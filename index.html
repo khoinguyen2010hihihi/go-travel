@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>GoTravel - Đà Nẵng</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="script.js" />
+        <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css" />
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <div class="header-container">
+                <div class="container">
+                    <div class="header-content">
+                        <div class="logo">
+                            <img src="assets/img/gotravel_logo_air.png" alt="" />
+                        </div>
+                        <nav class="nav">
+                            <ul>
+                                <li><a href="#">HOME</a></li>
+                                <li><a href="#">HOMESTAYS</a></li>
+                                <li><a href="#">ABOUT</a></li>
+                                <li><a href="#">CONTACT</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="auth">
+                    <button class="signup">Sign up</button>
+                    <button class="login">Log in</button>
+                </div>
+            </div>
+        </header>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Đà Nẵng Trong Tầm Tay Bạn</h1>
+                <div class="search-box">
+                    <div class="search-input">
+                        <svg
+                            class="search-icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" placeholder="Nhập địa điểm..." />
+                    </div>
+                    <div class="date-picker">
+                        <input type="date" class="date1" />
+                        <input type="date" class="date2" />
+                    </div>
+                    <div class="guests-selector">
+                        <select>
+                            <option>1 Khách</option>
+                            <option>2 Khách</option>
+                            <option>3 Khách</option>
+                            <option>4 Khách</option>
+                        </select>
+                    </div>
+                    <button class="search-button">SEARCH</button>
+                </div>
+            </div>
+        </section>
+        <!-- Destinations -->
+        <section class="destinations">
+            <h2>Các điểm đến thu hút nhất Đà Nẵng</h2>
+            <div class="carousel-container">
+                <button class="carousel-button prev" onclick="prevSlide()"><i class="ti-angle-left"></i></button>
+                <div class="carousel">
+                    <div class="slide">
+                        <img src="assets/img/ba-na.jpg" alt="Sun World Bà Nà Hills" />
+                        <div class="slide-info">
+                            <h3>Sun World Bà Nà Hills</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/nui-than-tai.jpg" alt="Núi Thần Tài" />
+                        <div class="slide-info">
+                            <h3>Núi Thần Tài</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/mikazuki.jpg" alt="Mikazuki" />
+                        <div class="slide-info">
+                            <h3>Mikazuki</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/asia-park.jpg" alt="Công viên châu Á" />
+                        <div class="slide-info">
+                            <h3>Công viên châu Á</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/hoa-phu-thanh.png" alt="Thác Hòa Phú Thành" />
+                        <div class="slide-info">
+                            <h3>Thác Hòa Phú Thành</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/suoi-mo.jpg" alt="Suối Mơ" />
+                        <div class="slide-info">
+                            <h3>Suối Mơ</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/cau-quay-song-han.jpg" alt="Cầu Sông Hàn" />
+                        <div class="slide-info">
+                            <h3>Cầu Sông Hàn</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/cau-thuan-phuoc.jpg" alt="Cầu Thuận Phước" />
+                        <div class="slide-info">
+                            <h3>Cầu Thuận Phước</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/cau-rong.png" alt="Cầu Rồng" />
+                        <div class="slide-info">
+                            <h3>Cầu Rồng</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/cau-tran-thi-ly.jpg" alt="Cầu Trần Thị Lý" />
+                        <div class="slide-info">
+                            <h3>Cầu Trần Thị Lý</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/chua-linh-ung.jpg" alt="Linh Ứng Sơn Trà" />
+                        <div class="slide-info">
+                            <h3>Linh Ứng Sơn Trà</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/ngu_hanh_son.jpg" alt="Ngũ Hành Sơn" />
+                        <div class="slide-info">
+                            <h3>Ngũ Hành Sơn</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/dinh-ban-co.webp" alt="Đỉnh Bàn Cờ" />
+                        <div class="slide-info">
+                            <h3>Đỉnh Bàn Cờ</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/bai-bien-my-khe.jpg" alt="Bãi biển Mỹ Khê" />
+                        <div class="slide-info">
+                            <h3>Bãi biển Mỹ Khê</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/bien-non-nuoc.jpg" alt="Bãi biển Non Nước" />
+                        <div class="slide-info">
+                            <h3>Bãi biển Non Nước</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/lang-da-my-nghe-non-nuoc.jpg" alt="Điêu Khắc Đá Mỹ Nghệ" />
+                        <div class="slide-info">
+                            <h3>Điêu Khắc Đá Mỹ Nghệ</h3>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/lang-mam-nam-o.jpg" alt="Làng Mắm Nam Ô" />
+                        <div class="slide-info">
+                            <h3>Làng Mắm Nam Ô</h3>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-button next" onclick="nextSlide()"><i class="ti-angle-right"></i></button>
+            </div>
+        </section>
+        <script src="script.js"></script>
+    </body>
+</html>
