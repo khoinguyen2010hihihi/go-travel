@@ -3,42 +3,37 @@ const slides = document.querySelectorAll(".slide");
 const prevButton = document.querySelector(".carousel-button.prev");
 const nextButton = document.querySelector(".carousel-button.next");
 let slideIndex = 0;
+const slidesPerMove = 5;
 
-function nextSlide() {
-    slideIndex++;
-    if (slideIndex >= slides.length) {
+function nextSlides(n) {
+    slideIndex += n;
+    if (slideIndex >= slides.length - 1) {
         slideIndex = slides.length - 1;
     }
-    updateCarousel();
     updateButtonsVisibility();
+    updateCarousel();
 }
 
-function prevSlide() {
-    slideIndex--;
+function prevSlides(n) {
+    slideIndex -= n;
     if (slideIndex < 0) {
         slideIndex = 0;
     }
-    updateCarousel();
     updateButtonsVisibility();
+    updateCarousel();
 }
 
 function updateCarousel() {
-    const slideWidth = slides[0].offsetWidth + 10; // Kích thước slide + margin
+    const slideWidth = slides[0].offsetWidth + 10;
     let translateX = -slideIndex * slideWidth;
 
-    // Tính số lượng slide hiển thị trên màn hình
-    const containerWidth = document.querySelector(".carousel-container").offsetWidth;
-    const slidesVisible = Math.floor(containerWidth / slideWidth);
+    const carouselWidth = carousel.offsetWidth;
+    const lastSlideWidth = slides[slides.length - 1].offsetWidth;
+    const remainingSpace = carouselWidth - lastSlideWidth;
 
-    // Nếu đang ở gần cuối, căn chỉnh slide cuối cùng về bên phải
-    if (slideIndex >= slides.length - slidesVisible) {
-        translateX = -(slides.length - slidesVisible) * slideWidth;
+    if (slideIndex === slides.length - 1) {
+        translateX = -(slideIndex * slideWidth - remainingSpace);
     }
-
-    const maxTranslateX = 0; // Giữ nguyên ở 0 để slide cuối luôn ở bên phải
-    const minTranslateX = -Math.max(0, (slides.length - slidesVisible) * slideWidth);
-
-    translateX = Math.max(translateX, minTranslateX); // giới hạn translateX
 
     carousel.style.transform = `translateX(${translateX}px)`;
 }
@@ -50,12 +45,11 @@ function updateButtonsVisibility() {
         prevButton.style.display = "block";
     }
 
-    if (slideIndex >= slides.length - 1) {
+    if (slideIndex >= slides.length - 6) {
         nextButton.style.display = "none";
     } else {
         nextButton.style.display = "block";
     }
 }
 
-// Gọi hàm này khi trang tải lần đầu để ẩn nút "Trước" nếu đang ở slide đầu tiên
 updateButtonsVisibility();
