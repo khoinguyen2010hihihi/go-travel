@@ -32,16 +32,29 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 header {
     background-color: #fff;
     color: #333;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
 }
 nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
+    align-items: center;
 }
 nav ul li {
     margin-left: 20px;
@@ -50,9 +63,12 @@ nav ul li a {
     text-decoration: none;
     color: #333;
     transition: color 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 5px;
 }
 nav ul li a:hover {
     color: #0099ff;
+    background-color: #f0f0f0;
 }
 .auth {
     display: flex;
@@ -66,12 +82,20 @@ nav ul li a:hover {
     border-radius: 5px;
     color: white;
     width: 100px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 .signup {
     background-color: #aaa;
 }
+.signup:hover {
+    background-color: #888;
+}
 .login {
     background-color: #0099ff;
+}
+.login:hover {
+    background-color: #007acc;
 }
 .hero {
     background: url("assets/img/back.webp") no-repeat center center/cover;
@@ -103,6 +127,9 @@ nav ul li a:hover {
     border: 1px solid #ddd;
     padding: 5px;
     border-radius: 5px;
+}
+.search-input:focus-within {
+    border: 2px solid #000;
 }
 .search-icon {
     margin: 5px;
@@ -150,6 +177,10 @@ nav ul li a:hover {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.search-button:hover {
+    background-color: #007acc; /* Màu nền khi di chuột qua */
 }
 
 /* Destinations */
@@ -216,4 +247,116 @@ nav ul li a:hover {
 
 .carousel-button.next {
     right: 10px;
+}
+/* featured properties */
+.featured-properties {
+    padding: 20px;
+    font-family: sans-serif;
+}
+.location-and-view-more {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+.location-tabs {
+    display: flex;
+}
+
+.tab {
+    background-color: transparent;
+    border: none;
+    padding: 10px 15px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #007bff;
+    font-weight: bold;
+    border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+    border-bottom: 2px solid #007bff;
+}
+
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /*Responsive*/
+    gap: 20px;
+}
+
+.property-card {
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.rating {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #007bff;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.property-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.property-details {
+    padding: 15px;
+}
+
+.property-details h3 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.property-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.property-rating {
+    color: #f39c12;
+}
+
+.property-rating span {
+    font-size: 14px;
+}
+
+.property-location {
+    color: #777;
+    font-size: 14px;
+}
+.property-location i {
+    margin: 5px;
+}
+
+.property-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #e44d26;
+    margin-bottom: 5px;
+}
+
+.view-more {
+    text-align: right;
+    color: #007bff;
+    text-decoration: none;
+    margin-top: 0px;
+}
+
+.view-more i {
+    margin-left: 5px;
 }
