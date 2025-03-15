@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Homestay Search</title>
+        <style>
+            .header-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+            }
+            .container1 {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .header-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+            .logo img {
+                height: 40px;
+                width: auto;
+                vertical-align: middle;
+            }
+            .logo {
+                width: auto;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+            }
+            header {
+                background-color: #fff;
+                color: #333;
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 1000;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            }
+            nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+            }
+            nav ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                align-items: center;
+            }
+            nav ul li {
+                margin-left: 20px;
+            }
+            nav ul li a {
+                text-decoration: none;
+                color: #333;
+                transition: color 0.3s ease;
+                padding: 10px 15px;
+                border-radius: 5px;
+            }
+            nav ul li a:hover {
+                color: #0099ff;
+                background-color: #f0f0f0;
+            }
+            .auth {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+            }
+            .auth button {
+                padding: 10px 20px;
+                margin-left: 10px;
+                border: none;
+                border-radius: 5px;
+                color: white;
+                width: 110px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            .signup {
+                background-color: #aaa;
+            }
+            .signup:hover {
+                background-color: #888;
+            }
+            .login {
+                background-color: #0099ff;
+            }
+            .login:hover {
+                background-color: #007acc;
+            }
+
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 60px auto;
+                display: flex;
+            }
+
+            .filters {
+                width: 300px;
+                padding: 20px;
+                height: min-content;
+                margin-top: 20px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .filters h2 {
+                margin-top: 0;
+                margin-bottom: 15px;
+                font-size: 1.2em;
+            }
+
+            .filters label {
+                display: block;
+                margin-bottom: 8px;
+            }
+
+            .results {
+                flex: 1;
+                padding: 20px;
+            }
+
+            .result-card {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+                display: flex;
+                overflow: hidden;
+            }
+
+            .result-card img {
+                width: 300px;
+                height: 200px;
+                object-fit: cover;
+                border-radius: 8px 0 0 8px;
+            }
+
+            .result-details {
+                padding: 20px;
+                flex: 1;
+            }
+
+            .result-details h3 {
+                margin-top: 0;
+                margin-bottom: 5px;
+                font-size: 1.3em;
+            }
+
+            .result-details .stars {
+                color: #ffc107;
+                margin-bottom: 10px;
+            }
+
+            .result-details .location {
+                margin-bottom: 10px;
+                color: #555;
+                font-size: 0.9em;
+            }
+
+            .result-details .amenities {
+                color: #777;
+                font-size: 0.85em;
+            }
+
+            .search-bar input[type="text"] {
+                padding: 15px;
+                border: 1px solid #ccc;
+                border-radius: 50px;
+                margin-bottom: 10px;
+                width: 90%;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="header-container">
+                <div class="container1">
+                    <div class="header-content">
+                        <div class="logo">
+                            <img src="assets/img/gotravel_logo_air.png" alt="" />
+                        </div>
+                        <nav class="nav">
+                            <ul>
+                                <li><a href="index.html">HOME</a></li>
+                                <li><a href="#">HOMESTAYS</a></li>
+                                <li><a href="#">ABOUT</a></li>
+                                <li><a href="#">CONTACT</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="auth">
+                    <button class="signup" onclick="openPopup('register')">Sign up</button>
+                    <button class="login" onclick="openPopup('login')">Log in</button>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <div class="filters">
+                <div class="search-bar">
+                    <input type="text" placeholder="Tìm kiếm" />
+                </div>
+                <h2>Giá mỗi đêm</h2>
+                <label><input type="checkbox" /> Từ 200 nghìn đến 500 nghìn</label>
+                <label><input type="checkbox" /> Từ 500 nghìn đến 1 triệu</label>
+                <label><input type="checkbox" /> Từ 1 triệu đến 2 triệu</label>
+                <label><input type="checkbox" /> Trên 2 triệu</label>
+
+                <h2>Loại homestay</h2>
+                <label><input type="checkbox" /> Nguyên căn</label>
+                <label><input type="checkbox" /> Phòng đơn</label>
+                <label><input type="checkbox" /> Phòng tập thể (Dorm)</label>
+
+                <h2>Tiện nghi</h2>
+                <label><input type="checkbox" /> Hồ bơi</label>
+                <label><input type="checkbox" /> Bãi đỗ xe</label>
+                <label><input type="checkbox" /> WiFi miễn phí</label>
+                <label><input type="checkbox" /> TV</label>
+                <label><input type="checkbox" /> Điều hòa</label>
+                <label><input type="checkbox" /> Tủ lạnh</label>
+                <label><input type="checkbox" /> Bếp riêng</label>
+                <label><input type="checkbox" /> Ban công</label>
+                <label><input type="checkbox" /> Bồn tắm</label>
+                <label><input type="checkbox" /> Máy pha trà/cà phê</label>
+
+                <h2>Loại giường</h2>
+                <label><input type="checkbox" /> Giường đôi</label>
+                <label><input type="checkbox" /> Giường đôi lớn</label>
+                <label><input type="checkbox" /> Giường lớn</label>
+                <label><input type="checkbox" /> Giường đơn/2 giường đơn</label>
+                <label><input type="checkbox" /> Giường tầng</label>
+
+                <h2>Xếp hạng đánh giá</h2>
+                <label><input type="checkbox" /> Từ 3 sao trở lên</label>
+                <label><input type="checkbox" /> Từ 4 sao trở lên</label>
+                <label><input type="checkbox" /> 5 sao</label>
+            </div>
+
+            <div class="results">
+                <div class="result-card">
+                    <img src="assets/img/home3.webp" alt="Harmony Homestay" />
+                    <div class="result-details">
+                        <h3>Harmony Homestay</h3>
+                        <div class="stars">★★★☆☆</div>
+                        <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
+                        <div class="amenities">Free Wi-Fi, Swimming Pool</div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <img src="assets/img/home3.webp" alt="Harmony Homestay" />
+                    <div class="result-details">
+                        <h3>Harmony Homestay</h3>
+                        <div class="stars">★★★☆☆</div>
+                        <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
+                        <div class="amenities">Free Wi-Fi, Swimming Pool</div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <img src="assets/img/home3.webp" alt="Harmony Homestay" />
+                    <div class="result-details">
+                        <h3>Harmony Homestay</h3>
+                        <div class="stars">★★★☆☆</div>
+                        <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
+                        <div class="amenities">Free Wi-Fi, Swimming Pool</div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <img src="assets/img/home3.webp" alt="Harmony Homestay" />
+                    <div class="result-details">
+                        <h3>Harmony Homestay</h3>
+                        <div class="stars">★★★☆☆</div>
+                        <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
+                        <div class="amenities">Free Wi-Fi, Swimming Pool</div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <img src="assets/img/home3.webp" alt="Harmony Homestay" />
+                    <div class="result-details">
+                        <h3>Harmony Homestay</h3>
+                        <div class="stars">★★★☆☆</div>
+                        <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
+                        <div class="amenities">Free Wi-Fi, Swimming Pool</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
