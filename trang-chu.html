@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>GoTravel - Đà Nẵng</title>
+        <link rel="stylesheet" href="trang-chu.css" />
         <link rel="stylesheet" href="style.css" />
         <link rel="stylesheet" href="script.js" />
         <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css" />
@@ -19,7 +20,7 @@
                         </div>
                         <nav class="nav">
                             <ul>
-                                <li><a href="">HOME</a></li>
+                                <li><a href="#">HOME</a></li>
                                 <li><a href="homestay.html">HOMESTAYS</a></li>
                                 <li><a href="#">ABOUT</a></li>
                                 <li><a href="#">CONTACT</a></li>
@@ -28,8 +29,11 @@
                     </div>
                 </div>
                 <div class="auth">
-                    <button class="signup" onclick="openPopup('register')">Sign up</button>
-                    <button class="login" onclick="openPopup('login')">Log in</button>
+                    <a href="partnership.html">
+                        <button class="cooperate-btn">Hợp tác với chúng tôi</button>
+                    </a>
+                    <button class="signup" onclick="openPopup('register')">Đăng ký</button>
+                    <button class="login" onclick="openPopup('login')">Đăng nhập</button>
                 </div>
             </div>
         </header>
@@ -68,7 +72,7 @@
                             <option>4 Khách</option>
                         </select>
                     </div>
-                    <button class="search-button">SEARCH</button>
+                    <button class="search-button">TÌM KIẾM</button>
                 </div>
             </div>
         </section>
@@ -250,36 +254,14 @@
             </div>
         </section>
 
-        <!-- Popup Đăng Nhập / Đăng Ký -->
-        <div id="popup" class="popup">
-            <div class="popup-content">
-                <span class="close-btn" onclick="closePopup()">&times;</span>
-                <div class="tabs">
-                    <button class="tab-btn active btn-login" onclick="switchTab('login')">Đăng Nhập</button>
-                    <button class="tab-btn btn-register" onclick="switchTab('register')">Đăng Ký</button>
-                </div>
-
-                <div class="form-container">
-                    <div id="loginForm" class="form">
-                        <h2>Đăng Nhập</h2>
-                        <input type="email" id="loginEmail" placeholder="Email" />
-                        <input type="password" id="loginPassword" placeholder="Mật khẩu" />
-                        <button class="button1">Đăng Nhập</button>
-                        <a href="#" class="forgot-password">Quên mật khẩu?</a>
-                    </div>
-
-                    <div id="registerForm" class="form hidden">
-                        <h2>Đăng Ký</h2>
-                        <input type="text" id="registerName" placeholder="Họ và Tên" />
-                        <input type="email" id="registerEmail" placeholder="Email" />
-                        <input type="password" id="registerPassword" placeholder="Mật khẩu" />
-                        <input type="password" id="confirmPassword" placeholder="Nhập lại mật khẩu" />
-                        <button class="button1">Đăng Ký</button>
-                    </div>
-                </div>
-                <button class="cooperate-btn">Hợp tác với chúng tôi</button>
-            </div>
-        </div>
+        <div id="popup-placeholder"></div>
+        <script>
+            fetch("popup.html")
+                .then((response) => response.text())
+                .then((data) => {
+                    document.getElementById("popup-placeholder").innerHTML = data;
+                });
+        </script>
 
         <script src="script.js"></script>
     </body>

@@ -3,192 +3,10 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Homestay Search</title>
-        <style>
-            .header-container {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 20px;
-            }
-            .container1 {
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-            }
-            .header-content {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-            }
-            .logo img {
-                height: 40px;
-                width: auto;
-                vertical-align: middle;
-            }
-            .logo {
-                width: auto;
-                height: 40px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-            }
-            header {
-                background-color: #fff;
-                color: #333;
-                position: fixed;
-                top: 0;
-                width: 100%;
-                z-index: 1000;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            }
-            nav {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 20px;
-            }
-            nav ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                display: flex;
-                align-items: center;
-            }
-            nav ul li {
-                margin-left: 20px;
-            }
-            nav ul li a {
-                text-decoration: none;
-                color: #333;
-                transition: color 0.3s ease;
-                padding: 10px 15px;
-                border-radius: 5px;
-            }
-            nav ul li a:hover {
-                color: #0099ff;
-                background-color: #f0f0f0;
-            }
-            .auth {
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-            }
-            .auth button {
-                padding: 10px 20px;
-                margin-left: 10px;
-                border: none;
-                border-radius: 5px;
-                color: white;
-                width: 110px;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-            }
-            .signup {
-                background-color: #aaa;
-            }
-            .signup:hover {
-                background-color: #888;
-            }
-            .login {
-                background-color: #0099ff;
-            }
-            .login:hover {
-                background-color: #007acc;
-            }
-
-            body {
-                font-family: sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f4f4f4;
-            }
-
-            .container {
-                max-width: 1200px;
-                margin: 60px auto;
-                display: flex;
-            }
-
-            .filters {
-                width: 300px;
-                padding: 20px;
-                height: min-content;
-                margin-top: 20px;
-                background-color: white;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-
-            .filters h2 {
-                margin-top: 0;
-                margin-bottom: 15px;
-                font-size: 1.2em;
-            }
-
-            .filters label {
-                display: block;
-                margin-bottom: 8px;
-            }
-
-            .results {
-                flex: 1;
-                padding: 20px;
-            }
-
-            .result-card {
-                background-color: white;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                margin-bottom: 20px;
-                display: flex;
-                overflow: hidden;
-            }
-
-            .result-card img {
-                width: 300px;
-                height: 200px;
-                object-fit: cover;
-                border-radius: 8px 0 0 8px;
-            }
-
-            .result-details {
-                padding: 20px;
-                flex: 1;
-            }
-
-            .result-details h3 {
-                margin-top: 0;
-                margin-bottom: 5px;
-                font-size: 1.3em;
-            }
-
-            .result-details .stars {
-                color: #ffc107;
-                margin-bottom: 10px;
-            }
-
-            .result-details .location {
-                margin-bottom: 10px;
-                color: #555;
-                font-size: 0.9em;
-            }
-
-            .result-details .amenities {
-                color: #777;
-                font-size: 0.85em;
-            }
-
-            .search-bar input[type="text"] {
-                padding: 15px;
-                border: 1px solid #ccc;
-                border-radius: 50px;
-                margin-bottom: 10px;
-                width: 90%;
-            }
-        </style>
+        <title>Homestay</title>
+        <link rel="stylesheet" href="homestay.css" />
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="script.js" />
     </head>
     <body>
         <header>
@@ -196,11 +14,13 @@
                 <div class="container1">
                     <div class="header-content">
                         <div class="logo">
-                            <img src="assets/img/gotravel_logo_air.png" alt="" />
+                            <a href="trang-chu.html">
+                                <img src="assets/img/gotravel_logo_air.png" alt="" />
+                            </a>
                         </div>
                         <nav class="nav">
                             <ul>
-                                <li><a href="index.html">HOME</a></li>
+                                <li><a href="trang-chu.html">HOME</a></li>
                                 <li><a href="#">HOMESTAYS</a></li>
                                 <li><a href="#">ABOUT</a></li>
                                 <li><a href="#">CONTACT</a></li>
@@ -209,15 +29,34 @@
                     </div>
                 </div>
                 <div class="auth">
-                    <button class="signup" onclick="openPopup('register')">Sign up</button>
-                    <button class="login" onclick="openPopup('login')">Log in</button>
+                    <a href="partnership.html">
+                        <button class="cooperate-btn">Hợp tác với chúng tôi</button>
+                    </a>
+                    <button class="signup" onclick="openPopup('register')">Đăng ký</button>
+                    <button class="login" onclick="openPopup('login')">Đăng nhập</button>
                 </div>
             </div>
         </header>
+
         <div class="container">
             <div class="filters">
-                <div class="search-bar">
-                    <input type="text" placeholder="Tìm kiếm" />
+                <div class="search-input">
+                    <svg
+                        class="search-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" placeholder="Tìm kiếm..." />
                 </div>
                 <h2>Giá mỗi đêm</h2>
                 <label><input type="checkbox" /> Từ 200 nghìn đến 500 nghìn</label>
@@ -307,5 +146,16 @@
                 </div>
             </div>
         </div>
+
+        <div id="popup-placeholder"></div>
+        <script>
+            fetch("popup.html")
+                .then((response) => response.text())
+                .then((data) => {
+                    document.getElementById("popup-placeholder").innerHTML = data;
+                });
+        </script>
+
+        <script src="script.js"></script>
     </body>
 </html>

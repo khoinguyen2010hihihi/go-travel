@@ -67,8 +67,8 @@ function closePopup() {
 function switchTab(tab) {
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
-    const loginTab = document.querySelector(".tab-btn:nth-child(1)");
-    const registerTab = document.querySelector(".tab-btn:nth-child(2)");
+    const registerTab = document.querySelector(".tab-btn:nth-child(1)");
+    const loginTab = document.querySelector(".tab-btn:nth-child(2)");
 
     if (tab === "login") {
         loginForm.classList.remove("hidden");
@@ -84,10 +84,10 @@ function switchTab(tab) {
 }
 
 // Event listeners for login and signup buttons
-document.querySelector(".login").addEventListener("click", function() {
+document.querySelector(".login").addEventListener("click", function () {
     openPopup("login");
 });
 
-document.querySelector(".signup").addEventListener("click", function() {
+document.querySelector(".signup").addEventListener("click", function () {
     openPopup("register");
 });
