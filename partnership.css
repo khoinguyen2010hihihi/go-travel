@@ -28,7 +28,7 @@ header {
     top: 0;
     width: 100%;
     z-index: 1000;
-    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); */
+    position: fixed;
 }
 
 nav {
@@ -128,7 +128,6 @@ nav ul li a:hover {
     padding: 30px;
     background-color: #fff;
     border-radius: 10px;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
     margin-bottom: 40px;
 }
 
@@ -317,7 +316,6 @@ nav ul li a:hover {
     background-color: #fff;
     border-radius: 8px;
     overflow: hidden;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
     text-align: center;
     padding: 20px;
 }
