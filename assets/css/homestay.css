@@ -48,7 +48,6 @@ body {
 .search-icon {
     margin: 10px;
     color: gray;
-    
 }
 
 .date-picker {
@@ -57,14 +56,14 @@ body {
 }
 
 .date-picker input {
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 5px;
     flex: 1;
 }
 
 .guests-selector select {
-    padding: 10px;
+    padding: 13px;
     border-radius: 5px;
     border: 1px solid #ddd;
     flex: 1;
@@ -73,7 +72,7 @@ body {
 .search-button {
     background-color: #0099ff;
     color: white;
-    padding: 11px 20px;
+    padding: 14px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
