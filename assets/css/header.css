@@ -4,22 +4,26 @@
     align-items: center;
     padding: 10px 20px;
 }
+
 .container {
     display: flex;
     justify-content: flex-start;
     align-items: center;
 }
+
 .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
+
 .logo img {
     height: 40px;
     width: auto;
     vertical-align: middle;
 }
+
 .logo {
     width: auto;
     height: 40px;
@@ -28,6 +32,7 @@
     align-items: center;
     cursor: pointer;
 }
+
 header {
     background-color: #fff;
     color: #333;
@@ -37,12 +42,14 @@ header {
     z-index: 1000;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
+
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
 }
+
 nav ul {
     list-style: none;
     padding: 0;
@@ -50,19 +57,21 @@ nav ul {
     display: flex;
     align-items: center;
 }
+
 nav ul li {
     margin-left: 20px;
     white-space: nowrap;
 }
+
 nav ul li a {
     text-decoration: none;
     color: #555555;
     transition: color 0.3s ease;
     padding: 10px 15px;
-    border-radius: 5px;
     font-weight: 550;
     font-size: 14px;
 }
+
 nav ul li a:hover {
     color: #0099ff;
 }
@@ -200,10 +209,10 @@ nav ul li a:hover {
         display: none;
     }
     .desktop-btns {
-        display: none; 
+        display: none;
     }
     .mobile-menu-toggle {
-        display: block; 
+        display: block;
         margin-left: auto; /* Đẩy nút hamburger sang hết bên phải */
         padding: 5px; /* Đảm bảo vùng bấm đủ lớn */
     }
@@ -215,9 +224,10 @@ nav ul li a:hover {
     }
     /* Bỏ container riêng cho logo/nav nếu không cần nữa */
     /* .container { display: none; } */ /* Hoặc điều chỉnh nếu cần */
-    .header-content { /* Đảm bảo logo được căn chỉnh */
-       display: flex;
-       align-items: center;
+    .header-content {
+        /* Đảm bảo logo được căn chỉnh */
+        display: flex;
+        align-items: center;
     }
 
     /* --- Style cho đường kẻ phân cách (Tùy chọn) --- */
@@ -229,26 +239,27 @@ nav ul li a:hover {
 
     /* Đảm bảo style cho các link mới thêm vào mobile menu là nhất quán */
     /* Selector này nên đã có từ trước */
-    .mobile-menu a, 
+    .mobile-menu a,
     .mobile-menu button {
         display: block;
         width: 100%;
         padding: 12px 20px;
         text-align: left;
         /* ... các style khác ... */
-        box-sizing: border-box; 
+        box-sizing: border-box;
     }
-    .mobile-menu a { /* Đảm bảo link không có gạch chân */
+    .mobile-menu a {
+        /* Đảm bảo link không có gạch chân */
         text-decoration: none;
         color: #333; /* Hoặc màu bạn muốn */
     }
-    .mobile-menu a:hover, 
+    .mobile-menu a:hover,
     .mobile-menu button:hover {
         background-color: #f0f0f0;
     }
 
     /* Style cho menu khi mở (đã có từ trước) */
     .mobile-menu.active {
-        display: block; 
+        display: block;
     }
 }
