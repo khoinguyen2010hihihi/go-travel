@@ -52,6 +52,7 @@ nav ul {
 }
 nav ul li {
     margin-left: 20px;
+    white-space: nowrap;
 }
 nav ul li a {
     text-decoration: none;
@@ -66,13 +67,13 @@ nav ul li a:hover {
     color: #0099ff;
 }
 
-.auth {
+.btns {
     display: flex;
     justify-content: flex-end;
     align-items: center;
 }
 
-.auth button {
+.btns button {
     padding: 10px 8px;
     margin-left: 10px;
     border-radius: 25px;
@@ -94,22 +95,160 @@ nav ul li a:hover {
     border: rgb(255, 86, 125);
 }
 
-.signup {
+.dang-ky-btn {
     width: 90px;
     background-color: #fff;
     color: #0099ff;
     border: 1px solid #0099ff;
 }
-.signup:hover {
+.dang-ky-btn:hover {
     background-color: #c2c2c2;
 }
 
-.login {
+.dang-nhap-btn {
     width: 90px;
     background-color: #0099ff;
     color: #fff;
     border: 1px solid #c2c2c2;
 }
-.login:hover {
+.dang-nhap-btn:hover {
     background-color: #007acc;
+}
+
+.desktop-btns {
+    display: flex;
+    align-items: center;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #555555;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.mobile-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0px;
+    background-color: #fff;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1100;
+    min-width: 200px;
+    padding: 10px 0;
+}
+
+.mobile-menu.active {
+    display: block;
+}
+
+.mobile-menu a,
+.mobile-menu button {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 20px;
+    text-align: left;
+    border: none;
+    background: none;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .header-container {
+        height: 50px;
+        padding: 0px 10px;
+    }
+
+    nav {
+        padding: 5px;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: #555555;
+        transition: color 0.3s ease;
+        padding: 10px 5px;
+        font-weight: 550;
+        font-size: 14px;
+    }
+
+    .desktop-btns {
+        display: none;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+}
+
+@media (max-width: 767px) {
+    .header-container {
+        height: 50px;
+        padding: 0px 10px;
+    }
+    .nav {
+        display: none;
+    }
+    .desktop-btns {
+        display: none; 
+    }
+    .mobile-menu-toggle {
+        display: block; 
+        margin-left: auto; /* Đẩy nút hamburger sang hết bên phải */
+        padding: 5px; /* Đảm bảo vùng bấm đủ lớn */
+    }
+    .header-container {
+        display: flex;
+        justify-content: space-between; /* Logo bên trái, hamburger bên phải */
+        align-items: center;
+        flex-wrap: nowrap;
+    }
+    /* Bỏ container riêng cho logo/nav nếu không cần nữa */
+    /* .container { display: none; } */ /* Hoặc điều chỉnh nếu cần */
+    .header-content { /* Đảm bảo logo được căn chỉnh */
+       display: flex;
+       align-items: center;
+    }
+
+    /* --- Style cho đường kẻ phân cách (Tùy chọn) --- */
+    .mobile-menu-divider {
+        margin: 8px 20px; /* Khoảng cách trên dưới và trái phải */
+        border: none;
+        border-top: 1px solid #eee; /* Màu đường kẻ */
+    }
+
+    /* Đảm bảo style cho các link mới thêm vào mobile menu là nhất quán */
+    /* Selector này nên đã có từ trước */
+    .mobile-menu a, 
+    .mobile-menu button {
+        display: block;
+        width: 100%;
+        padding: 12px 20px;
+        text-align: left;
+        /* ... các style khác ... */
+        box-sizing: border-box; 
+    }
+    .mobile-menu a { /* Đảm bảo link không có gạch chân */
+        text-decoration: none;
+        color: #333; /* Hoặc màu bạn muốn */
+    }
+    .mobile-menu a:hover, 
+    .mobile-menu button:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* Style cho menu khi mở (đã có từ trước) */
+    .mobile-menu.active {
+        display: block; 
+    }
 }

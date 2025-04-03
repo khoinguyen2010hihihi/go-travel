@@ -6,7 +6,6 @@
         <title>GoTravel - Đà Nẵng</title>
         <link rel="stylesheet" href="assets/css/trang-chu.css" />
         <link rel="stylesheet" href="assets/css/header.css" />
-        <link rel="stylesheet" href="script.js" />
         <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css" />
     </head>
     <body>
@@ -30,12 +29,27 @@
                         </nav>
                     </div>
                 </div>
-                <div class="auth">
+                <div class="btns desktop-btns">
                     <a href="partnership.html">
                         <button class="cooperate-btn">Hợp tác với chúng tôi</button>
                     </a>
-                    <button class="signup" onclick="openPopup('register')">Đăng ký</button>
-                    <button class="login" onclick="openPopup('login')">Đăng nhập</button>
+                    <button class="dang-ky-btn" onclick="openPopup('register')">Đăng ký</button>
+                    <button class="dang-nhap-btn" onclick="openPopup('login')">Đăng nhập</button>
+                </div>
+
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+                    <i class="ti-menu"></i>
+                </button>
+
+                <div class="mobile-menu">
+                    <a href="#" class="mobile-menu-link">TRANG CHỦ</a>
+                    <a href="homestay.html" class="mobile-menu-link">HOMESTAYS</a>
+                    <a href="about.html" class="mobile-menu-link">VỀ CHÚNG TÔI</a>
+                    <a href="contact.html" class="mobile-menu-link">LIÊN HỆ</a>
+                    <hr class="mobile-menu-divider" />
+                    <a href="partnership.html" class="mobile-menu-link">Hợp tác với chúng tôi</a>
+                    <button class="mobile-menu-btn" onclick="openPopup('register'); closeMobileMenu();">Đăng ký</button>
+                    <button class="mobile-menu-btn" onclick="openPopup('login'); closeMobileMenu();">Đăng nhập</button>
                 </div>
             </div>
         </header>
@@ -181,83 +195,319 @@
                         </div>
                     </div>
                 </div>
-                <button class="carousel-button next" onclick="nextSlides(5)"><i class="ti-angle-right"></i></button>
+                <button class="carousel-button next" onclick="nextSlides()"><i class="ti-angle-right"></i></button>
             </div>
         </section>
         <!-- featured properties -->
         <section class="featured-properties">
-            <h2>Những chỗ nghỉ nổi bật được đề xuất cho quý khách:</h2>
+            <h2>Những chỗ nghỉ nổi bật được đề xuất cho quý khách</h2>
             <div class="location-and-view-more">
-                <div class="location-tabs">
-                    <button class="tab active">Ngũ Hành Sơn</button>
-                    <button class="tab">Sơn Trà</button>
-                    <button class="tab">Hải Châu</button>
-                    <button class="tab">Thanh Khê</button>
-                    <button class="tab">Liên Chiểu</button>
+                <div class="location-tabs hide-scrollbar">
+                    <button class="tab active" data-location="ngu-hanh-son">Ngũ Hành Sơn</button>
+                    <button class="tab" data-location="son-tra">Sơn Trà</button>
+                    <button class="tab" data-location="hai-chau">Hải Châu</button>
+                    <button class="tab" data-location="thanh-khe">Thanh Khê</button>
+                    <button class="tab" data-location="lien-chieu">Liên Chiểu</button>
                 </div>
-                <a href="#" class="view-more">Xem thêm các chỗ nghỉ (Ngũ Hành Sơn) <i class="ti-angle-right"></i></a>
             </div>
-            <div class="property-grid">
-                <div class="property-card">
-                    <div class="rating">9.1</div>
-                    <img src="assets/img/kin_wander_tan_quy.webp" alt="Kin Wander Tân Quy" />
-                    <div class="property-details">
-                        <h3>Kin Wander Tân Quy</h3>
-                        <div class="property-info">
-                            <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-                            <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+            <div id="property-container">
+                <div class="property-grid" data-location="ngu-hanh-son">
+                    <div class="property-card">
+                        <div class="rating">9.1</div>
+                        <img src="assets/img/kin_wander_tan_quy.webp" alt="Kin Wander Tân Quy" />
+                        <div class="property-details">
+                            <h3>Kin Wander Tân Quy</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,232,551</p>
                         </div>
-                        <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
-                        <p class="property-price">VND 1,232,551</p>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">9.1</div>
+                        <img src="assets/img/kin_wander_tan_phong.webp" alt="Kin Wander Tân Phong" />
+                        <div class="property-details">
+                            <h3>Kin Wander Tân Phong</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,579,601</p>
+                        </div>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">8.3</div>
+                        <img src="assets/img/yen_house.jpg" alt="YÊN HOUSE" />
+                        <div class="property-details">
+                            <h3>YÊN HOUSE (YEN HOUSE)</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Tân Bình, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 648,148</p>
+                        </div>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">8.6</div>
+                        <img src="assets/img/vincity_serviced_apartment.webp" alt="VINCITY" />
+                        <div class="property-details">
+                            <h3>Vinhomes Serviced Apartment</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 9, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,007,223</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="property-card">
-                    <div class="rating">9.1</div>
-                    <img src="assets/img/kin_wander_tan_phong.webp" alt="Kin Wander Tân Phong" />
-                    <div class="property-details">
-                        <h3>Kin Wander Tân Phong</h3>
-                        <div class="property-info">
-                            <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-                            <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+                <div class="property-grid" data-location="son-tra" style="display: none">
+                    <div class="property-card">
+                        <div class="rating">9.1</div>
+                        <img src="assets/img/kin_wander_tan_quy.webp" alt="Kin Wander Tân Quy" />
+                        <div class="property-details">
+                            <h3>Kin Wander Tân Quy</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,232,551</p>
                         </div>
-                        <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
-                        <p class="property-price">VND 1,579,601</p>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">9.1</div>
+                        <img src="assets/img/kin_wander_tan_quy.webp" alt="Kin Wander Tân Quy" />
+                        <div class="property-details">
+                            <h3>Kin Wander Tân Quy</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,232,551</p>
+                        </div>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">9.1</div>
+                        <img src="assets/img/kin_wander_tan_quy.webp" alt="Kin Wander Tân Quy" />
+                        <div class="property-details">
+                            <h3>Kin Wander Tân Quy</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,232,551</p>
+                        </div>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">9.1</div>
+                        <img src="assets/img/kin_wander_tan_quy.webp" alt="Kin Wander Tân Quy" />
+                        <div class="property-details">
+                            <h3>Kin Wander Tân Quy</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,232,551</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="property-card">
-                    <div class="rating">8.3</div>
-                    <img src="assets/img/yen_house.jpg" alt="YÊN HOUSE" />
-                    <div class="property-details">
-                        <h3>YÊN HOUSE (YEN HOUSE)</h3>
-                        <div class="property-info">
-                            <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
-                            <div class="property-location"><i class="ti-location-pin"></i>Tân Bình, Hồ Chí Minh</div>
+                <div class="property-grid" data-location="hai-chau" style="display: none">
+                    <div class="property-card">
+                        <div class="rating">9.1</div>
+                        <img src="assets/img/kin_wander_tan_phong.webp" alt="Kin Wander Tân Phong" />
+                        <div class="property-details">
+                            <h3>Kin Wander Tân Phong</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,579,601</p>
                         </div>
-                        <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
-                        <p class="property-price">VND 648,148</p>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">9.1</div>
+                        <img src="assets/img/kin_wander_tan_phong.webp" alt="Kin Wander Tân Phong" />
+                        <div class="property-details">
+                            <h3>Kin Wander Tân Phong</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,579,601</p>
+                        </div>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">9.1</div>
+                        <img src="assets/img/kin_wander_tan_phong.webp" alt="Kin Wander Tân Phong" />
+                        <div class="property-details">
+                            <h3>Kin Wander Tân Phong</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,579,601</p>
+                        </div>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">9.1</div>
+                        <img src="assets/img/kin_wander_tan_phong.webp" alt="Kin Wander Tân Phong" />
+                        <div class="property-details">
+                            <h3>Kin Wander Tân Phong</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 7, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,579,601</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="property-card">
-                    <div class="rating">8.6</div>
-                    <img src="assets/img/vincity_serviced_apartment.webp" alt="VINCITY" />
-                    <div class="property-details">
-                        <h3>Vinhomes Serviced Apartment</h3>
-                        <div class="property-info">
-                            <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
-                            <div class="property-location"><i class="ti-location-pin"></i>Quận 9, Hồ Chí Minh</div>
+                <div class="property-grid" data-location="thanh-khe" style="display: none">
+                    <div class="property-card">
+                        <div class="rating">8.3</div>
+                        <img src="assets/img/yen_house.jpg" alt="YÊN HOUSE" />
+                        <div class="property-details">
+                            <h3>YÊN HOUSE (YEN HOUSE)</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Tân Bình, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 648,148</p>
                         </div>
-                        <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
-                        <p class="property-price">VND 1,007,223</p>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">8.3</div>
+                        <img src="assets/img/yen_house.jpg" alt="YÊN HOUSE" />
+                        <div class="property-details">
+                            <h3>YÊN HOUSE (YEN HOUSE)</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Tân Bình, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 648,148</p>
+                        </div>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">8.3</div>
+                        <img src="assets/img/yen_house.jpg" alt="YÊN HOUSE" />
+                        <div class="property-details">
+                            <h3>YÊN HOUSE (YEN HOUSE)</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Tân Bình, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 648,148</p>
+                        </div>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">8.3</div>
+                        <img src="assets/img/yen_house.jpg" alt="YÊN HOUSE" />
+                        <div class="property-details">
+                            <h3>YÊN HOUSE (YEN HOUSE)</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Tân Bình, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 648,148</p>
+                        </div>
                     </div>
                 </div>
+
+                <div class="property-grid" data-location="lien-chieu" style="display: none">
+                    <div class="property-card">
+                        <div class="rating">8.6</div>
+                        <img src="assets/img/vincity_serviced_apartment.webp" alt="VINCITY" />
+                        <div class="property-details">
+                            <h3>Vinhomes Serviced Apartment</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 9, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,007,223</p>
+                        </div>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">8.6</div>
+                        <img src="assets/img/vincity_serviced_apartment.webp" alt="VINCITY" />
+                        <div class="property-details">
+                            <h3>Vinhomes Serviced Apartment</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 9, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,007,223</p>
+                        </div>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">8.6</div>
+                        <img src="assets/img/vincity_serviced_apartment.webp" alt="VINCITY" />
+                        <div class="property-details">
+                            <h3>Vinhomes Serviced Apartment</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 9, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,007,223</p>
+                        </div>
+                    </div>
+
+                    <div class="property-card">
+                        <div class="rating">8.6</div>
+                        <img src="assets/img/vincity_serviced_apartment.webp" alt="VINCITY" />
+                        <div class="property-details">
+                            <h3>Vinhomes Serviced Apartment</h3>
+                            <div class="property-info">
+                                <div class="property-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
+                                <div class="property-location"><i class="ti-location-pin"></i>Quận 9, Hồ Chí Minh</div>
+                            </div>
+                            <p class="property-price">Giá mỗi đêm chưa gồm thuế và phí</p>
+                            <p class="property-price">VND 1,007,223</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="view-more-container">
+                <a href="#" class="view-more">Xem thêm các chỗ nghỉ (<span id="view-more-text">Ngũ Hành Sơn</span>) <i class="ti-angle-right"></i></a>
             </div>
         </section>
-
         <div id="popup-placeholder"></div>
         <script>
+            // Popup functionality
             fetch("popup.html")
                 .then((response) => response.text())
                 .then((data) => {
@@ -265,6 +515,10 @@
                 });
         </script>
 
-        <script src="script.js"></script>
+        <script src="assets/js/carousel.js"></script>
+        <script src="assets/js/tabs-location.js"></script>
+
+        <script src="assets/js/popup-login.js"></script>
+        <script src="assets/js/toggle-mobile-menu.js"></script>
     </body>
 </html>

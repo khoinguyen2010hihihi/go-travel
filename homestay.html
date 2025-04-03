@@ -6,7 +6,7 @@
         <title>Homestay</title>
         <link rel="stylesheet" href="assets/css/homestay.css" />
         <link rel="stylesheet" href="assets/css/header.css" />
-        <link rel="stylesheet" href="script.js" />
+        <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css" />
     </head>
     <body>
         <header>
@@ -28,12 +28,27 @@
                         </nav>
                     </div>
                 </div>
-                <div class="auth">
+                <div class="btns desktop-btns">
                     <a href="partnership.html">
                         <button class="cooperate-btn">Hợp tác với chúng tôi</button>
                     </a>
-                    <button class="signup" onclick="openPopup('register')">Đăng ký</button>
-                    <button class="login" onclick="openPopup('login')">Đăng nhập</button>
+                    <button class="dang-ky-btn" onclick="openPopup('register')">Đăng ký</button>
+                    <button class="dang-nhap-btn" onclick="openPopup('login')">Đăng nhập</button>
+                </div>
+
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+                    <i class="ti-menu"></i>
+                </button>
+
+                <div class="mobile-menu">
+                    <a href="trang-chu.html" class="mobile-menu-link">TRANG CHỦ</a>
+                    <a href="#" class="mobile-menu-link">HOMESTAYS</a>
+                    <a href="about.html" class="mobile-menu-link">VỀ CHÚNG TÔI</a>
+                    <a href="contact.html" class="mobile-menu-link">LIÊN HỆ</a>
+                    <hr class="mobile-menu-divider" />
+                    <a href="partnership.html" class="mobile-menu-link">Hợp tác với chúng tôi</a>
+                    <button class="mobile-menu-btn" onclick="openPopup('register'); closeMobileMenu();">Đăng ký</button>
+                    <button class="mobile-menu-btn" onclick="openPopup('login'); closeMobileMenu();">Đăng nhập</button>
                 </div>
             </div>
         </header>
@@ -185,6 +200,7 @@
 
         <div id="popup-placeholder"></div>
         <script>
+            // Popup functionality
             fetch("popup.html")
                 .then((response) => response.text())
                 .then((data) => {
@@ -192,6 +208,8 @@
                 });
         </script>
 
-        <script src="script.js"></script>
+        <script src="assets/js/popup-login.js"></script>
+        <script src="assets/js/carousel.js"></script>
+        <script src="assets/js/toggle-mobile-menu.js"></script>
     </body>
 </html>
