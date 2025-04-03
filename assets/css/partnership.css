@@ -17,14 +17,18 @@ body {
     align-items: center;
 }
 
-.logo .logo-image {
+.logo img {
     height: 40px;
     width: auto;
     vertical-align: middle;
-    cursor: pointer;
-    justify-content: center;
+}
+
+.logo {
+    width: auto;
     display: flex;
+    justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 header {
