@@ -1,63 +1,44 @@
 package com.homestay.homestayweb.controller;
 
-import com.homestay.homestayweb.dto.request.HomestayCreationRequest;
-import com.homestay.homestayweb.dto.request.HomestayUpdateRequest;
-import com.homestay.homestayweb.entity.Homestay;
+import com.homestay.homestayweb.dto.request.HomestayRequest;
+import com.homestay.homestayweb.dto.response.HomestayResponse;
 import com.homestay.homestayweb.service.HomestayService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/homestay")
+@RequestMapping("/api/homestays")
+@RequiredArgsConstructor
 public class HomestayController {
-    @Autowired
-    private HomestayService homestayService;
 
-    // API tạo Homestay
-    @PostMapping("/create")
-    public ResponseEntity<Homestay> createHomestay(@RequestBody HomestayCreationRequest request) {
+    private final HomestayService homestayService;
+
+    @PostMapping
+    public ResponseEntity<HomestayResponse> create(@RequestBody HomestayRequest request) {
         return ResponseEntity.ok(homestayService.createHomestay(request));
     }
 
-    // API lấy danh sách Homestay
-    @GetMapping("/list")
-    public ResponseEntity<List<Homestay>> getAllHomestays() {
+    @GetMapping("/{id}")
+    public ResponseEntity<HomestayResponse> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(homestayService.getHomestayById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<HomestayResponse>> getAll() {
         return ResponseEntity.ok(homestayService.getAllHomestays());
     }
 
-    // API lấy Homestay theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Homestay> getHomestayById(@PathVariable Long id) {
-        Optional<Homestay> homestay = homestayService.getHomestayById(id);
-        return homestay.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // API xóa Homestay theo ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteHomestay(@PathVariable Long id) {
-        boolean deleted = homestayService.deleteHomestay(id);
-        if (deleted) {
-            return ResponseEntity.ok("Homestay deleted successfully.");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    // API sửa Homestay theo ID
     @PutMapping("/{id}")
-    public ResponseEntity<Homestay> updateHomestay(
-            @PathVariable Long id,
-            @RequestBody HomestayUpdateRequest request) {
-        try {
-            Homestay updatedHomestay = homestayService.updateHomestay(id, request);
-            return ResponseEntity.ok(updatedHomestay);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<HomestayResponse> update(@PathVariable Long id, @RequestBody HomestayRequest request) {
+        return ResponseEntity.ok(homestayService.updateHomestay(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        homestayService.deleteHomestay(id);
+        return ResponseEntity.noContent().build();
     }
 }
