@@ -34,12 +34,16 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         // Cho phép truy cập không cần xác thực
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/homestays/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/homestays/**").permitAll()
 
                         // Role-based access
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/host/**").hasAnyRole("HOST", "ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+
+                        // Endpoint thêm/xem room của homestay
+                        .requestMatchers(HttpMethod.POST, "/homestay/api/homestays/**/rooms").hasAnyRole("HOST", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/homestay/api/homestays/**/rooms").permitAll()
 
                         // Tất cả request còn lại phải xác thực
                         .anyRequest().authenticated()
