@@ -151,6 +151,9 @@ nav ul li a:hover {
     z-index: 1100;
     min-width: 200px;
     padding: 10px 0;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .mobile-menu.active {
@@ -213,9 +216,9 @@ nav ul li a:hover {
     }
 
     .mobile-menu .mobile-nav-link {
-        display: block; 
+        display: block;
     }
     .mobile-menu .mobile-menu-divider {
-        display: block; 
+        display: block;
     }
 }
