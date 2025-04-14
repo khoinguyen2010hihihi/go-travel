@@ -26,7 +26,6 @@
 
 .logo {
     width: auto;
-    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -105,21 +104,23 @@ nav ul li a:hover {
 }
 
 .dang-ky-btn {
-    width: 90px;
+    width: 100px;
     background-color: #fff;
     color: #0099ff;
     border: 1px solid #0099ff;
 }
+
 .dang-ky-btn:hover {
     background-color: #c2c2c2;
 }
 
 .dang-nhap-btn {
-    width: 90px;
+    width: 100px;
     background-color: #0099ff;
     color: #fff;
-    border: 1px solid #c2c2c2;
+    border: none;
 }
+
 .dang-nhap-btn:hover {
     background-color: #007acc;
 }
@@ -150,6 +151,9 @@ nav ul li a:hover {
     z-index: 1100;
     min-width: 200px;
     padding: 10px 0;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .mobile-menu.active {
@@ -172,16 +176,7 @@ nav ul li a:hover {
     font-weight: 500;
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
-    .header-container {
-        height: 50px;
-        padding: 0px 10px;
-    }
-
-    nav {
-        padding: 5px;
-    }
-
+@media (min-width: 767px) and (max-width: 1120px) {
     nav ul li a {
         text-decoration: none;
         color: #555555;
@@ -198,68 +193,32 @@ nav ul li a:hover {
     .mobile-menu-toggle {
         display: block;
     }
+
+    .mobile-menu .mobile-nav-link {
+        display: none;
+    }
+    .mobile-menu .mobile-menu-divider {
+        display: none;
+    }
 }
 
 @media (max-width: 767px) {
-    .header-container {
-        height: 50px;
-        padding: 0px 10px;
-    }
-    .nav {
+    nav {
         display: none;
     }
+
     .desktop-btns {
         display: none;
     }
+
     .mobile-menu-toggle {
         display: block;
-        margin-left: auto; /* Đẩy nút hamburger sang hết bên phải */
-        padding: 5px; /* Đảm bảo vùng bấm đủ lớn */
-    }
-    .header-container {
-        display: flex;
-        justify-content: space-between; /* Logo bên trái, hamburger bên phải */
-        align-items: center;
-        flex-wrap: nowrap;
-    }
-    /* Bỏ container riêng cho logo/nav nếu không cần nữa */
-    /* .container { display: none; } */ /* Hoặc điều chỉnh nếu cần */
-    .header-content {
-        /* Đảm bảo logo được căn chỉnh */
-        display: flex;
-        align-items: center;
     }
 
-    /* --- Style cho đường kẻ phân cách (Tùy chọn) --- */
-    .mobile-menu-divider {
-        margin: 8px 20px; /* Khoảng cách trên dưới và trái phải */
-        border: none;
-        border-top: 1px solid #eee; /* Màu đường kẻ */
-    }
-
-    /* Đảm bảo style cho các link mới thêm vào mobile menu là nhất quán */
-    /* Selector này nên đã có từ trước */
-    .mobile-menu a,
-    .mobile-menu button {
+    .mobile-menu .mobile-nav-link {
         display: block;
-        width: 100%;
-        padding: 12px 20px;
-        text-align: left;
-        /* ... các style khác ... */
-        box-sizing: border-box;
     }
-    .mobile-menu a {
-        /* Đảm bảo link không có gạch chân */
-        text-decoration: none;
-        color: #333; /* Hoặc màu bạn muốn */
-    }
-    .mobile-menu a:hover,
-    .mobile-menu button:hover {
-        background-color: #f0f0f0;
-    }
-
-    /* Style cho menu khi mở (đã có từ trước) */
-    .mobile-menu.active {
+    .mobile-menu .mobile-menu-divider {
         display: block;
     }
 }
