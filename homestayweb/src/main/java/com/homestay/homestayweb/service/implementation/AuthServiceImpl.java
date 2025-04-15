@@ -5,7 +5,6 @@ import com.homestay.homestayweb.dto.request.SignupRequest;
 import com.homestay.homestayweb.dto.response.JwtResponse;
 import com.homestay.homestayweb.entity.Role;
 import com.homestay.homestayweb.entity.User;
-import com.homestay.homestayweb.enums.ERole;
 import com.homestay.homestayweb.repository.RoleRepository;
 import com.homestay.homestayweb.repository.UserRepository;
 import com.homestay.homestayweb.security.JwtUtil;
@@ -32,9 +31,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtResponse login(LoginRequest request) {
-        Authentication authentication = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
+        try {
+            Authentication authentication = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Sai email hoặc mật khẩu");
+        }
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -42,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtUtil.generateToken(user.getEmail());
 
         List<String> roles = user.getRoles().stream()
-                .map(role -> role.getName().name())
+                .map(Role::getRoleName)
                 .collect(Collectors.toList());
 
         return new JwtResponse(
@@ -61,13 +64,18 @@ public class AuthServiceImpl implements AuthService {
         Set<String> strRoles = request.getRoles();
 
         if (strRoles == null || strRoles.isEmpty()) {
-            roles.add(getRole(ERole.USER));
+            roles.add(getRole("ROLE_USER"));
         } else {
             for (String role : strRoles) {
                 switch (role.toLowerCase()) {
-                    case "admin": roles.add(getRole(ERole.ADMIN)); break;
-                    case "host": roles.add(getRole(ERole.HOST)); break;
-                    default: roles.add(getRole(ERole.USER)); break;
+                    case "admin":
+                        roles.add(getRole("ROLE_ADMIN"));
+                        break;
+                    case "host":
+                        roles.add(getRole("ROLE_HOST"));
+                        break;
+                    default:
+                        roles.add(getRole("ROLE_USER"));
                 }
             }
         }
@@ -83,8 +91,8 @@ public class AuthServiceImpl implements AuthService {
         return "User registered successfully";
     }
 
-    private Role getRole(ERole name) {
-        return roleRepository.findByName(name)
-                .orElseThrow(() -> new RuntimeException("Role " + name + " not found"));
+    private Role getRole(String roleName) {
+        return roleRepository.findByRoleName(roleName)
+                .orElseThrow(() -> new RuntimeException("Role " + roleName + " not found"));
     }
 }

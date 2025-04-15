@@ -10,4 +10,5 @@ public interface RoomService {
     List<RoomResponse> getRoomsByHomestay(Long homestayId);
     RoomResponse updateRoom(Long roomId, RoomRequest request);
     void deleteRoom(Long roomId);
+    RoomResponse getRoomById(Long roomId);
 }

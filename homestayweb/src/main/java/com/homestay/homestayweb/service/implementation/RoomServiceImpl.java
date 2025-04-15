@@ -46,6 +46,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public RoomResponse getRoomById(Long roomId) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("Room not found"));
+        return mapToResponse(room);
+    }
+
+    @Override
     public RoomResponse updateRoom(Long roomId, RoomRequest request) {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new RuntimeException("Room not found"));

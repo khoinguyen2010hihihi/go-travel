@@ -1,8 +1,10 @@
 package com.homestay.homestayweb.entity;
 
-import com.homestay.homestayweb.enums.ERole;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -10,15 +12,20 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
-    private Long id;
+    private Long roleId;
+    
+    @Column(name = "role_name")
+    private String roleName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role_name", length = 50)
-    private ERole name;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "role_permission",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Set<Permission> permissions = new HashSet<>();
 }
