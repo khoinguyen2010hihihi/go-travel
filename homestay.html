@@ -1,215 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Homestay</title>
-        <link rel="stylesheet" href="assets/css/homestay.css" />
-        <link rel="stylesheet" href="assets/css/header.css" />
-        <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css" />
-    </head>
-    <body>
-        <header>
-            <div class="header-container">
-                <div class="container1">
-                    <div class="header-content">
-                        <div class="logo">
-                            <a href="trang-chu.html">
-                                <img src="assets/img/gotravel_logo_air.png" alt="" />
-                            </a>
-                        </div>
-                        <nav class="nav">
-                            <ul>
-                                <li><a href="trang-chu.html">TRANG CHỦ</a></li>
-                                <li><a href="#">HOMESTAYS</a></li>
-                                <li><a href="about.html">VỀ CHÚNG TÔI</a></li>
-                                <li><a href="contact.html">LIÊN HỆ</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="btns desktop-btns">
-                    <a href="partnership.html">
-                        <button class="cooperate-btn">Hợp tác với chúng tôi</button>
-                    </a>
-                    <button class="dang-ky-btn" onclick="openPopup('register')">Đăng ký</button>
-                    <button class="dang-nhap-btn" onclick="openPopup('login')">Đăng nhập</button>
-                </div>
-
-                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
-                    <i class="ti-menu"></i>
-                </button>
-
-                <div class="mobile-menu">
-                    <a href="trang-chu.html" class="mobile-menu-link">TRANG CHỦ</a>
-                    <a href="#" class="mobile-menu-link">HOMESTAYS</a>
-                    <a href="about.html" class="mobile-menu-link">VỀ CHÚNG TÔI</a>
-                    <a href="contact.html" class="mobile-menu-link">LIÊN HỆ</a>
-                    <hr class="mobile-menu-divider" />
-                    <a href="partnership.html" class="mobile-menu-link">Hợp tác với chúng tôi</a>
-                    <button class="mobile-menu-btn" onclick="openPopup('register'); closeMobileMenu();">Đăng ký</button>
-                    <button class="mobile-menu-btn" onclick="openPopup('login'); closeMobileMenu();">Đăng nhập</button>
-                </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homestay</title>
+    <link rel="stylesheet" href="assets/css/homestay.css" />
+    <link rel="stylesheet" href="assets/css/header.css" />
+    <link
+      rel="stylesheet"
+      href="./assets/fonts/themify-icons/themify-icons.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="header-container">
+        <div class="container1">
+          <div class="header-content">
+            <div class="logo">
+              <a href="trang-chu.html">
+                <img src="assets/img/gotravel_logo_air.png" alt="" />
+              </a>
             </div>
-        </header>
-
-        <div class="hero">
-            <div class="search-box">
-                <div class="search-location">
-                    <svg
-                        class="search-icon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <input type="text" placeholder="Hải Châu" />
-                </div>
-                <div class="date-picker">
-                    <input type="date" class="date1" />
-                    <input type="date" class="date2" />
-                </div>
-                <div class="guests-selector">
-                    <select>
-                        <option>1 Khách</option>
-                        <option>2 Khách</option>
-                        <option>3 Khách</option>
-                        <option>4 Khách</option>
-                    </select>
-                </div>
-                <button class="search-button">TÌM KIẾM</button>
-            </div>
+            <nav class="nav">
+              <ul>
+                <li><a href="trang-chu.html">TRANG CHỦ</a></li>
+                <li><a href="#">HOMESTAYS</a></li>
+                <li><a href="about.html">VỀ CHÚNG TÔI</a></li>
+                <li><a href="contact.html">LIÊN HỆ</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <div class="btns desktop-btns" id="auth-buttons">
+          <a href="partnership.html">
+            <button class="cooperate-btn">Hợp tác với chúng tôi</button>
+          </a>
+          <button class="dang-ky-btn" onclick="openPopup('register')">
+            Đăng ký
+          </button>
+          <button class="dang-nhap-btn" onclick="openPopup('login')">
+            Đăng nhập
+          </button>
         </div>
 
-        <div class="homestay-section">
-            <div class="filters">
-                <div class="search-input">
-                    <svg
-                        class="search-icon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <input type="text" placeholder="Tìm kiếm..." />
-                </div>
-                <h2>Giá mỗi đêm</h2>
-                <label><input type="checkbox" /> Từ 200 nghìn đến 500 nghìn</label>
-                <label><input type="checkbox" /> Từ 500 nghìn đến 1 triệu</label>
-                <label><input type="checkbox" /> Từ 1 triệu đến 2 triệu</label>
-                <label><input type="checkbox" /> Trên 2 triệu</label>
-
-                <h2>Loại homestay</h2>
-                <label><input type="checkbox" /> Nguyên căn</label>
-                <label><input type="checkbox" /> Phòng đơn</label>
-                <label><input type="checkbox" /> Phòng tập thể (Dorm)</label>
-
-                <h2>Tiện nghi</h2>
-                <label><input type="checkbox" /> Hồ bơi</label>
-                <label><input type="checkbox" /> Bãi đỗ xe</label>
-                <label><input type="checkbox" /> WiFi miễn phí</label>
-                <label><input type="checkbox" /> TV</label>
-                <label><input type="checkbox" /> Điều hòa</label>
-                <label><input type="checkbox" /> Tủ lạnh</label>
-                <label><input type="checkbox" /> Bếp riêng</label>
-                <label><input type="checkbox" /> Ban công</label>
-                <label><input type="checkbox" /> Bồn tắm</label>
-                <label><input type="checkbox" /> Máy pha trà/cà phê</label>
-
-                <h2>Loại giường</h2>
-                <label><input type="checkbox" /> Giường đôi</label>
-                <label><input type="checkbox" /> Giường đôi lớn</label>
-                <label><input type="checkbox" /> Giường lớn</label>
-                <label><input type="checkbox" /> Giường đơn/2 giường đơn</label>
-                <label><input type="checkbox" /> Giường tầng</label>
-
-                <h2>Xếp hạng đánh giá</h2>
-                <label><input type="checkbox" /> Từ 3 sao trở lên</label>
-                <label><input type="checkbox" /> Từ 4 sao trở lên</label>
-                <label><input type="checkbox" /> 5 sao</label>
-            </div>
-
-            <div class="results">
-                <div class="result-card">
-                    <img src="assets/img/home3.webp" alt="Harmony Homestay" />
-                    <div class="result-details">
-                        <h3>Harmony Homestay</h3>
-                        <div class="stars">★★★☆☆</div>
-                        <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
-                        <div class="amenities">Free Wi-Fi, Swimming Pool</div>
-                    </div>
-                </div>
-
-                <div class="result-card">
-                    <img src="assets/img/home3.webp" alt="Harmony Homestay" />
-                    <div class="result-details">
-                        <h3>Harmony Homestay</h3>
-                        <div class="stars">★★★☆☆</div>
-                        <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
-                        <div class="amenities">Free Wi-Fi, Swimming Pool</div>
-                    </div>
-                </div>
-
-                <div class="result-card">
-                    <img src="assets/img/home3.webp" alt="Harmony Homestay" />
-                    <div class="result-details">
-                        <h3>Harmony Homestay</h3>
-                        <div class="stars">★★★☆☆</div>
-                        <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
-                        <div class="amenities">Free Wi-Fi, Swimming Pool</div>
-                    </div>
-                </div>
-
-                <div class="result-card">
-                    <img src="assets/img/home3.webp" alt="Harmony Homestay" />
-                    <div class="result-details">
-                        <h3>Harmony Homestay</h3>
-                        <div class="stars">★★★☆☆</div>
-                        <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
-                        <div class="amenities">Free Wi-Fi, Swimming Pool</div>
-                    </div>
-                </div>
-
-                <div class="result-card">
-                    <img src="assets/img/home3.webp" alt="Harmony Homestay" />
-                    <div class="result-details">
-                        <h3>Harmony Homestay</h3>
-                        <div class="stars">★★★☆☆</div>
-                        <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
-                        <div class="amenities">Free Wi-Fi, Swimming Pool</div>
-                    </div>
-                </div>
-            </div>
+        <div id="user-info" style="display: none">
+          <span id="user-email"></span>
+          <!-- Hiển thị email người dùng -->
+          <button id="logoutBtn" style="display: none">Đăng xuất</button>
+          <!-- Nút đăng xuất -->
         </div>
 
-        <div id="popup-placeholder"></div>
-        <script>
-            // Popup functionality
-            fetch("popup.html")
-                .then((response) => response.text())
-                .then((data) => {
-                    document.getElementById("popup-placeholder").innerHTML = data;
-                });
-        </script>
+        <button
+          class="mobile-menu-toggle"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <i class="ti-menu"></i>
+        </button>
 
-        <script src="assets/js/popup-login.js"></script>
-        <script src="assets/js/carousel.js"></script>
-        <script src="assets/js/toggle-mobile-menu.js"></script>
-    </body>
+        <div class="mobile-menu">
+          <a href="trang-chu.html" class="mobile-menu-link">TRANG CHỦ</a>
+          <a href="#" class="mobile-menu-link">HOMESTAYS</a>
+          <a href="about.html" class="mobile-menu-link">VỀ CHÚNG TÔI</a>
+          <a href="contact.html" class="mobile-menu-link">LIÊN HỆ</a>
+          <hr class="mobile-menu-divider" />
+          <a href="partnership.html" class="mobile-menu-link"
+            >Hợp tác với chúng tôi</a
+          >
+          <button
+            class="mobile-menu-btn"
+            onclick="openPopup('register'); closeMobileMenu();"
+          >
+            Đăng ký
+          </button>
+          <button
+            class="mobile-menu-btn"
+            onclick="openPopup('login'); closeMobileMenu();"
+          >
+            Đăng nhập
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="search-box">
+        <div class="search-location">
+          <svg
+            class="search-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" placeholder="Hải Châu" />
+        </div>
+        <div class="date-picker">
+          <input type="date" class="date1" />
+          <input type="date" class="date2" />
+        </div>
+        <div class="guests-selector">
+          <select>
+            <option>1 Khách</option>
+            <option>2 Khách</option>
+            <option>3 Khách</option>
+            <option>4 Khách</option>
+          </select>
+        </div>
+        <button class="search-button">TÌM KIẾM</button>
+      </div>
+    </div>
+
+    <div class="homestay-section">
+      <div class="filters">
+        <div class="search-input">
+          <svg
+            class="search-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" placeholder="Tìm kiếm..." />
+        </div>
+        <h2>Giá mỗi đêm</h2>
+        <label><input type="checkbox" /> Từ 200 nghìn đến 500 nghìn</label>
+        <label><input type="checkbox" /> Từ 500 nghìn đến 1 triệu</label>
+        <label><input type="checkbox" /> Từ 1 triệu đến 2 triệu</label>
+        <label><input type="checkbox" /> Trên 2 triệu</label>
+
+        <h2>Loại homestay</h2>
+        <label><input type="checkbox" /> Nguyên căn</label>
+        <label><input type="checkbox" /> Phòng đơn</label>
+        <label><input type="checkbox" /> Phòng tập thể (Dorm)</label>
+
+        <h2>Tiện nghi</h2>
+        <label><input type="checkbox" /> Hồ bơi</label>
+        <label><input type="checkbox" /> Bãi đỗ xe</label>
+        <label><input type="checkbox" /> WiFi miễn phí</label>
+        <label><input type="checkbox" /> TV</label>
+        <label><input type="checkbox" /> Điều hòa</label>
+        <label><input type="checkbox" /> Tủ lạnh</label>
+        <label><input type="checkbox" /> Bếp riêng</label>
+        <label><input type="checkbox" /> Ban công</label>
+        <label><input type="checkbox" /> Bồn tắm</label>
+        <label><input type="checkbox" /> Máy pha trà/cà phê</label>
+
+        <h2>Loại giường</h2>
+        <label><input type="checkbox" /> Giường đôi</label>
+        <label><input type="checkbox" /> Giường đôi lớn</label>
+        <label><input type="checkbox" /> Giường lớn</label>
+        <label><input type="checkbox" /> Giường đơn/2 giường đơn</label>
+        <label><input type="checkbox" /> Giường tầng</label>
+
+        <h2>Xếp hạng đánh giá</h2>
+        <label><input type="checkbox" /> Từ 3 sao trở lên</label>
+        <label><input type="checkbox" /> Từ 4 sao trở lên</label>
+        <label><input type="checkbox" /> 5 sao</label>
+      </div>
+
+      <div class="results">
+        <div class="result-card">
+          <img src="assets/img/home3.webp" alt="Harmony Homestay" />
+          <div class="result-details">
+            <h3>Harmony Homestay</h3>
+            <div class="stars">★★★☆☆</div>
+            <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
+            <div class="amenities">Free Wi-Fi, Swimming Pool</div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <img src="assets/img/home3.webp" alt="Harmony Homestay" />
+          <div class="result-details">
+            <h3>Harmony Homestay</h3>
+            <div class="stars">★★★☆☆</div>
+            <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
+            <div class="amenities">Free Wi-Fi, Swimming Pool</div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <img src="assets/img/home3.webp" alt="Harmony Homestay" />
+          <div class="result-details">
+            <h3>Harmony Homestay</h3>
+            <div class="stars">★★★☆☆</div>
+            <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
+            <div class="amenities">Free Wi-Fi, Swimming Pool</div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <img src="assets/img/home3.webp" alt="Harmony Homestay" />
+          <div class="result-details">
+            <h3>Harmony Homestay</h3>
+            <div class="stars">★★★☆☆</div>
+            <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
+            <div class="amenities">Free Wi-Fi, Swimming Pool</div>
+          </div>
+        </div>
+
+        <div class="result-card">
+          <img src="assets/img/home3.webp" alt="Harmony Homestay" />
+          <div class="result-details">
+            <h3>Harmony Homestay</h3>
+            <div class="stars">★★★☆☆</div>
+            <div class="location">Hải Châu, Đà Nẵng - cách trung tâm 0,9km</div>
+            <div class="amenities">Free Wi-Fi, Swimming Pool</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="popup-placeholder"></div>
+    <script>
+      // Popup functionality
+      fetch("popup.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("popup-placeholder").innerHTML = data;
+        });
+    </script>
+
+    <script src="assets/js/popup-login.js"></script>
+    <script src="assets/js/carousel.js"></script>
+    <script src="assets/js/toggle-mobile-menu.js"></script>
+    <script src="assets/js/login.js"></script>
+  </body>
 </html>
