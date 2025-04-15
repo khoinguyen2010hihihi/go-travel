@@ -5,21 +5,30 @@ body {
     background-color: #fff;
 }
 
-.container {
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
 }
+.container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
 
-.logo .logo-image {
+.logo img {
     height: 40px;
     width: auto;
     vertical-align: middle;
-    cursor: pointer;
-    justify-content: center;
+}
+
+.logo {
+    width: auto;
     display: flex;
+    justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 header {
@@ -35,7 +44,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 10px 20px;
 }
 
 nav ul {
@@ -48,13 +57,14 @@ nav ul {
 
 nav ul li {
     margin-left: 20px;
+    white-space: nowrap;
 }
 
 nav ul li a {
     text-decoration: none;
     color: #333;
     transition: color 0.3s ease;
-    padding: 10px;
+    padding: 10px 15px;
     font-size: 14px;
     font-weight: bold;
 }
@@ -183,7 +193,7 @@ nav ul li a:hover {
     border: none;
     padding: 12px 25px;
     font-size: 1.1em;
-    border-radius: 8px;
+    border-radius: 50px;
     cursor: pointer;
     transition: background-color 0.2s ease;
     text-decoration: none;
@@ -340,28 +350,28 @@ nav ul li a:hover {
 }
 
 .coop-section {
-    max-width: 1200px; 
+    max-width: 1200px;
     margin: 0 auto;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    margin-bottom: 40px;    
+    margin-bottom: 40px;
     overflow: hidden;
 }
 
 .partnership-card {
-    position: relative; 
+    position: relative;
     width: 100%;
-    max-width: 1260px; 
+    max-width: 1260px;
     margin: 0 auto;
-    border-radius: 10px; 
+    border-radius: 10px;
     overflow: hidden;
     background-color: #fff;
 }
 .partnership-image {
     width: 100%;
     display: block;
-    object-fit: cover; 
+    object-fit: cover;
     height: auto;
     max-height: 400px;
 }
@@ -387,4 +397,18 @@ nav ul li a:hover {
     line-height: 50px;
     margin-bottom: 15px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .header-container {
+        height: 50px;
+        padding: 0px 10px;
+    }
+}
+
+@media (max-width: 767px) {
+    .header-container {
+        height: 50px;
+        padding: 0px 10px;
+    }
 }
