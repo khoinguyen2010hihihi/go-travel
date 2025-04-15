@@ -2,48 +2,35 @@ package com.homestay.homestayweb.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
+import jakarta.persistence.Column;
 
 @Entity
-@Table(name = "Homestay")
+@Table(name = "homestay")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Homestay {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "homestay_id")
-    private Long homestayID;
+    private Long homestayId;
 
-    @Column(nullable = false, length = 255)
     private String name;
-
-    @Column(nullable = false, length = 255)
     private String street;
-
-    @Column(nullable = false, length = 255)
     private String ward;
-
-    @Column(nullable = false, length = 255)
     private String district;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(precision = 3, scale = 2)
-    private BigDecimal surfRating;
-
-    @Column(length = 50)
+    private Double surfRating;
     private String approveStatus;
-
     private Long approvedBy;
-
-    @Column(length = 255)
     private String contactInfo;
 
     @CreationTimestamp

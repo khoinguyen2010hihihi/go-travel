@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
   servlet:
     context-path: /homestay
 
@@ -8,7 +8,11 @@ spring:
     url: "jdbc:mysql://localhost:3306/homestay"
     username: root
     password: Bachdepzai11
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: "nL8Wk3q9TuXFeV+JkzAmYZcRpGfM2y8PvqLdWz3aHTG9eV7uKqV3lSn5eLZCq4US"
+  expiration: 86400000

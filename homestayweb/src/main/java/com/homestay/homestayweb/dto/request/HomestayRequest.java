@@ -1,17 +1,16 @@
 package com.homestay.homestayweb.dto.request;
 
-import java.math.BigDecimal;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
-public class HomestayUpdateRequest {
+@Data
+public class HomestayRequest {
     private String name;
     private String street;
     private String ward;
     private String district;
     private String description;
-    private BigDecimal surfRating;
+    private Double surfRating;
+    private String approveStatus;
+    private Long approvedBy;
     private String contactInfo;
 }
