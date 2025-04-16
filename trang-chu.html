@@ -1,142 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GoTravel - Đà Nẵng</title>
-    <link rel="stylesheet" href="assets/css/trang-chu.css" />
-    <link rel="stylesheet" href="assets/css/header.css" />
-    <link
-      rel="stylesheet"
-      href="./assets/fonts/themify-icons/themify-icons.css"
-    />
-  </head>
-  <body>
-    <!-- Header -->
-    <header>
-      <div class="header-container">
-        <div class="container">
-          <div class="header-content">
-            <div class="logo">
-              <a href="trang-chu.html">
-                <img
-                  class="logo-image"
-                  src="assets/img/gotravel_logo_air.png"
-                  alt=""
-                />
-              </a>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>GoTravel - Đà Nẵng</title>
+        <link rel="stylesheet" href="assets/css/trang-chu.css" />
+        <link rel="stylesheet" href="assets/css/header.css" />
+        <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css" />
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <div class="header-container">
+                <div class="container">
+                    <div class="header-content">
+                        <div class="logo">
+                            <a href="trang-chu.html">
+                                <img class="logo-image" src="assets/img/gotravel_logo_air.png" alt="" />
+                            </a>
+                        </div>
+                        <nav class="nav">
+                            <ul>
+                                <li><a href="#">TRANG CHỦ</a></li>
+                                <li><a href="homestay.html">HOMESTAYS</a></li>
+                                <li><a href="about.html">VỀ CHÚNG TÔI</a></li>
+                                <li><a href="contact.html">LIÊN HỆ</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="btns desktop-btns">
+                    <a href="partnership.html">
+                        <button class="cooperate-btn">Hợp tác với chúng tôi</button>
+                    </a>
+                    <button class="dang-ky-btn" onclick="openPopup('register')">Đăng ký</button>
+                    <button class="dang-nhap-btn" onclick="openPopup('login')">Đăng nhập</button>
+                </div>
+
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+                    <i class="ti-menu"></i>
+                </button>
+
+                <div class="mobile-menu">
+                    <a href="#" class="mobile-menu-link mobile-nav-link">TRANG CHỦ</a>
+                    <a href="homestay.html" class="mobile-menu-link mobile-nav-link">HOMESTAYS</a>
+                    <a href="about.html" class="mobile-menu-link mobile-nav-link">VỀ CHÚNG TÔI</a>
+                    <a href="contact.html" class="mobile-menu-link mobile-nav-link">LIÊN HỆ</a>
+                    <hr class="mobile-menu-divider" />
+                    <a href="partnership.html" class="mobile-menu-link">Hợp tác với chúng tôi</a>
+                    <button class="mobile-menu-btn" onclick="openPopup('register'); closeMobileMenu();">Đăng ký</button>
+                    <button class="mobile-menu-btn" onclick="openPopup('login'); closeMobileMenu();">Đăng nhập</button>
+                </div>
             </div>
-            <nav class="nav">
-              <ul>
-                <li><a href="#">TRANG CHỦ</a></li>
-                <li><a href="homestay.html">HOMESTAYS</a></li>
-                <li><a href="about.html">VỀ CHÚNG TÔI</a></li>
-                <li><a href="contact.html">LIÊN HỆ</a></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-        <div class="btns desktop-btns" id="auth-buttons">
-          <a href="partnership.html">
-            <button class="cooperate-btn">Hợp tác với chúng tôi</button>
-          </a>
-          <button class="dang-ky-btn" onclick="openPopup('register')">
-            Đăng ký
-          </button>
-          <button class="dang-nhap-btn" onclick="openPopup('login')">
-            Đăng nhập
-          </button>
-        </div>
+        </header>
 
-        <div id="user-info" style="display: none">
-          <span id="user-email"></span>
-          <!-- Hiển thị email người dùng -->
-          <button id="logoutBtn" style="display: none">Đăng xuất</button>
-          <!-- Nút đăng xuất -->
-        </div>
-        <button
-          class="mobile-menu-toggle"
-          aria-label="Toggle menu"
-          aria-expanded="false"
-        >
-          <i class="ti-menu"></i>
-        </button>
-
-        <div class="mobile-menu">
-          <a href="#" class="mobile-menu-link">TRANG CHỦ</a>
-          <a href="homestay.html" class="mobile-menu-link">HOMESTAYS</a>
-          <a href="about.html" class="mobile-menu-link">VỀ CHÚNG TÔI</a>
-          <a href="contact.html" class="mobile-menu-link">LIÊN HỆ</a>
-          <hr class="mobile-menu-divider" />
-          <a href="partnership.html" class="mobile-menu-link"
-            >Hợp tác với chúng tôi</a
-          >
-          <button
-            class="mobile-menu-"
-            onclick="openPopup('register'); closeMobileMenu();"
-          >
-            Đăng ký
-          </button>
-          <button
-            class="mobile-menu-btn"
-            onclick="openPopup('login'); closeMobileMenu();"
-          >
-            Đăng nhập
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <section class="hero">
-      <div class="hero-content">
-        <h1>Trải nghiệm sự thoải mái và ấm cúng giữa lòng Đà Nẵng</h1>
-        <div class="search-box">
-          <div class="search-input">
-            <svg
-              class="search-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" placeholder="Nhập địa điểm..." />
-          </div>
-          <div class="date-picker">
-            <input type="date" class="date1" />
-            <input type="date" class="date2" />
-          </div>
-          <div class="guests-selector">
-            <select>
-              <option>1 Khách</option>
-              <option>2 Khách</option>
-              <option>3 Khách</option>
-              <option>4 Khách</option>
-            </select>
-          </div>
-          <button class="search-button">TÌM KIẾM</button>
-        </div>
-      </div>
-    </section>
-    <!-- Destinations -->
-    <section class="destinations">
-      <h2>Các điểm đến thu hút nhất Đà Nẵng</h2>
-      <div class="carousel-container">
-        <button class="carousel-button prev" onclick="prevSlides(5)">
-          <i class="ti-angle-left"></i>
-        </button>
-        <div class="carousel">
-          <div class="slide">
-            <img src="assets/img/ba-na.jpg" alt="Sun World Bà Nà Hills" />
-            <div class="slide-info">
-              <h3>Sun World Bà Nà Hills</h3>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Trải nghiệm sự thoải mái và ấm cúng giữa lòng Đà Nẵng</h1>
+                <div class="search-box">
+                    <div class="search-input">
+                        <svg
+                            class="search-icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" placeholder="Nhập địa điểm..." />
+                    </div>
+                    <div class="date-picker">
+                        <input type="date" class="date1" />
+                        <input type="date" class="date2" />
+                    </div>
+                    <div class="guests-selector">
+                        <select>
+                            <option>Single</option>
+                            <option>Supperior</option>
+                            <option>Deluxe</option>
+                            <option>Suite</option>
+                        </select>
+                    </div>
+                    <button class="search-button">TÌM KIẾM</button>
+                </div>
             </div>
           </div>
           <div class="slide">
