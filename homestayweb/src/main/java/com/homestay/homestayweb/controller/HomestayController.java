@@ -2,10 +2,12 @@ package com.homestay.homestayweb.controller;
 
 import com.homestay.homestayweb.dto.request.HomestayRequest;
 import com.homestay.homestayweb.dto.response.HomestayResponse;
+import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.HomestayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,5 +48,13 @@ public class HomestayController {
     @PreAuthorize("hasAuthority('VIEW_HOMESTAY')")
     public ResponseEntity<HomestayResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(homestayService.getHomestayById(id));
+    }
+
+    @GetMapping("/my")
+    @PreAuthorize("hasAuthority('VIEW_HOMESTAY')")
+    public ResponseEntity<List<HomestayResponse>> getMyHomestays() {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<HomestayResponse> homestays = homestayService.getHomestaysByHostId(userDetails.getId());
+        return ResponseEntity.ok(homestays);
     }
 }
