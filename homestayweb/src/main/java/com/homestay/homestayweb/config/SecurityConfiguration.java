@@ -1,6 +1,5 @@
 package com.homestay.homestayweb.config;
 
-import com.homestay.homestayweb.security.CustomUserDetailsService;
 import com.homestay.homestayweb.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +11,9 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,12 +26,13 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import java.util.List;
 
 @Configuration
-@RequiredArgsConstructor
+@EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private final CustomUserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserDetailsService userDe;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,14 +41,23 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ Đảm bảo CORS hoạt động
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/homestays/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/host/**").hasAnyRole("HOST", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/homestay/api/homestays/{id}/rooms").hasAnyRole("HOST", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/homestay/api/homestays/{id}/rooms").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/homestays", "/api/homestays/**").permitAll()
+                        // ADMIN permissions
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN_ACCESS")
+                        .requestMatchers(HttpMethod.POST, "/api/homestays").hasAuthority("CREATE_HOMESTAY")
+
+                        .requestMatchers("/host/**").hasAuthority("HOST_ACCESS")
+                        .requestMatchers(HttpMethod.POST, "/api/homestays/{id}/rooms").hasAuthority("CREATE_ROOM")
+
+                        .requestMatchers("/user/**").hasAuthority("USER_ACCESS")
                         .anyRequest().authenticated()
                 )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -71,7 +82,7 @@ public class SecurityConfiguration {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
+        provider.setUserDetailsService(userDe);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
@@ -85,5 +96,4 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
 }

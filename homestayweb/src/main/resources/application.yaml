@@ -16,3 +16,9 @@ spring:
 jwt:
   secret: "nL8Wk3q9TuXFeV+JkzAmYZcRpGfM2y8PvqLdWz3aHTG9eV7uKqV3lSn5eLZCq4US"
   expiration: 86400000
+
+logging:
+  level:
+    root: DEBUG
+    org.springframework: DEBUG
+    org.springframework.security: DEBUG

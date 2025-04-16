@@ -3,12 +3,16 @@ package com.homestay.homestayweb.service.implementation;
 import com.homestay.homestayweb.dto.request.HomestayRequest;
 import com.homestay.homestayweb.dto.response.HomestayResponse;
 import com.homestay.homestayweb.entity.Homestay;
+import com.homestay.homestayweb.entity.User;
 import com.homestay.homestayweb.exception.BadRequestException;
 import com.homestay.homestayweb.exception.DuplicateResourceException;
 import com.homestay.homestayweb.exception.ResourceNotFoundException;
 import com.homestay.homestayweb.repository.HomestayRepository;
+import com.homestay.homestayweb.repository.UserRepository;
+import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.HomestayService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +22,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class HomestayServiceImpl implements HomestayService {
-
     private final HomestayRepository homestayRepository;
+    private final UserRepository userRepository;
 
     @Override
     public HomestayResponse createHomestay(HomestayRequest request) {
@@ -45,6 +49,11 @@ public class HomestayServiceImpl implements HomestayService {
             throw new DuplicateResourceException("Địa chỉ homestay đã tồn tại.");
         }
 
+        // Lấy user hiện tại
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(userDetails.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy user"));
+
         // Tạo homestay
         Homestay homestay = Homestay.builder()
                 .name(request.getName())
@@ -56,7 +65,9 @@ public class HomestayServiceImpl implements HomestayService {
                 .approveStatus(request.getApproveStatus())
                 .approvedBy(request.getApprovedBy())
                 .contactInfo(request.getContactInfo())
+                .host(user) // Gán host
                 .build();
+
         homestayRepository.save(homestay);
         return mapToResponse(homestay);
     }
@@ -70,7 +81,16 @@ public class HomestayServiceImpl implements HomestayService {
 
     @Override
     public List<HomestayResponse> getAllHomestays() {
-        return homestayRepository.findAll().stream()
+        List<Homestay> homestays = homestayRepository.findAll();
+        return homestays.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<HomestayResponse> getHomestaysByHostId(Long hostId) {
+        List<Homestay> homestays = homestayRepository.findByHost_Id(hostId);
+        return homestays.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }

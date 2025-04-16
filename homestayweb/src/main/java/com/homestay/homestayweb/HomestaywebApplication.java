@@ -9,5 +9,4 @@ public class HomestaywebApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HomestaywebApplication.class, args);
 	}
-
 }

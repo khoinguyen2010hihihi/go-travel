@@ -10,6 +10,7 @@ public interface HomestayService {
     HomestayResponse createHomestay(HomestayRequest request);
     HomestayResponse getHomestayById(Long id);
     List<HomestayResponse> getAllHomestays();
+    List<HomestayResponse> getHomestaysByHostId(Long hostId);
     HomestayResponse updateHomestay(Long id, HomestayRequest request);
     void deleteHomestay(Long id);
 }
