@@ -35,8 +35,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/homestay/api/homestays/**").permitAll()
-
+                        .requestMatchers(HttpMethod.GET, "/homestay/api/homestays", "/homestay/api/homestays/**").permitAll()
                         // ADMIN permissions
                         .requestMatchers("/admin/**").hasAuthority("ADMIN_ACCESS")
                         .requestMatchers(HttpMethod.POST, "/homestay/api/homestays").hasAuthority("CREATE_HOMESTAY")

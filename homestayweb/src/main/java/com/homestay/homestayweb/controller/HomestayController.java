@@ -39,13 +39,11 @@ public class HomestayController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('VIEW_HOMESTAY')")
     public ResponseEntity<List<HomestayResponse>> getAll() {
         return ResponseEntity.ok(homestayService.getAllHomestays());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('VIEW_HOMESTAY')")
     public ResponseEntity<HomestayResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(homestayService.getHomestayById(id));
     }
