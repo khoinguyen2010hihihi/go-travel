@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Quản lý Homestay - Host</title>
+        <link rel="stylesheet" href="/assets/css/host.css" />
+        <link rel="stylesheet" href="/assets/css/header.css" />
+        <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css" />
+    </head>
+    <body>
+        <header>
+            <div class="header-container">
+                <div class="container1">
+                    <div class="header-content">
+                        <div class="logo">
+                            <a href="trang-chu.html">
+                                <img src="assets/img/gotravel_logo_air.png" alt="" />
+                            </a>
+                        </div>
+                        <nav class="nav">
+                            <ul>
+                                <li><a href="trang-chu.html">TRANG CHỦ</a></li>
+                                <li><a href="#">HOMESTAYS</a></li>
+                                <li><a href="about.html">VỀ CHÚNG TÔI</a></li>
+                                <li><a href="contact.html">LIÊN HỆ</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="btns desktop-btns">
+                    <div class="user-icon-container">
+                        <div class="user-icon" onclick="toggleUserMenu()">
+                            <img src="assets/img/avt.jpg" alt="User" />
+                        </div>
+                        <ul class="user-dropdown" id="userDropdown">
+                            <li><a href="#">Trang cá nhân</a></li>
+                            <li><a href="#">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+                    <i class="ti-menu"></i>
+                </button>
+
+                <div class="mobile-menu">
+                    <a href="trang-chu.html" class="mobile-menu-link">TRANG CHỦ</a>
+                    <a href="homestay.html" class="mobile-menu-link">HOMESTAYS</a>
+                    <a href="about.html" class="mobile-menu-link">VỀ CHÚNG TÔI</a>
+                    <a href="contact.html" class="mobile-menu-link">LIÊN HỆ</a>
+                    <hr class="mobile-menu-divider" />
+                    <a href="partnership.html" class="mobile-menu-link">Hợp tác với chúng tôi</a>
+                    <a href="#">Trang cá nhân</a>
+                    <a href="#">Đăng xuất</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <h2>Host Menu</h2>
+                <ul>
+                    <li><a href="#" class="tab-link active" data-tab="room-list">Tất cả phòng</a></li>
+                    <li><a href="#" class="tab-link" data-tab="add-room">Thêm phòng</a></li>
+                </ul>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Danh sách phòng -->
+                <div id="room-list" class="tab-content active">
+                    <h1>Danh sách phòng</h1>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã phòng</th>
+                                <th>Mã homestay</th>
+                                <th>Loại phòng</th>
+                                <th>Giá</th>
+                                <th>Trạng thái</th>
+                                <th>Đặc trưng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>P001</td>
+                                <td>H001</td>
+                                <td>Phòng đôi</td>
+                                <td>800,000 VND</td>
+                                <td>Còn trống</td>
+                                <td>Ban công, điều hòa</td>
+                            </tr>
+                            <tr>
+                                <td>P002</td>
+                                <td>H001</td>
+                                <td>Phòng đơn</td>
+                                <td>500,000 VND</td>
+                                <td>Đã đặt</td>
+                                <td>Wi-Fi, Tivi</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Form thêm phòng -->
+                <div id="add-room" class="tab-content" style="display: none">
+                    <div class="form-container">
+                        <h2>Thêm phòng mới</h2>
+                        <form action="/host/add-room" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label>Loại phòng</label>
+                                <div class="checkbox-group">
+                                    <label><input type="radio" name="roomType" value="Single" required /> Single</label>
+                                    <label><input type="radio" name="roomType" value="Double" /> Double</label>
+                                    <label><input type="radio" name="roomType" value="Deluxe" /> Deluxe</label>
+                                    <label><input type="radio" name="roomType" value="Suite" /> Suite</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Giá (VND)</label>
+                                <input type="number" id="price" name="price" required min="0" />
+                            </div>
+                            <div class="form-group">
+                                <label>Tiện nghi</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" name="amenities" value="Hồ bơi" /> Hồ bơi</label>
+                                    <label><input type="checkbox" name="amenities" value="Bãi đỗ xe" /> Bãi đỗ xe</label>
+                                    <label><input type="checkbox" name="amenities" value="WiFi miễn phí" /> WiFi miễn phí</label>
+                                    <label><input type="checkbox" name="amenities" value="TV" /> TV</label>
+                                    <label><input type="checkbox" name="amenities" value="Điều hòa" /> Điều hòa</label>
+                                    <label><input type="checkbox" name="amenities" value="Tủ lạnh" /> Tủ lạnh</label>
+                                    <label><input type="checkbox" name="amenities" value="Bếp riêng" /> Bếp riêng</label>
+                                    <label><input type="checkbox" name="amenities" value="Ban công" /> Ban công</label>
+                                    <label><input type="checkbox" name="amenities" value="Bồn tắm" /> Bồn tắm</label>
+                                    <label><input type="checkbox" name="amenities" value="Máy pha trà/cà phê" /> Máy pha trà/cà phê</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Ảnh phòng (chọn nhiều ảnh)</label>
+                                <input type="file" name="roomImages" accept="image/*" multiple required />
+                            </div>
+                            <button type="submit" class="submit-btn">Thêm phòng</button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Script để chuyển tab -->
+        <script>
+            const links = document.querySelectorAll(".tab-link");
+            const contents = document.querySelectorAll(".tab-content");
+
+            links.forEach((link) => {
+                link.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    links.forEach((l) => l.classList.remove("active"));
+                    link.classList.add("active");
+
+                    contents.forEach((content) => (content.style.display = "none"));
+                    const id = link.getAttribute("data-tab");
+                    document.getElementById(id).style.display = "block";
+                });
+            });
+        </script>
+    </body>
+</html>
