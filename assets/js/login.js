@@ -10,9 +10,14 @@ window.onload = function () {
 
   // Giải mã JWT
   function decodeJWT(token) {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
     return JSON.parse(jsonPayload);
   }
 
@@ -32,8 +37,8 @@ window.onload = function () {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       })
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           if (data.token) {
             localStorage.setItem("authToken", data.token); // Lưu token vào localStorage
             alert("Đăng nhập thành công!");
@@ -86,19 +91,19 @@ window.onload = function () {
     if (authButtons && userInfo && userEmail) {
       if (token) {
         authButtons.style.display = "none"; // Ẩn nút đăng nhập, đăng ký
-        userInfo.style.display = "block";   // Hiển thị thông tin người dùng
-        const user = decodeJWT(token);      // Giải mã token JWT
-        userEmail.textContent = `Chào, ${user.sub}`;  // Hiển thị email người dùng
+        userInfo.style.display = "block"; // Hiển thị thông tin người dùng
+        const user = decodeJWT(token); // Giải mã token JWT
+        userEmail.textContent = `Chào, ${user.sub}`; // Hiển thị email người dùng
 
         // Hiển thị nút đăng xuất nếu người dùng đã đăng nhập
         if (logoutBtn) {
           logoutBtn.style.display = "inline-block"; // Hiển thị nút đăng xuất
         }
       } else {
-        authButtons.style.display = "block";  // Hiển thị nút đăng nhập, đăng ký
-        userInfo.style.display = "none";      // Ẩn thông tin người dùng
+        authButtons.style.display = "block"; // Hiển thị nút đăng nhập, đăng ký
+        userInfo.style.display = "none"; // Ẩn thông tin người dùng
         if (logoutBtn) {
-          logoutBtn.style.display = "none";   // Ẩn nút đăng xuất nếu chưa đăng nhập
+          logoutBtn.style.display = "none"; // Ẩn nút đăng xuất nếu chưa đăng nhập
         }
       }
     }
