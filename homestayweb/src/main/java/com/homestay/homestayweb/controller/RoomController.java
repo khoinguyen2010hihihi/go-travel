@@ -49,5 +49,10 @@ public class RoomController {
     public ResponseEntity<RoomResponse> getRoomById(@PathVariable Long roomId) {
         return ResponseEntity.ok(roomService.getRoomById(roomId));
     }
+
+    @GetMapping
+    public ResponseEntity<List<RoomResponse>> getAllRooms(){
+        return ResponseEntity.ok(roomService.getAllRooms());
+    }
 }
 

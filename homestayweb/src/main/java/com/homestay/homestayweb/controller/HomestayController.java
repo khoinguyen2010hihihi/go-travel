@@ -56,4 +56,15 @@ public class HomestayController {
         List<HomestayResponse> homestays = homestayService.getHomestaysByHostId(userDetails.getId());
         return ResponseEntity.ok(homestays);
     }
+
+    @PutMapping("/admin/pending/{id}")
+    @PreAuthorize("hasAuthority('ADMIN_ACCESS')")
+    public ResponseEntity<HomestayResponse> pending(@PathVariable Long id) {
+        return ResponseEntity.ok(homestayService.pendingHomestay(id));
+    }
+
+    @GetMapping("/slide/{district}")
+    public ResponseEntity<List<HomestayResponse>> getAllByDistrict(@PathVariable String district) {
+        return ResponseEntity.ok(homestayService.getAllByDistrict(district));
+    }
 }

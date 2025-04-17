@@ -50,6 +50,7 @@ public class SecurityConfiguration {
 
                         .requestMatchers("/host/**").hasAuthority("HOST_ACCESS")
                         .requestMatchers(HttpMethod.POST, "/api/homestays/{id}/rooms").hasAuthority("CREATE_ROOM")
+                        .requestMatchers(HttpMethod.GET, "/api/rooms/**").permitAll()
 
                         .requestMatchers("/user/**").hasAuthority("USER_ACCESS")
                         .anyRequest().authenticated()
