@@ -1,4 +1,4 @@
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", function () {
   // Đảm bảo rằng tất cả các phần tử đã được tải
   const loginBtn = document.querySelector(".submit-login-btn");
   const signupBtn = document.querySelector(".submit-register-btn");
@@ -108,4 +108,4 @@ window.onload = function () {
       }
     }
   }
-};
+});
