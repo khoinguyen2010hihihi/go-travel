@@ -427,38 +427,7 @@
             Quản lý Homestay
             <span class="arrow-icon">▼</span>
           </a>
-          <ul class="homestay-list" style="display: none">
-            <li>
-              <a href="#" class="homestay-toggle">Homestay A</a>
-              <ul class="sub-menu">
-                <li>
-                  <a href="#" class="tab-link" data-tab="view-all-room"
-                    >Tất cả phòng</a
-                  >
-                </li>
-                <li>
-                  <a href="#" class="tab-link" data-tab="add-room"
-                    >Thêm phòng</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#" class="homestay-toggle">Homestay B</a>
-              <ul class="sub-menu">
-                <li>
-                  <a href="#" class="tab-link" data-tab="view-all-room"
-                    >Tất cả phòng</a
-                  >
-                </li>
-                <li>
-                  <a href="#" class="tab-link" data-tab="add-room"
-                    >Thêm phòng</a
-                  >
-                </li>
-              </ul>
-            </li>
-          </ul>
+          <ul class="homestay-list" style="display: none"></ul>
         </li>
       </ul>
     </div>
@@ -476,73 +445,63 @@
         <div id="view-all-room" class="tab-content">
           <div class="card-box">
             <button class="close-btn" onclick="returnToDefault()">×</button>
-            <h2>Danh sách tất cả phòng – Homestay Biển Xanh</h2>
+            <h2>Danh sách tất cả phòng</h2>
             <table class="room-table">
               <thead>
                 <tr>
                   <th>Mã phòng</th>
-                  <th>Mã homestay</th>
                   <th>Loại phòng</th>
                   <th>Giá</th>
                   <th>Trạng thái</th>
                   <th>Hành động</th>
                 </tr>
               </thead>
-              <tbody>
-                <!-- Dữ liệu mẫu -->
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="view-all-pending-room" class="tab-content">
+          <div class="card-box">
+            <button class="close-btn" onclick="returnToDefault()">×</button>
+            <h2>Danh sách tất cả phòng</h2>
+            <table class="room-table">
+              <thead>
                 <tr>
-                  <td>R001</td>
-                  <td>HS001</td>
-                  <td>Phòng đôi</td>
-                  <td>700.000đ</td>
-                  <td>Đang hoạt động</td>
-                  <td>
-                    <button class="btn btn-view">Xem</button>
-                    <button class="btn btn-edit">Sửa</button>
-                    <button class="btn btn-delete">Xóa</button>
-                  </td>
+                  <th>Mã phòng</th>
+                  <th>Loại phòng</th>
+                  <th>Giá</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
                 </tr>
-                <tr>
-                  <td>R002</td>
-                  <td>HS001</td>
-                  <td>Phòng đơn</td>
-                  <td>500.000đ</td>
-                  <td>Đang bảo trì</td>
-                  <td>
-                    <button class="btn btn-view">Xem</button>
-                    <button class="btn btn-edit">Sửa</button>
-                    <button class="btn btn-delete">Xóa</button>
-                  </td>
-                </tr>
-                <!-- Thêm các dòng khác nếu cần -->
-              </tbody>
+              </thead>
+              <tbody></tbody>
             </table>
           </div>
         </div>
         <div id="add-room" class="tab-content" style="display: none">
           <div class="card-box">
             <button class="close-btn" onclick="returnToDefault()">×</button>
-            <h2>Thêm phòng mới – Homestay Biển Xanh</h2>
-
-            <!-- Loại phòng -->
+            <h2>Thêm phòng mới</h2>
             <div class="form-group">
               <label><strong>Loại phòng:</strong></label
               ><br />
               <label
-                ><input type="radio" name="RoomType" value="Phòng đơn" /> Phòng
-                đơn</label
+                ><input type="radio" name="RoomType" value="Phòng đơn" /> Single
+                Room</label
               ><br />
               <label
-                ><input type="radio" name="RoomType" value="Phòng đôi" /> Phòng
-                đôi</label
+                ><input type="radio" name="RoomType" value="Phòng đôi" />
+                Superior Room</label
               ><br />
               <label
-                ><input type="radio" name="RoomType" value="Studio" />
-                Studio</label
+                ><input type="radio" name="RoomType" value="Studio" /> Deluxe
+                Room</label
+              ><br />
+              <label
+                ><input type="radio" name="RoomType" value="Phòng đơn" /> Suite
+                Room</label
               >
             </div>
-
-            <!-- Giá -->
             <div class="form-group">
               <label for="Price"><strong>Giá phòng (VNĐ):</strong></label>
               <input
@@ -553,8 +512,6 @@
                 placeholder="Nhập giá..."
               />
             </div>
-
-            <!-- Tiện nghi -->
             <div class="form-group">
               <label><strong>Tiện nghi:</strong></label
               ><br />
@@ -580,7 +537,7 @@
               >
             </div>
 
-            <!-- Ảnh -->
+            <!-- Anh (chua co) -->
             <div class="form-group">
               <label for="Image"><strong>Ảnh phòng:</strong></label>
               <input
@@ -592,14 +549,16 @@
               />
               <div id="preview-container"></div>
             </div>
-
-            <!-- Nút Thêm -->
-            <button type="submit" class="btn btn-add">Thêm phòng</button>
+            <input type="hidden" name="homestayId" id="HomestayId" />
+            <button type="button" class="btn btn-add" id="submit-room">
+              Thêm phòng
+            </button>
           </div>
         </div>
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <script src="assets/js/host-homestay.js"></script>
 
     <script>

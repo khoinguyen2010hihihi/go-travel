@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((response) => response.json())
         .then((data) => {
           if (data.token) {
-            localStorage.setItem("authToken", data.token); // Lưu token vào localStorage
+            localStorage.setItem("authToken", data.token);
             alert("Đăng nhập thành công!");
             checkLoginStatus(); // Gọi lại để cập nhật giao diện
             closePopup();
