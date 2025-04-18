@@ -25,7 +25,7 @@ public class HomestayImageServiceImpl implements HomestayImageService {
     private String uploadDir;
 
     @Override
-    public void uploadImages(Long homestayId, List<MultipartFile> images) {
+    public void uploadImages(Long homestayId, List<MultipartFile> images, Integer primaryIndex) {
         if (images == null || images.isEmpty()) {
             throw new IllegalArgumentException("Image list cannot be empty");
         }
@@ -40,27 +40,28 @@ public class HomestayImageServiceImpl implements HomestayImageService {
 
             Files.createDirectories(homestayPath);
 
-            for (MultipartFile file : images) {
+            for (int i = 0; i < images.size(); i++) {
+                MultipartFile file = images.get(i);
                 if (file.isEmpty()) continue;
 
-                // Tạo tên file ngẫu nhiên
                 String originalFilename = Objects.requireNonNull(file.getOriginalFilename());
                 String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
                 String uniqueFilename = UUID.randomUUID() + fileExtension;
 
                 Path targetPath = homestayPath.resolve(uniqueFilename);
 
-                // Bảo mật: Kiểm tra path traversal
                 if (!targetPath.normalize().startsWith(uploadPath)) {
                     throw new RuntimeException("Security error: Cannot save file outside upload directory");
                 }
 
                 file.transferTo(targetPath);
 
+                boolean isPrimary = (primaryIndex != null && primaryIndex == i);
+
                 imageRepository.save(HomestayImage.builder()
                         .homestayId(homestayId)
                         .imageUrl("/uploads/homestays/" + homestayId + "/" + uniqueFilename)
-                        .isPrimary(false)
+                        .isPrimary(isPrimary)
                         .build());
             }
         } catch (IOException e) {
