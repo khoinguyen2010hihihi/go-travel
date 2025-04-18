@@ -5,5 +5,5 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface HomestayImageService {
-    void uploadImages(Long homestayId, List<MultipartFile> images);
+    void uploadImages(Long homestayId, List<MultipartFile> images, Integer primaryIndex);
 }

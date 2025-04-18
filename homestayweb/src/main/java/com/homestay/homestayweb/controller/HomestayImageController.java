@@ -19,8 +19,10 @@ public class HomestayImageController {
     @PostMapping
     public ResponseEntity<String> uploadImages(
             @PathVariable Long homestayId,
-            @RequestParam("images") List<MultipartFile> images) {
-        homestayImageService.uploadImages(homestayId, images);
+            @RequestParam("images") List<MultipartFile> images,
+            @RequestParam(value = "primaryIndex", required = false) Integer primaryIndex // index của ảnh chính (tùy chọn)
+    ) {
+        homestayImageService.uploadImages(homestayId, images, primaryIndex);
         return ResponseEntity.ok("successful");
     }
 }
