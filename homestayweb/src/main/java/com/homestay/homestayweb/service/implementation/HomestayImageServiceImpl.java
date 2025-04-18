@@ -27,11 +27,11 @@ public class HomestayImageServiceImpl implements HomestayImageService {
     @Override
     public void uploadImages(Long homestayId, List<MultipartFile> images) {
         if (images == null || images.isEmpty()) {
-            throw new IllegalArgumentException("Danh sách hình ảnh không được trống");
+            throw new IllegalArgumentException("Image list cannot be empty");
         }
 
         if (images.size() > 5) {
-            throw new IllegalArgumentException("Không thể tải lên quá 5 hình ảnh");
+            throw new IllegalArgumentException("Cannot upload more than 5 images");
         }
 
         try {
@@ -52,7 +52,7 @@ public class HomestayImageServiceImpl implements HomestayImageService {
 
                 // Bảo mật: Kiểm tra path traversal
                 if (!targetPath.normalize().startsWith(uploadPath)) {
-                    throw new RuntimeException("Lỗi bảo mật: Không thể lưu file bên ngoài thư mục upload");
+                    throw new RuntimeException("Security error: Cannot save file outside upload directory");
                 }
 
                 file.transferTo(targetPath);
@@ -64,7 +64,7 @@ public class HomestayImageServiceImpl implements HomestayImageService {
                         .build());
             }
         } catch (IOException e) {
-            throw new RuntimeException("Lỗi khi tải lên hình ảnh: " + e.getMessage(), e);
+            throw new RuntimeException("Error while uploading image: " + e.getMessage(), e);
         }
     }
 }
