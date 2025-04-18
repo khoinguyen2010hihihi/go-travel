@@ -29,8 +29,9 @@ public class RoomServiceImpl implements RoomService {
                 .homestay(homestay)
                 .roomType(request.getRoomType())
                 .price(request.getPrice())
-                .availability(request.getAvailability())
+                .availability(true)
                 .features(request.getFeatures())
+                .roomStatus("PENDING")
                 .build();
 
         roomRepository.save(room);
@@ -83,10 +84,14 @@ public class RoomServiceImpl implements RoomService {
         return RoomResponse.builder()
                 .roomId(room.getRoomId())
                 .homestayName(room.getHomestay().getName())
+                .rating(room.getHomestay().getSurfRating())
                 .roomType(room.getRoomType())
                 .price(room.getPrice())
                 .availability(room.getAvailability())
                 .features(room.getFeatures())
+                .district(room.getHomestay().getDistrict())
+                .ward(room.getHomestay().getWard())
+                .street(room.getHomestay().getStreet())
                 .build();
     }
 }
