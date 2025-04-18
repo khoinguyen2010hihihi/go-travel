@@ -43,6 +43,12 @@ public class HomestayController {
         return ResponseEntity.ok(homestayService.getAllHomestays());
     }
 
+    @GetMapping("/pending")
+//    @PreAuthorize("hasAuthority('ADMIN_ACCESS')")
+    public ResponseEntity<List<HomestayResponse>> getAllP() {
+        return ResponseEntity.ok(homestayService.getAllPendingHomestays());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<HomestayResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(homestayService.getHomestayById(id));

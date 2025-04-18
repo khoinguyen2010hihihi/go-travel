@@ -147,6 +147,15 @@ public class HomestayServiceImpl implements HomestayService {
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<HomestayResponse> getAllPendingHomestays() {
+        List<Homestay> homestays = homestayRepository.findByApproveStatus("PENDING");
+        return homestays.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     private HomestayResponse mapToResponse(Homestay homestay) {
         return HomestayResponse.builder()
                 .id(homestay.getHomestayId())
