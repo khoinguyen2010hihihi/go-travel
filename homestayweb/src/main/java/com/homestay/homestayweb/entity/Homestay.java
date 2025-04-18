@@ -40,4 +40,5 @@ public class Homestay {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "host_id")
     private User host;
+
 }

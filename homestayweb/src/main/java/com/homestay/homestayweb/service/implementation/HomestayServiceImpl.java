@@ -140,9 +140,16 @@ public class HomestayServiceImpl implements HomestayService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<HomestayResponse> getHomestayByHost(Long id) {
+        List<Homestay> homestays = homestayRepository.findByHost_Id(id);
+        return homestays.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
     private HomestayResponse mapToResponse(Homestay homestay) {
         return HomestayResponse.builder()
-//                .id(homestay.getHomestayId())
+                .id(homestay.getHomestayId())
                 .name(homestay.getName())
                 .street(homestay.getStreet())
                 .ward(homestay.getWard())

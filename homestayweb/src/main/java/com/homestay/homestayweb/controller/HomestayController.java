@@ -40,7 +40,6 @@ public class HomestayController {
 
     @GetMapping
     public ResponseEntity<List<HomestayResponse>> getAll() {
-                System.out.println("123");
         return ResponseEntity.ok(homestayService.getAllHomestays());
     }
 
@@ -50,11 +49,15 @@ public class HomestayController {
     }
 
     @GetMapping("/my")
-    @PreAuthorize("hasAuthority('VIEW_HOMESTAY')")
     public ResponseEntity<List<HomestayResponse>> getMyHomestays() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<HomestayResponse> homestays = homestayService.getHomestaysByHostId(userDetails.getId());
         return ResponseEntity.ok(homestays);
+    }
+
+    @GetMapping("/host/{host_id}")
+    public ResponseEntity<List<HomestayResponse>> getByHost(@PathVariable Long host_id) {
+        return ResponseEntity.ok(homestayService.getHomestayByHost(host_id));
     }
 
     @PutMapping("/admin/pending/{id}")

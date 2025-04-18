@@ -16,4 +16,6 @@ public interface HomestayService {
     HomestayResponse pendingHomestay(Long id);
 
     List<HomestayResponse> getAllByDistrict(String district);
+
+    List<HomestayResponse> getHomestayByHost(Long id);
 }
