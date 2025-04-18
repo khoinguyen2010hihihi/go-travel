@@ -1,4 +1,6 @@
 HELP.md
+/uploads/
+!/uploads/homestays/.keep
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
