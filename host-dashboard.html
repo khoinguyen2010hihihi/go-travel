@@ -460,12 +460,28 @@
             </table>
           </div>
         </div>
+        <div id="view-all-pending-room" class="tab-content">
+          <div class="card-box">
+            <button class="close-btn" onclick="returnToDefault()">×</button>
+            <h2>Danh sách tất cả phòng</h2>
+            <table class="room-table">
+              <thead>
+                <tr>
+                  <th>Mã phòng</th>
+                  <th>Loại phòng</th>
+                  <th>Giá</th>
+                  <th>Trạng thái</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
         <div id="add-room" class="tab-content" style="display: none">
           <div class="card-box">
             <button class="close-btn" onclick="returnToDefault()">×</button>
             <h2>Thêm phòng mới</h2>
-
-            <!-- Loại phòng -->
             <div class="form-group">
               <label><strong>Loại phòng:</strong></label
               ><br />
@@ -486,8 +502,6 @@
                 Room</label
               >
             </div>
-
-            <!-- Giá -->
             <div class="form-group">
               <label for="Price"><strong>Giá phòng (VNĐ):</strong></label>
               <input
@@ -498,8 +512,6 @@
                 placeholder="Nhập giá..."
               />
             </div>
-
-            <!-- Tiện nghi -->
             <div class="form-group">
               <label><strong>Tiện nghi:</strong></label
               ><br />
@@ -525,7 +537,7 @@
               >
             </div>
 
-            <!-- Ảnh -->
+            <!-- Anh (chua co) -->
             <div class="form-group">
               <label for="Image"><strong>Ảnh phòng:</strong></label>
               <input
@@ -537,9 +549,7 @@
               />
               <div id="preview-container"></div>
             </div>
-
-            <!-- Nút Thêm -->
-            <input type="hidden" name="homestayId" id="HomestayId"/>
+            <input type="hidden" name="homestayId" id="HomestayId" />
             <button type="button" class="btn btn-add" id="submit-room">
               Thêm phòng
             </button>
@@ -548,6 +558,7 @@
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <script src="assets/js/host-homestay.js"></script>
 
     <script>

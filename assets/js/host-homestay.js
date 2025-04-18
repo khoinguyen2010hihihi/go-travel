@@ -1,6 +1,19 @@
 window.onload = function () {
   const homestayList = document.querySelector(".homestay-list");
-  fetch("http://localhost:8081/homestay/api/homestays")
+
+  // Lấy token từ localStorage
+  const token = localStorage.getItem("authToken");
+
+  // Giải mã token để lấy host_id (giả sử token chứa host_id dưới dạng claim)
+  const decodedToken = jwt_decode(token);
+  const hostId = decodedToken.host_id;
+
+  fetch(`http://localhost:8081/homestay/api/homestays/host/${hostId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
     .then((res) => res.json())
     .then((data) => {
       homestayList.innerHTML = "";
@@ -20,6 +33,11 @@ window.onload = function () {
               <a href="#" class="tab-link" data-tab="add-room" data-hid="${homestay.id}">
                 Thêm phòng
               </a>
+            </li>
+            <li>
+              <a href="#" class="tab-link" data-tab="view-all-pending-room" data-hid="${homestay.id}">
+                Phòng đang chờ duyệt
+                </a>
             </li>
           </ul>
         `;
@@ -47,8 +65,10 @@ window.onload = function () {
 
     if (tabId === "view-all-room") {
       showRoomList(homestayId);
-    } else {
+    } else if (tabId == "add-room") {
       showAddForm(homestayId);
+    } else {
+      showPendingRoomList(homestayId);
     }
   });
 
@@ -56,7 +76,9 @@ window.onload = function () {
     const viewTab = document.getElementById("view-all-room");
     viewTab.style.display = "block";
 
-    fetch(`http://localhost:8081/homestay/api/rooms/homestay/{homestayId}`)
+    fetch(
+      `http://localhost:8081/homestay/api/rooms/valid-homestay/${homestayId}`
+    )
       .then((res) => res.json())
       .then((rooms) => {
         const tbody = viewTab.querySelector(".room-table tbody");
@@ -84,12 +106,10 @@ window.onload = function () {
       .catch((err) => console.error("Lỗi load phòng:", err));
   }
 
-  // 4. Hiển thị form thêm phòng
   function showAddForm(homestayId) {
     const addTab = document.getElementById("add-room");
     addTab.style.display = "block";
 
-    // gán hidden input hoặc lưu lại homestayId để gửi form
     let hidden = addTab.querySelector("input[name='homestayId']");
     if (!hidden) {
       hidden = document.createElement("input");
@@ -100,7 +120,6 @@ window.onload = function () {
     hidden.value = homestayId;
   }
 
-  // 5. Nút trở về
   window.returnToDefault = function () {
     document
       .querySelectorAll(".tab-content")
@@ -108,6 +127,60 @@ window.onload = function () {
     document.getElementById("default-content").style.display = "block";
   };
 
+  function showPendingRoomList(homestayId) {
+    const viewTab = document.getElementById("view-all-pending-room");
+    viewTab.style.display = "block";
+
+    fetch(
+      `http://localhost:8081/homestay/api/rooms/pending-homestay/${homestayId}`
+    )
+      .then((res) => res.json())
+      .then((rooms) => {
+        const tbody = viewTab.querySelector(".room-table tbody");
+        tbody.innerHTML = "";
+        if (!rooms.length) {
+          tbody.innerHTML = '<tr><td colspan="6">Không có phòng nào.</td></tr>';
+          return;
+        }
+        rooms.forEach((r) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${r.roomId}</td>
+            <td>${r.roomType}</td>
+            <td>${Number(r.price).toLocaleString("vi-VN")}đ</td>
+            <td>${r.availability ? "Còn trống" : "Đang được sử dụng"}</td>
+            <td>
+              <button class="btn btn-view"  data-id="${r.roomIdd}">Xem</button>
+              <button class="btn btn-edit"  data-id="${r.roomId}">Sửa</button>
+              <button class="btn btn-delete" data-id="${r.roomId}">Xóa</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch((err) => console.error("Lỗi load phòng:", err));
+  }
+
+  function showAddForm(homestayId) {
+    const addTab = document.getElementById("add-room");
+    addTab.style.display = "block";
+
+    let hidden = addTab.querySelector("input[name='homestayId']");
+    if (!hidden) {
+      hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.name = "homestayId";
+      addTab.querySelector(".card-box").appendChild(hidden);
+    }
+    hidden.value = homestayId;
+  }
+
+  window.returnToDefault = function () {
+    document
+      .querySelectorAll(".tab-content")
+      .forEach((tc) => (tc.style.display = "none"));
+    document.getElementById("default-content").style.display = "block";
+  };
   //Them
 
   document.getElementById("submit-room").addEventListener("click", function () {
@@ -120,7 +193,7 @@ window.onload = function () {
     );
     const features = Array.from(featuresEls)
       .map((el) => el.value)
-      .join(", "); // Ghép các giá trị lại
+      .join(", ");
 
     if (!roomType || !price || !features) {
       alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
@@ -134,7 +207,7 @@ window.onload = function () {
     const roomData = {
       roomType: roomType,
       price: price,
-      features: features, // Tạo chuỗi từ các giá trị của features
+      features: features,
     };
 
     const token = localStorage.getItem("authToken");
