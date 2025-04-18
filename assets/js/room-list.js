@@ -32,8 +32,10 @@ window.onload = function () {
               <img src="assets/img/home3.webp" alt="${item.name}" />
               <div class="result-details">
                 <h3>${item.homestayName}</h3>
-                <div class="rating">${item.rating}</div>
-                <div class="price">${item.price}</div>
+                <div class="stars">${item.rating}/5 ★</div>
+                <div class="price">Giá: ${Number(item.price).toLocaleString(
+                  "vi-VN"
+                )}₫ / đêm</div>
                 <div class="location">${locationText}</div>
                 <div class="features">${item.features}</div>
               </div>
