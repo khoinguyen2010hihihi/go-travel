@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class RoomResponse {
     private Long roomId;
-    private Long homestayId;
+    private String homestayName;
     private String roomType;
     private Double price;
     private Boolean availability;

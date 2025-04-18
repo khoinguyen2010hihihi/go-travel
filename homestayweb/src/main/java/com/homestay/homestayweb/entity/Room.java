@@ -29,4 +29,6 @@ public class Room {
 
     @Lob
     private String features;
+
+    private String roomStatus;
 }

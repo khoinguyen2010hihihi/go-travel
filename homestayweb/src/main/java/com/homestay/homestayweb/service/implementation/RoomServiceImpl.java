@@ -53,6 +53,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public List<RoomResponse> getAllRooms() {
+        return roomRepository.findByRoomStatus("ACCEPTED")
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public RoomResponse updateRoom(Long roomId, RoomRequest request) {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new RuntimeException("Room not found"));
@@ -60,7 +68,7 @@ public class RoomServiceImpl implements RoomService {
         room.setRoomType(request.getRoomType());
         room.setPrice(request.getPrice());
         room.setAvailability(request.getAvailability());
-        room.setFeatures(request.getFeatures());
+
 
         roomRepository.save(room);
         return mapToResponse(room);
@@ -74,7 +82,7 @@ public class RoomServiceImpl implements RoomService {
     private RoomResponse mapToResponse(Room room) {
         return RoomResponse.builder()
                 .roomId(room.getRoomId())
-                .homestayId(room.getHomestay().getHomestayId())
+                .homestayName(room.getHomestay().getName())
                 .roomType(room.getRoomType())
                 .price(room.getPrice())
                 .availability(room.getAvailability())

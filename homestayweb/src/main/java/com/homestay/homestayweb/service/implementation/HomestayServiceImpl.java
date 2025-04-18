@@ -81,11 +81,12 @@ public class HomestayServiceImpl implements HomestayService {
 
     @Override
     public List<HomestayResponse> getAllHomestays() {
-        List<Homestay> homestays = homestayRepository.findAll();
+        List<Homestay> homestays = homestayRepository.findByApproveStatus("ACCEPTED");
         return homestays.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public List<HomestayResponse> getHomestaysByHostId(Long hostId) {
@@ -122,9 +123,26 @@ public class HomestayServiceImpl implements HomestayService {
         homestayRepository.deleteById(id);
     }
 
+    @Override
+    public HomestayResponse pendingHomestay(Long id) {
+        Homestay homestay = homestayRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Homestay not found"));
+        homestay.setApproveStatus("ACCEPTED");
+        homestayRepository.save(homestay);
+        return mapToResponse(homestay);
+    }
+
+    @Override
+    public List<HomestayResponse> getAllByDistrict(String district) {
+        List<Homestay> homestays = homestayRepository.findByDistrict(district);
+        return homestays.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     private HomestayResponse mapToResponse(Homestay homestay) {
         return HomestayResponse.builder()
-                .id(homestay.getHomestayId())
+//                .id(homestay.getHomestayId())
                 .name(homestay.getName())
                 .street(homestay.getStreet())
                 .ward(homestay.getWard())
