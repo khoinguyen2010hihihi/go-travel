@@ -8,10 +8,6 @@ spring:
     url: "jdbc:mysql://localhost:3306/homestay"
     username: root
     password: 123456
-  servlet:
-    multipart:
-      max-file-size: 5MB
-      max-request-size: 25MB
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,8 +17,10 @@ jwt:
   secret: "nL8Wk3q9TuXFeV+JkzAmYZcRpGfM2y8PvqLdWz3aHTG9eV7uKqV3lSn5eLZCq4US"
   expiration: 86400000
 
-upload:
-  path: ./uploads/homestays
+cloudinary:
+  cloud_name: deyu8aoef
+  api_key: 642675988451599
+  api_secret: 4IXsKibWyB2isTTkCWQ0oP7_l5s
 
 #logging:
 #  level:

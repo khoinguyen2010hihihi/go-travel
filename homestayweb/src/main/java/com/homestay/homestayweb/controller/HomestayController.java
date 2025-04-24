@@ -2,13 +2,18 @@ package com.homestay.homestayweb.controller;
 
 import com.homestay.homestayweb.dto.request.HomestayRequest;
 import com.homestay.homestayweb.dto.response.HomestayResponse;
+import com.homestay.homestayweb.entity.HomestayImage;
+import com.homestay.homestayweb.repository.HomestayImageRepository;
 import com.homestay.homestayweb.security.UserDetailsImpl;
+import com.homestay.homestayweb.service.CloudinaryService;
 import com.homestay.homestayweb.service.HomestayService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,7 +22,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HomestayController {
 
-    private final HomestayService homestayService;
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
+    @Autowired
+    private HomestayImageRepository homestayImageRepository;
+
+    @Autowired
+    private HomestayService homestayService;
 
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_HOMESTAY')")
@@ -66,5 +78,32 @@ public class HomestayController {
     @GetMapping("/slide/{district}")
     public ResponseEntity<List<HomestayResponse>> getAllByDistrict(@PathVariable String district) {
         return ResponseEntity.ok(homestayService.getAllByDistrict(district));
+    }
+
+    @PostMapping("/{id}/images")
+    @PreAuthorize("hasAuthority('CREATE_HOMESTAY')")
+    public ResponseEntity<String> uploadImageToHomestay(
+            @PathVariable("id") Long homestayId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(name = "isPrimary", defaultValue = "false") boolean isPrimary
+    ) {
+        try {
+            // Upload ảnh lên Cloudinary
+            String imageUrl = cloudinaryService.uploadFile(file);
+
+            // Gán Homestay cho ảnh
+            HomestayImage image = new HomestayImage();
+            image.setImageUrl(imageUrl);
+            image.setIsPrimary(isPrimary);
+            image.setHomestay(homestayService.findEntityById(homestayId));
+
+            // Lưu vào DB
+            homestayImageRepository.save(image);
+
+            return ResponseEntity.ok(imageUrl);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Upload thất bại: " + e.getMessage());
+        }
     }
 }

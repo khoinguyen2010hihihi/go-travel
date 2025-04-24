@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class HomestayResponse {
-//    private Long id;
+    private Long id;
     private String name;
     private String street;
     private String ward;
