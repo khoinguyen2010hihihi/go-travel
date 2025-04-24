@@ -142,7 +142,7 @@ public class HomestayServiceImpl implements HomestayService {
 
     private HomestayResponse mapToResponse(Homestay homestay) {
         return HomestayResponse.builder()
-//                .id(homestay.getHomestayId())
+                .id(homestay.getHomestayId())
                 .name(homestay.getName())
                 .street(homestay.getStreet())
                 .ward(homestay.getWard())
@@ -154,5 +154,10 @@ public class HomestayServiceImpl implements HomestayService {
                 .contactInfo(homestay.getContactInfo())
                 .createdAt(homestay.getCreatedAt())
                 .build();
+    }
+
+    public Homestay findEntityById(Long id) {
+        return homestayRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Homestay not found"));
     }
 }
