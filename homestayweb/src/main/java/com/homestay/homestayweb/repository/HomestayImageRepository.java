@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface HomestayImageRepository extends JpaRepository<HomestayImage, Long> {
-    List<HomestayImage> findByHomestay(Homestay homestay);
+    HomestayImage findByHomestayAndIsPrimaryTrue(Homestay homestay);
 }
