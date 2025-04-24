@@ -1,7 +1,7 @@
 window.onload = function () {
   const homestayList = document.querySelector(".homestay-list");
 
-  fetch("http://localhost:8081/homestay/api/homestays") // endpoint ví dụ
+  fetch("http://localhost:8080/homestay/api/homestays") // endpoint ví dụ
     .then((res) => res.json())
     .then((data) => {
       homestayList.innerHTML = ""; // clear nếu có cũ

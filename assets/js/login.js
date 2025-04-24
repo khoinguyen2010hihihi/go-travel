@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      fetch("http://localhost:8081/homestay/auth/login", {
+      fetch("http://localhost:8080/homestay/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
