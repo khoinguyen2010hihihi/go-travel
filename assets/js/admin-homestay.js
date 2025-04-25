@@ -16,7 +16,7 @@ window.onload = function () {
   })
     .then((res) => res.json())
     .then((data) => {
-      tableBody.innerHTML = ""; // clear cũ
+      tableBody.innerHTML = ""; // clear 
       if (!data.length) {
         tableBody.innerHTML = `<tr><td colspan="4">Không có yêu cầu nào.</td></tr>`;
         return;

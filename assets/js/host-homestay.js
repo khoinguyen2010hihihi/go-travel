@@ -1,10 +1,8 @@
 window.onload = function () {
   const homestayList = document.querySelector(".homestay-list");
 
-  // Lấy token từ localStorage
   const token = localStorage.getItem("authToken");
 
-  // Giải mã token để lấy host_id (giả sử token chứa host_id dưới dạng claim)
   const decodedToken = jwt_decode(token);
   const hostId = decodedToken.host_id;
 

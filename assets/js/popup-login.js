@@ -1,4 +1,3 @@
-// Popup login/register functionality
 function openPopup(tab) {
   document.getElementById("popup").style.display = "flex";
   switchTab(tab);
@@ -29,7 +28,6 @@ function switchTab(tab) {
   }
 }
 
-// Add event listeners only if elements exist
 document.addEventListener("DOMContentLoaded", function () {
   const loginBtn = document.querySelector(".login");
   const signupBtn = document.querySelector(".signup");
@@ -47,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Close popup when clicking outside
   if (popup) {
     popup.addEventListener("click", function (event) {
       if (event.target === popup) {
