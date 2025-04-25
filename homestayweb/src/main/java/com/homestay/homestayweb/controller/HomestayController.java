@@ -73,7 +73,7 @@ public class HomestayController {
     }
 
     @GetMapping("/slide/{district}")
-    public ResponseEntity<List<HomestayResponse>> getAllByDistrict(@PathVariable String district) {
-        return ResponseEntity.ok(homestayService.getAllByDistrict(district));
+    public ResponseEntity<List<HomestayResponse>> getAllByDistrict(@PathVariable String district, String status) {
+        return ResponseEntity.ok(homestayService.getAllByDistrict(district,status));
     }
 }

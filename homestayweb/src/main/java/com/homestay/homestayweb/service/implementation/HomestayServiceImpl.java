@@ -133,8 +133,8 @@ public class HomestayServiceImpl implements HomestayService {
     }
 
     @Override
-    public List<HomestayResponse> getAllByDistrict(String district) {
-        List<Homestay> homestays = homestayRepository.findByDistrict(district);
+    public List<HomestayResponse> getAllByDistrict(String district,String status) {
+        List<Homestay> homestays = homestayRepository.findByDistrictAndApproveStatus(district,"ACCEPTED");
         return homestays.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());

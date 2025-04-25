@@ -15,7 +15,7 @@ public interface HomestayService {
     void deleteHomestay(Long id);
     HomestayResponse pendingHomestay(Long id);
 
-    List<HomestayResponse> getAllByDistrict(String district);
+    List<HomestayResponse> getAllByDistrict(String district,String status);
 
     List<HomestayResponse> getHomestayByHost(Long id);
 
