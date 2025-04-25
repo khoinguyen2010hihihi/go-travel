@@ -7,7 +7,7 @@ window.onload = function () {
     "lien-chieu": "Liên Chiểu",
   };
   const resultsContainer = document.querySelector(".results");
-  const endpoint = "http://localhost:8081/homestay/api/rooms";
+  const endpoint = "http://localhost:8080/homestay/api/rooms";
 
   fetch(endpoint)
     .then((res) => {

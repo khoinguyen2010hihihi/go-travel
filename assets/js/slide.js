@@ -20,24 +20,32 @@ window.onload = function () {
           grid.style.display = "grid";
           grid.innerHTML = "";
 
-          fetch(
-            `http://localhost:8081/homestay/api/homestays/slide/${selectedLocation}`
-          )
+          fetch(`http://localhost:8080/homestay/api/homestays/slide/${selectedLocation}`)
             .then((res) => res.json())
             .then((data) => {
               if (data.length === 0) {
-                grid.innerHTML =
-                  "<p>Hiện chưa có chỗ nghỉ nào ở khu vực này.</p>";
+                grid.innerHTML = "<p>Hiện chưa có chỗ nghỉ nào ở khu vực này.</p>";
                 return;
               }
 
-              data.forEach((item) => {
+              data.forEach(async (item) => {
+                let primaryImageUrl = "assets/img/default-thumbnail.webp"; // fallback ảnh mặc định
+
+                try {
+                  // Fetch API lấy ảnh chính từ backend
+                  const res = await fetch(`http://localhost:8080/homestay/api/homestays/${item.id}/images/primary`);
+                  if (res.ok) {
+                    const json = await res.json();
+                    primaryImageUrl = json.primaryImageUrl; // Lấy URL ảnh chính từ response
+                  }
+                } catch (error) {
+                  console.error("Không lấy được ảnh chính:", error);
+                }
+
                 const cardHTML = `
                   <div class="property-card">
                     <div class="rating">${item.surfRating ?? "?"}</div>
-                    <img src="assets/img/centre-hotel.webp" alt="${
-                      item.name
-                    }" />
+                    <img src="${primaryImageUrl}" alt="${item.name}" />
                     <div class="property-details">
                       <h3>${item.name}</h3>
                       <div class="property-info">
@@ -45,26 +53,22 @@ window.onload = function () {
                           <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
                         </div>
                         <div class="property-location">
-                          <i class="ti-location-pin"></i>${item.street}, ${
-                  item.ward
-                }
+                          <i class="ti-location-pin"></i>${item.street}, ${item.ward}
                         </div>
                       </div>
                       <p class="property-price-description">
                         Giá mỗi đêm chưa gồm thuế và phí
                       </p>
-                      <p class="property-price">VND ${formatPrice(
-                        item.price ?? 0
-                      )}</p>
+                      <p class="property-price">VND ${formatPrice(item.price ?? 0)}</p>
                     </div>
                   </div>
                 `;
+
                 grid.insertAdjacentHTML("beforeend", cardHTML);
               });
             })
             .catch((err) => {
-              grid.innerHTML =
-                "<p>Lỗi khi tải dữ liệu homestay. Vui lòng thử lại.</p>";
+              grid.innerHTML = "<p>Lỗi khi tải dữ liệu homestay. Vui lòng thử lại.</p>";
               console.error(err);
             });
         } else {
@@ -77,6 +81,6 @@ window.onload = function () {
   });
 
   if (tabs.length > 0) {
-    tabs[0].click();
+    tabs[0].click();  // Mặc định click tab đầu tiên
   }
 };
