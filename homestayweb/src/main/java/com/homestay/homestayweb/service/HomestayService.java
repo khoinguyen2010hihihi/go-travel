@@ -22,6 +22,5 @@ public interface HomestayService {
     List<HomestayResponse> getHomestayByHost(Long id);
 
     List<HomestayResponse> getAllPendingHomestays();
-    List<HomestayResponse> getAllByDistrict(String district);
     Homestay findEntityById(Long id);
 }
