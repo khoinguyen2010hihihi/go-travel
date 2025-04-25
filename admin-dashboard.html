@@ -269,10 +269,8 @@
         <h2>Admin Panel</h2>
         <ul>
           <li>
-            <a href="#" class="parent-toggle"
-              >Yêu cầu phê duyệt<span class="arrow-icon">▼</span></a
-            >
-            <ul class="sub-menu">
+            <a href="#" class="tab-link">Yêu cầu phê duyệt</a>
+            <!-- <ul class="sub-menu">
               <li>
                 <a href="#" class="tab-link" data-tab="tab-approve-business"
                   >Phê duyệt doanh nghiệp</a
@@ -283,7 +281,7 @@
                   >Phê duyệt phòng</a
                 >
               </li>
-            </ul>
+            </ul> -->
           </li>
           <li>
             <a href="#" class="tab-link" data-tab="tab-manage-company"
@@ -336,7 +334,7 @@
           </div>
         </div>
 
-        <div id="tab-approve-room" class="tab-content">
+        <!-- <div id="tab-approve-room" class="tab-content">
           <div class="card">
             <h2>Phê duyệt phòng</h2>
             <table class="room-table">
@@ -368,7 +366,7 @@
               </tbody>
             </table>
           </div>
-        </div>
+        </div> -->
 
         <div id="tab-manage-company" class="tab-content">
           <h2>Quản lý doanh nghiệp</h2>
@@ -387,7 +385,7 @@
     </div>
 
     <script>
-      // Icon user
+
       function toggleUserMenu() {
         const dropdown = document.getElementById("userDropdown");
         dropdown.style.display =
@@ -403,7 +401,7 @@
         mobileToggle.setAttribute("aria-expanded", String(!isVisible));
       });
 
-      // Tự động ẩn menu khi click ngoài
+
       window.addEventListener("click", function (e) {
         const userIcon = document.querySelector(".user-icon");
         const dropdown = document.getElementById("userDropdown");

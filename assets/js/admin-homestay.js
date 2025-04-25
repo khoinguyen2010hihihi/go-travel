@@ -6,30 +6,48 @@ window.onload = function () {
     "thanh-khe": "Thanh Khê",
     "lien-chieu": "Liên Chiểu",
   };
-  const tableBody = document.querySelector("#homestay-request-table tbody");
+
   const token = localStorage.getItem("authToken");
 
-  fetch("http://localhost:8081/homestay/api/homestays/pending", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      tableBody.innerHTML = ""; // clear 
-      if (!data.length) {
-        tableBody.innerHTML = `<tr><td colspan="4">Không có yêu cầu nào.</td></tr>`;
-        return;
-      }
+  document.querySelector(".tab-link").addEventListener("click", function (e) {
+    e.preventDefault();
 
-      data.forEach((h) => {
-        const locationParts = [];
-        if (h.district) locationParts.push(locationEnum[h.district]);
-        if (h.ward) locationParts.push(h.ward);
-        if (h.street) locationParts.push(h.street);
-        let locationText = locationParts.join(", ");
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
+    document.querySelectorAll(".tab-content").forEach((tab) => {
+      tab.style.display = "none";
+      tab.classList.remove("active");
+    });
+
+    const tab = document.getElementById("tab-approve-business");
+    tab.style.display = "block";
+    tab.classList.add("active");
+
+    loadPendingHomestays();
+  });
+
+  function loadPendingHomestays() {
+    const tableBody = document.querySelector("#homestay-request-table tbody");
+
+    fetch("http://localhost:8080/homestay/api/homestays/pending", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        tableBody.innerHTML = ""; // clear
+        if (!data.length) {
+          tableBody.innerHTML = `<tr><td colspan="4">Không có yêu cầu nào.</td></tr>`;
+          return;
+        }
+
+        data.forEach((h) => {
+          const locationParts = [];
+          if (h.district) locationParts.push(locationEnum[h.district]);
+          if (h.ward) locationParts.push(h.ward);
+          if (h.street) locationParts.push(h.street);
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
             <td>${h.id}</td>
             <td>${h.name}</td>
             <td>
@@ -46,95 +64,40 @@ window.onload = function () {
               </button>
             </td>
             <td>
-              <button class="btn btn-approve" onclick="approveHomestay('${
+              <button class="btn btn-approve" onclick="approveHomestay(${
                 h.id
-              }')">Phê duyệt</button>
+              })">Phê duyệt</button>
               <button class="btn btn-reject" onclick="rejectHomestay('${
                 h.id
               }')">Từ chối</button>
             </td>
           `;
-        tableBody.appendChild(tr);
-      });
-    })
-    .catch((err) => {
-      console.error("Lỗi khi tải danh sách homestay chờ duyệt:", err);
-      tableBody.innerHTML =
-        "<tr><td colspan='4'>Lỗi khi tải dữ liệu.</td></tr>";
-    });
-  const roomTableBody = document.querySelector(
-    "#tab-approve-room .room-table tbody"
-  );
-
-  function loadPendingRooms() {
-    fetch("http://localhost:8081/homestay/api/rooms/pending", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Lỗi phản hồi: " + res.status);
-        return res.json();
-      })
-      .then((rooms) => {
-        roomTableBody.innerHTML = "";
-        if (!rooms.length) {
-          roomTableBody.innerHTML =
-            "<tr><td colspan='4'>Không có phòng nào chờ duyệt.</td></tr>";
-          return;
-        }
-
-        rooms.forEach((r) => {
-          const popupData = {
-            homestay: r.homestayName,
-            roomType: r.roomType,
-            features: r.features,
-            price: Number(r.price).toLocaleString("vi-VN") + "đ",
-          };
-
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-                <td>${r.roomId}</td>
-                <td>${r.homestayName}</td>
-                <td>
-                  <button
-                    class="btn btn-view"
-                    onclick='openCommonPopup("room", ${JSON.stringify(
-                      popupData
-                    )})'
-                  >
-                    Xem chi tiết
-                  </button>
-                </td>
-                <td>
-                  <button class="btn btn-approve" onclick="approveRoom('${
-                    r.roomId
-                  }')">Phê duyệt</button>
-                  <button class="btn btn-reject" onclick="rejectRoom('${
-                    r.roomId
-                  }')">Từ chối</button>
-                </td>
-              `;
-          roomTableBody.appendChild(tr);
+          tableBody.appendChild(tr);
         });
       })
       .catch((err) => {
-        console.error("Lỗi khi tải danh sách phòng chờ duyệt:", err);
-        roomTableBody.innerHTML =
+        console.error("Lỗi khi tải danh sách homestay chờ duyệt:", err);
+        tableBody.innerHTML =
           "<tr><td colspan='4'>Lỗi khi tải dữ liệu.</td></tr>";
       });
   }
-  loadPendingRooms();
 
-  window.approveRoom = function (roomId) {
-    fetch(`http://localhost:8081/homestay/api/rooms/admin/pending/${roomId}`, {
-      method: "PUT",
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  // const roomTableBody = document.querySelector(
+  //   "#tab-approve-room .room-table tbody"
+  // );
+
+  window.approveHomestay = function (homestayId) {
+    fetch(
+      `http://localhost:8080/homestay/api/homestays/admin/pending/${homestayId}`,
+      {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText);
-        alert("Phòng đã được phê duyệt.");
-        loadPendingRooms();
+        alert("Doanh nghiệp đã được phê duyệt.");
+        loadPendingHomestays();
       })
       .catch((e) => {
         console.error(e);

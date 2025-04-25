@@ -6,7 +6,7 @@ window.onload = function () {
   const decodedToken = jwt_decode(token);
   const hostId = decodedToken.host_id;
 
-  fetch(`http://localhost:8081/homestay/api/homestays/host/${hostId}`, {
+  fetch(`http://localhost:8080/homestay/api/homestays/host/${hostId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -75,7 +75,7 @@ window.onload = function () {
     viewTab.style.display = "block";
 
     fetch(
-      `http://localhost:8081/homestay/api/rooms/valid-homestay/${homestayId}`
+      `http://localhost:8080/homestay/api/rooms/valid-homestay/${homestayId}`
     )
       .then((res) => res.json())
       .then((rooms) => {
@@ -130,7 +130,7 @@ window.onload = function () {
     viewTab.style.display = "block";
 
     fetch(
-      `http://localhost:8081/homestay/api/rooms/pending-homestay/${homestayId}`
+      `http://localhost:8080/homestay/api/rooms/pending-homestay/${homestayId}`
     )
       .then((res) => res.json())
       .then((rooms) => {
@@ -210,7 +210,7 @@ window.onload = function () {
 
     const token = localStorage.getItem("authToken");
 
-    fetch(`http://localhost:8081/homestay/api/rooms/homestay/${homestayId}`, {
+    fetch(`http://localhost:8080/homestay/api/rooms/homestay/${homestayId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
