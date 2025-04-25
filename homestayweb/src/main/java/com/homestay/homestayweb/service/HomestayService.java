@@ -2,6 +2,8 @@ package com.homestay.homestayweb.service;
 
 import com.homestay.homestayweb.dto.request.HomestayRequest;
 import com.homestay.homestayweb.dto.response.HomestayResponse;
+import com.homestay.homestayweb.entity.Homestay;
+
 import java.util.Optional;
 
 import java.util.List;
@@ -20,4 +22,6 @@ public interface HomestayService {
     List<HomestayResponse> getHomestayByHost(Long id);
 
     List<HomestayResponse> getAllPendingHomestays();
+    List<HomestayResponse> getAllByDistrict(String district);
+    Homestay findEntityById(Long id);
 }

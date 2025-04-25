@@ -2,22 +2,39 @@ package com.homestay.homestayweb.controller;
 
 import com.homestay.homestayweb.dto.request.HomestayRequest;
 import com.homestay.homestayweb.dto.response.HomestayResponse;
+import com.homestay.homestayweb.entity.Homestay;
+import com.homestay.homestayweb.entity.HomestayImage;
+import com.homestay.homestayweb.repository.HomestayImageRepository;
 import com.homestay.homestayweb.security.UserDetailsImpl;
+import com.homestay.homestayweb.service.CloudinaryService;
+import com.homestay.homestayweb.service.HomestayImageService;
 import com.homestay.homestayweb.service.HomestayService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/homestays")
 @RequiredArgsConstructor
 public class HomestayController {
 
-    private final HomestayService homestayService;
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
+    @Autowired
+    private HomestayImageService homestayImageService;
+
+    @Autowired
+    private HomestayService homestayService;
 
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_HOMESTAY')")
@@ -75,5 +92,47 @@ public class HomestayController {
     @GetMapping("/slide/{district}")
     public ResponseEntity<List<HomestayResponse>> getAllByDistrict(@PathVariable String district, String status) {
         return ResponseEntity.ok(homestayService.getAllByDistrict(district,status));
+    }
+
+    @GetMapping("/{id}/images/primary")
+    public ResponseEntity<Map<String, String>> getPrimaryImage(@PathVariable Long id) {
+        Homestay homestay = homestayService.findEntityById(id);
+        HomestayImage primaryImage = homestayImageService.getPrimaryImage(homestay);
+
+        if (primaryImage == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        Map<String, String> response = new HashMap<>();
+        response.put("primaryImageUrl", primaryImage.getImageUrl());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{id}/images")
+    @PreAuthorize("hasAuthority('CREATE_HOMESTAY')")
+    public ResponseEntity<String> uploadImageToHomestay(
+            @PathVariable("id") Long homestayId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(name = "isPrimary", defaultValue = "false") boolean isPrimary
+    ) {
+        try {
+            // Upload ảnh lên Cloudinary
+            String imageUrl = cloudinaryService.uploadFile(file);
+
+            // Gán Homestay cho ảnh
+            HomestayImage image = new HomestayImage();
+            image.setImageUrl(imageUrl);
+            image.setIsPrimary(isPrimary);
+            image.setHomestay(homestayService.findEntityById(homestayId));
+
+            // Lưu vào DB thông qua service
+            homestayImageService.saveHomestayImage(image);
+
+            return ResponseEntity.ok(imageUrl);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Upload thất bại: " + e.getMessage());
+        }
     }
 }

@@ -171,4 +171,9 @@ public class HomestayServiceImpl implements HomestayService {
                 .createdAt(homestay.getCreatedAt())
                 .build();
     }
+
+    public Homestay findEntityById(Long id) {
+        return homestayRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Homestay not found"));
+    }
 }

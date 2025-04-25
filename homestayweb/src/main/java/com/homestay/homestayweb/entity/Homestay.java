@@ -18,6 +18,7 @@ public class Homestay {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "homestay_id")
     private Long homestayId;
 
     private String name;
