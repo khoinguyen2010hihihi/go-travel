@@ -1,27 +1,21 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Đảm bảo rằng tất cả các phần tử đã được tải
+// assets/js/login.js
+import { closePopup } from "./popup-login.js";
+
+function decodeJWT(token) {
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+      .join("")
+  );
+  return JSON.parse(jsonPayload);
+}
+
+function login() {
   const loginBtn = document.querySelector(".submit-login-btn");
-  const signupBtn = document.querySelector(".submit-register-btn");
-  const logoutBtn = document.getElementById("logoutBtn"); // Phần tử đăng xuất
-  const popup = document.getElementById("popup");
 
-  // Kiểm tra trạng thái đăng nhập và cập nhật giao diện
-  checkLoginStatus();
-
-  // Giải mã JWT
-  function decodeJWT(token) {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split("")
-        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-        .join("")
-    );
-    return JSON.parse(jsonPayload);
-  }
-
-  // Đăng nhập
   if (loginBtn) {
     loginBtn.addEventListener("click", function () {
       const email = document.getElementById("loginEmail").value;
@@ -42,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (data.token) {
             localStorage.setItem("authToken", data.token);
             alert("Đăng nhập thành công!");
-            checkLoginStatus(); // Gọi lại để cập nhật giao diện
+            checkLoginStatus();
             closePopup();
           } else {
             alert("Đăng nhập thất bại.");
@@ -51,61 +45,56 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(() => alert("Đã có lỗi xảy ra. Thử lại sau."));
     });
   }
+}
 
-  // Đăng ký (Hiện tại chỉ là thông báo)
-  if (signupBtn) {
-    signupBtn.addEventListener("click", function () {
-      alert("Đăng ký được nhấn.");
-    });
+function isTokenExpired(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const exp = payload.exp;
+    if (!exp) return true; // Không có exp thì xem như hết hạn
+    const now = Math.floor(Date.now() / 1000);
+    return exp < now; // Nếu exp < now thì token đã hết hạn
+  } catch (error) {
+    console.error("Token invalid:", error);
+    return true; // Token lỗi thì xem như hết hạn
   }
+}
 
-  // Đóng popup khi nhấn ngoài
-  if (popup) {
-    popup.addEventListener("click", function (event) {
-      if (event.target === popup) {
-        closePopup();
+function checkLoginStatus() {
+  const token = localStorage.getItem("authToken");
+  const authButtons = document.getElementById("auth-buttons");
+  const userInfo = document.getElementById("user-info");
+  const userEmail = document.getElementById("user-email");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (authButtons && userInfo && userEmail) {
+    if (token && !isTokenExpired(token)) {
+      authButtons.style.display = "none";
+      userInfo.style.display = "block";
+      const user = decodeJWT(token);
+      if (user) {
+        userEmail.textContent = `Chào, ${user.sub}`;
       }
-    });
-  }
 
-  // Đóng popup
-  function closePopup() {
-    popup.style.display = "none";
-  }
+      if (logoutBtn) {
+        logoutBtn.style.display = "inline-block";
 
-  // Đăng xuất
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", function () {
-      localStorage.removeItem("authToken"); // Xóa token khỏi localStorage
-      checkLoginStatus(); // Cập nhật lại giao diện sau khi đăng xuất
-    });
-  }
-
-  // Kiểm tra trạng thái đăng nhập và cập nhật giao diện
-  function checkLoginStatus() {
-    const token = localStorage.getItem("authToken");
-    const authButtons = document.getElementById("auth-buttons");
-    const userInfo = document.getElementById("user-info");
-    const userEmail = document.getElementById("user-email");
-
-    if (authButtons && userInfo && userEmail) {
-      if (token) {
-        authButtons.style.display = "none"; // Ẩn nút đăng nhập, đăng ký
-        userInfo.style.display = "block"; // Hiển thị thông tin người dùng
-        const user = decodeJWT(token); // Giải mã token JWT
-        userEmail.textContent = `Chào, ${user.sub}`; // Hiển thị email người dùng
-
-        // Hiển thị nút đăng xuất nếu người dùng đã đăng nhập
-        if (logoutBtn) {
-          logoutBtn.style.display = "inline-block"; // Hiển thị nút đăng xuất
-        }
-      } else {
-        authButtons.style.display = "block"; // Hiển thị nút đăng nhập, đăng ký
-        userInfo.style.display = "none"; // Ẩn thông tin người dùng
-        if (logoutBtn) {
-          logoutBtn.style.display = "none"; // Ẩn nút đăng xuất nếu chưa đăng nhập
-        }
+        logoutBtn.onclick = () => {
+          localStorage.removeItem("authToken");
+          checkLoginStatus(); // Sau khi logout thì gọi lại check
+        };
+      }
+    } else {
+      localStorage.removeItem("authToken");
+      authButtons.style.display = "block";
+      userInfo.style.display = "none";
+      if (logoutBtn) {
+        logoutBtn.style.display = "none";
+        logoutBtn.onclick = null; // Xóa sự kiện click cũ nếu có
       }
     }
   }
-});
+}
+
+
+export { login, checkLoginStatus }

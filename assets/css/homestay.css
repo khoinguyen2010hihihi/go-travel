@@ -148,6 +148,8 @@ body {
 .result-details .stars {
   color: #ffc107;
   margin-bottom: 10px;
+  font-weight: 700;
+  font-family: system-ui;
 }
 
 .result-details .location {
@@ -246,4 +248,31 @@ body {
 .result-details .stars i {
   color: #ffc107;
   margin-left: 4px;
+}
+
+.pagination {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.pagination button {
+  background-color: #f0f0f0;
+  border: none;
+  margin: 0 5px;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #020a33;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination button.active {
+  background-color: #020a33;
+  color: white;
+}
+
+.pagination button:hover {
+  background-color: #0099ff;
+  color: white;
 }

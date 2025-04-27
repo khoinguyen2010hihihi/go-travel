@@ -18,6 +18,10 @@
   width: 100%;
 }
 
+#auth-buttons, #user-info {
+  display: none;
+}
+
 .logo img {
   height: 40px;
   width: auto;
