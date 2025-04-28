@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết Homestay</title>
+    <link rel="stylesheet" href="assets/css/room-detail.css" />
+    <link rel="stylesheet" href="assets/css/header.css" />
+    <link
+      rel="stylesheet"
+      href="./assets/fonts/themify-icons/themify-icons.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="header-container">
+        <div class="container">
+          <div class="header-content">
+            <div class="logo">
+              <a href="trang-chu.html">
+                <img
+                  class="logo-image"
+                  src="assets/img/gotravel_logo_air.png"
+                  alt=""
+                />
+              </a>
+            </div>
+            <nav class="nav">
+              <ul>
+                <li><a href="trang-chu.html">TRANG CHỦ</a></li>
+                <li><a href="homestay.html">HOMESTAYS</a></li>
+                <li><a href="about.html">VỀ CHÚNG TÔI</a></li>
+                <li><a href="contact.html">LIÊN HỆ</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <div class="btns desktop-btns">
+          <a href="partnership.html">
+            <button class="cooperate-btn">Hợp tác với chúng tôi</button>
+          </a>
+          <button class="dang-ky-btn" onclick="openPopup('register')">
+            Đăng ký
+          </button>
+          <button class="dang-nhap-btn" onclick="openPopup('login')">
+            Đăng nhập
+          </button>
+        </div>
+
+        <button
+          class="mobile-menu-toggle"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <i class="ti-menu"></i>
+        </button>
+
+        <div class="mobile-menu">
+          <a href="#" class="mobile-menu-link mobile-nav-link">TRANG CHỦ</a>
+          <a href="homestay.html" class="mobile-menu-link mobile-nav-link"
+            >HOMESTAYS</a
+          >
+          <a href="about.html" class="mobile-menu-link mobile-nav-link"
+            >VỀ CHÚNG TÔI</a
+          >
+          <a href="contact.html" class="mobile-menu-link mobile-nav-link"
+            >LIÊN HỆ</a
+          >
+          <hr class="mobile-menu-divider" />
+          <a href="partnership.html" class="mobile-menu-link"
+            >Hợp tác với chúng tôi</a
+          >
+          <button
+            class="mobile-menu-btn"
+            onclick="openPopup('register'); closeMobileMenu();"
+          >
+            Đăng ký
+          </button>
+          <button
+            class="mobile-menu-btn"
+            onclick="openPopup('login'); closeMobileMenu();"
+          >
+            Đăng nhập
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Nội dung chính -->
+    <main class="room-detail">
+      <!-- Ảnh + chọn phòng -->
+      <section class="top-section">
+        <div class="gallery-grid">
+          <div class="gallery-large">
+            <img src="assets/img/room1.webp" alt="Ảnh lớn" />
+            <a class="view-all-btn" href="#">
+              <i class="ti-camera"></i> Xem mọi bức ảnh
+            </a>
+          </div>
+          <div class="gallery-small">
+            <img src="assets/img/room2.webp" alt="Ảnh nhỏ 1" />
+            <img src="assets/img/room3.webp" alt="Ảnh nhỏ 2" />
+            <img src="assets/img/room4.webp" alt="Ảnh nhỏ 3" />
+            <img src="assets/img/room5.webp" alt="Ảnh nhỏ 4" />
+            <img src="assets/img/room6.webp" alt="Ảnh nhỏ 5" />
+            <img src="assets/img/room7.jpg" alt="Ảnh nhỏ 6" />
+          </div>
+        </div>
+
+        <div class="top-nav-price-box">
+          <div class="tab-links">
+            <a href="#overview">Tổng quan</a>
+            <a href="#room-list">Phòng nghỉ</a>
+            <a href="#highlights">Điểm nổi bật</a>
+            <a href="#facilities">Cơ sở vật chất</a>
+            <a href="#hotel-facts">Đánh giá</a>
+            <a href="#location">Vị trí</a>
+          </div>
+          <div class="tab-price-action">
+            <span class="label">từ</span>
+            <p class="price">388.591 VND/đêm</p>
+            <button class="btn-book-now">Đặt ngay</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Thông tin mô tả -->
+      <section class="info-section">
+        <!-- <section class="overview" id="overview">
+          <h2>Titan Hotel <span class="star">★★★</span></h2>
+          <p class="address">
+            102 - 104 Hồ Xuân Hương, Q. Ngũ Hành Sơn, Phước Mỹ, Đà Nẵng, Việt
+            Nam
+          </p>
+          <p class="desc">
+            Hãy di chuyển đi của quý khách có mức khởi đầu tuyệt vời khi ở lại
+            khách sạn này, nơi có Wi-Fi miễn phí trong tất cả các phòng.
+          </p>
+        </section> -->
+        <section class="overview" id="overview">
+          <h2 id="homestay-name">
+            Homestay Name <span class="star">★★★</span>
+          </h2>
+          <p class="address" id="homestay-address">Địa chỉ</p>
+          <p class="desc" id="homestay-desc">Mô tả</p>
+        </section>
+
+        <section class="highlights" id="highlights">
+          <h3>Điểm nổi bật nhất</h3>
+          <div class="highlight-grid">
+            <div class="item">
+              <i class="ti-thumb-up"></i> Thích hợp cho các hoạt động
+            </div>
+            <div class="item"><i class="ti-car"></i> Đưa đón sân bay</div>
+            <div class="item"><i class="ti-time"></i> Nhận phòng 24 giờ</div>
+            <div class="item">
+              <i class="ti-location-pin"></i> Cách bãi biển 670m
+            </div>
+          </div>
+        </section>
+
+        <section class="facilities" id="facilities">
+          <h3>Cơ sở vật chất</h3>
+          <ul>
+            <li>Bãi biển</li>
+            <li>Nhà hàng</li>
+            <li>Miễn phí Wi-Fi</li>
+            <li>Đưa đón sân bay</li>
+            <li>Đỗ xe miễn phí</li>
+            <li>Phòng gia đình</li>
+            <li>Bàn tiếp tân 24 giờ</li>
+            <li>Giữ hành lý</li>
+          </ul>
+        </section>
+
+        <section class="hotel-facts" id="hotel-facts">
+          <h3>Thông tin hữu ích</h3>
+          <table>
+            <tr>
+              <td>Đáng giá tiền</td>
+              <td>8,3</td>
+            </tr>
+            <tr>
+              <td>Cách trung tâm</td>
+              <td>5 km</td>
+            </tr>
+            <tr>
+              <td>Đánh giá vị trí</td>
+              <td>8,1</td>
+            </tr>
+            <tr>
+              <td>Sân bay gần nhất</td>
+              <td>Sân Bay Quốc Tế Đà Nẵng (DAD)</td>
+            </tr>
+            <tr>
+              <td>Cách sân bay</td>
+              <td>5,2 km</td>
+            </tr>
+          </table>
+        </section>
+      </section>
+
+      <section class="room-list" id="room-list">
+        <h3 id="room-list-title">Phòng còn trống tại …</h3>
+        <div id="room-container"></div>
+      </section>
+      <!-- Danh sách phòng -->
+      <!-- <section class="room-list" id="room-list">
+        <h3>Phòng còn trống tại Menora Grand Da Nang</h3>
+        <div class="room-item">
+
+          <div class="room-img">
+            <img src="assets/img/standard-double.webp" alt="Standard Double" />
+          </div>
+
+
+          <div class="room-facilities">
+            <h4>Tiện nghi</h4>
+            <div class="facilities-list">
+              <div class="facility-item">
+                <i class="ti-check"></i> Giường cỡ king
+              </div>
+              <div class="facility-item">
+                <i class="ti-check"></i> Gồm bữa sáng
+              </div>
+              <div class="facility-item">
+                <i class="ti-check"></i> Wi-Fi miễn phí
+              </div>
+              <div class="facility-item"><i class="ti-check"></i> Điều hòa</div>
+              <div class="facility-item">
+                <i class="ti-check"></i> Phòng tắm riêng
+              </div>
+            </div>
+          </div>
+
+          <div class="room-price">
+            <p class="price">461.837 VND/đêm</p>
+          </div>
+
+          <div class="room-booking">
+            <button class="btn-book-now">Đặt ngay</button>
+          </div>
+        </div>
+      </section> -->
+    </main>
+  </body>
+  <div id="popup-placeholder"></div>
+  <script>
+    // Popup functionality
+    fetch("popup.html")
+      .then((response) => response.text())
+      .then((data) => {
+        document.getElementById("popup-placeholder").innerHTML = data;
+      });
+  </script>
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const homestayId = params.get("id");
+    
+      if (!homestayId) {
+        console.error("❌ Thiếu homestayId trong URL (query string)");
+        return;
+      }
+    
+      // 1) Lấy chi tiết homestay
+      fetch(`http://localhost:8080/homestay/api/homestays/${homestayId}`)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`❌ Lỗi khi fetch homestay: ${res.status} ${res.statusText}`);
+          }
+          return res.json();
+        })
+        .then(h => {
+          // Cập nhật DOM
+          const stars = "★".repeat(Math.round(h.surfRating || 0));
+          document.getElementById("homestay-name").textContent = `${h.name} ${stars}`;
+          document.getElementById("homestay-address").textContent =
+            [h.street, h.ward, h.district].filter(Boolean).join(", ");
+          document.getElementById("homestay-desc").textContent = h.description || "Chưa có mô tả.";
+          document.querySelector(".tab-price-action .price").textContent =
+            new Intl.NumberFormat("vi-VN").format(h.minPrice || 0) + " VND/đêm";
+        })
+        .catch(err => {
+          console.error("❌ Lỗi khi lấy thông tin homestay:", err);
+        });
+    
+      // 2) Lấy danh sách phòng
+      fetch(`http://localhost:8080/homestay/api/rooms/valid-homestay/${homestayId}`)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`❌ Lỗi khi fetch danh sách phòng: ${res.status} ${res.statusText}`);
+          }
+          return res.json();
+        })
+        .then(rooms => {
+          const container = document.getElementById("room-container");
+          if (!container) {
+            console.error("❌ Không tìm thấy phần tử #room-container");
+            return;
+          }
+          container.innerHTML = ""; // xóa hết
+    
+          if (!rooms || rooms.length === 0) {
+            container.innerHTML = "<p>Không có phòng nào.</p>";
+            return;
+          }
+    
+          rooms.forEach(r => {
+            // Tách chuỗi features thành mảng
+            const featuresArr = (r.features || "")
+              .split(",")
+              .map(f => f.trim())
+              .filter(f => f);
+    
+            // Tạo HTML cho features
+            const featuresHtml = featuresArr
+              .map(f => `<div class="facility-item"><i class="ti-check"></i> ${f}</div>`)
+              .join("");
+    
+            // Tạo div.room-item
+            const div = document.createElement("div");
+            div.className = "room-item";
+            div.innerHTML = `
+              <div class="room-img">
+                <img src="${r.imageUrl || 'assets/img/default-room.jpg'}" alt="${r.roomType}" />
+              </div>
+              <div class="room-facilities">
+                <h4>Tiện nghi</h4>
+                <div class="facilities-list">${featuresHtml}</div>
+              </div>
+              <div class="room-price">
+                <p class="price">${new Intl.NumberFormat("vi-VN").format(r.price || 0)} VND/đêm</p>
+              </div>
+              <div class="room-booking">
+                <button class="btn-book-now">Đặt ngay</button>
+              </div>
+            `;
+            container.appendChild(div);
+          });
+        })
+        .catch(err => {
+          console.error("❌ Lỗi khi lấy danh sách phòng:", err);
+        });
+    });
+    </script>    
+
+  <script src="assets/js/popup-login.js"></script>
+</html>
