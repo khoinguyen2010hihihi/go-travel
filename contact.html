@@ -26,21 +26,16 @@
                 <li><a href="trang-chu.html">TRANG CHỦ</a></li>
                 <li><a href="homestay.html">HOMESTAYS</a></li>
                 <li><a href="about.html">VỀ CHÚNG TÔI</a></li>
-                <li><a href="#">LIÊN HỆ</a></li>
+                <li><a href="">LIÊN HỆ</a></li>
               </ul>
             </nav>
           </div>
         </div>
         <div class="btns desktop-btns" id="auth-buttons">
-          <a href="partnership.html">
-            <button class="cooperate-btn">Hợp tác với chúng tôi</button>
-          </a>
-          <button class="dang-ky-btn" onclick="openPopup('register')">
-            Đăng ký
-          </button>
-          <button class="dang-nhap-btn" onclick="openPopup('login')">
-            Đăng nhập
-          </button>
+          <button class="cooperate-btn" onclick="location.href='partnership.html'">Hợp tác với chúng tôi</button>
+          <!-- Loại bỏ onclick trong HTML, thay vào đó sẽ gắn sự kiện trong JavaScript -->
+          <button class="dang-ky-btn signup" id="registerBtn">Đăng ký</button>
+          <button class="dang-nhap-btn login" id="loginBtn">Đăng nhập</button>
         </div>
 
         <div id="user-info" style="display: none">

@@ -1,5 +1,5 @@
-// chuyển tab location
-document.addEventListener("DOMContentLoaded", function () {
+// assets/js/tabs-location.js
+function setupTabsLocation() {
     const tabs = document.querySelectorAll(".tab");
     const propertyGrids = document.querySelectorAll(".property-grid");
     const viewMoreText = document.getElementById("view-more-text");
@@ -22,4 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
             viewMoreText.textContent = this.textContent;
         });
     });
-});
+}
+
+export {
+    setupTabsLocation
+};

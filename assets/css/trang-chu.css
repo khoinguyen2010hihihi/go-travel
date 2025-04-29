@@ -313,6 +313,13 @@ body {
     z-index: 1;
 }
 
+.stars {
+    color: #ffc107;
+    font-size: 1.5em;
+    font-weight: 700;
+    font-family: system-ui;
+}
+
 .property-details {
     padding: 15px;
     display: flex;
@@ -348,6 +355,7 @@ body {
 .property-location {
     display: flex;
     align-items: center;
+    font-size: 1em;
 }
 
 .property-location i {
@@ -355,6 +363,7 @@ body {
     margin-right: 5px;
     font-size: 15px;
     color: #777;
+    font-size: 1em;
 }
 
 .property-price-description {

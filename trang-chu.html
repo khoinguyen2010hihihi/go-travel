@@ -37,18 +37,10 @@
           </div>
         </div>
         <div class="btns desktop-btns" id="auth-buttons">
-          <button
-            class="cooperate-btn"
-            onclick="location.href='partnership.html'"
-          >
-            Hợp tác với chúng tôi
-          </button>
-          <button class="dang-ky-btn" onclick="openPopup('register')">
-            Đăng ký
-          </button>
-          <button class="dang-nhap-btn" onclick="openPopup('login')">
-            Đăng nhập
-          </button>
+          <button class="cooperate-btn" onclick="location.href='partnership.html'">Hợp tác với chúng tôi</button>
+          <!-- Loại bỏ onclick trong HTML, thay vào đó sẽ gắn sự kiện trong JavaScript -->
+          <button class="dang-ky-btn signup" id="registerBtn">Đăng ký</button>
+          <button class="dang-nhap-btn login" id="loginBtn">Đăng nhập</button>
         </div>
 
         <div id="user-info" style="display: none">
@@ -117,7 +109,7 @@
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="text" placeholder="Nhập địa điểm..." />
+            <input type="text" autocomplete="off" placeholder="Nhập địa điểm..." />
           </div>
           <div class="date-picker">
             <input type="date" class="date1" />
@@ -295,23 +287,17 @@
       </div>
     </section>
     <div id="popup-placeholder"></div>
-    <script>
-      // Popup functionality
+    <script type="module">
+      import { setupPopupEventListeners } from './assets/js/popup-login.js'
+
       fetch("popup.html")
-        .then((response) => response.text())
-        .then((data) => {
+        .then(response => response.text())
+        .then(data => {
           document.getElementById("popup-placeholder").innerHTML = data;
-        });
+          setupPopupEventListeners();
+        })
     </script>
 
-    <script src="assets/js/carousel.js"></script>
-    <script src="assets/js/tabs-location.js"></script>
-
-    <script src="assets/js/popup-login.js"></script>
-    <script src="assets/js/toggle-mobile-menu.js"></script>
-
-    <script src="assets/js/slide.js"></script>
-
-    <script src="assets/js/login.js"></script>
+    <script type="module" src="assets/js/main.js"></script>
   </body>
 </html>
