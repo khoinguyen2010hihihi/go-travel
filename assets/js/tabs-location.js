@@ -24,6 +24,4 @@ function setupTabsLocation() {
     });
 }
 
-export {
-    setupTabsLocation
-};
+export { setupTabsLocation };
