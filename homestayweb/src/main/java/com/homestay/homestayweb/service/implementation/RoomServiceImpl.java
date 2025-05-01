@@ -28,6 +28,8 @@ public class RoomServiceImpl implements RoomService {
         Homestay homestay = homestayRepository.findById(homestayId)
                 .orElseThrow(() -> new RuntimeException("Homestay not found"));
 
+        checkHomestayOwnership(homestay);
+
         Room room = Room.builder()
                 .homestay(homestay)
                 .roomType(request.getRoomType())
@@ -107,6 +109,18 @@ public class RoomServiceImpl implements RoomService {
         Long roomOwnerId = room.getHomestay().getHost().getId();
 
         if (!currentUserId.equals(roomOwnerId)) {
+            throw new ForbiddenException("Bạn không có quyền thực hiện hành động này");
+        }
+    }
+
+    private void checkHomestayOwnership(Homestay homestay) {
+        UserDetailsImpl currentUser = (UserDetailsImpl) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+
+        Long currentUserId = currentUser.getId();
+        Long homestayOwnerId = homestay.getHost().getId();
+
+        if (!currentUserId.equals(homestayOwnerId)) {
             throw new ForbiddenException("Bạn không có quyền thực hiện hành động này");
         }
     }
