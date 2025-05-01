@@ -26,7 +26,7 @@
                 <li><a href="trang-chu.html">TRANG CHỦ</a></li>
                 <li><a href="homestay.html">HOMESTAYS</a></li>
                 <li><a href="about.html">VỀ CHÚNG TÔI</a></li>
-                <li><a href="">LIÊN HỆ</a></li>
+                <li><a href="#">LIÊN HỆ</a></li>
               </ul>
             </nav>
           </div>
@@ -79,18 +79,17 @@
     </header>
 
     <div id="popup-placeholder"></div>
-    <script>
-      // Popup functionality
+    <script type="module">
+      import { setupPopupEventListeners } from './assets/js/popup-login.js';
+    
       fetch("popup.html")
-        .then((response) => response.text())
-        .then((data) => {
+        .then(response => response.text())
+        .then(data => {
           document.getElementById("popup-placeholder").innerHTML = data;
+          setupPopupEventListeners();
         });
     </script>
 
-    <script src="assets/js/popup-login.js"></script>
-    <script src="assets/js/carousel.js"></script>
-    <script src="assets/js/toggle-mobile-menu.js"></script>
-    <script src="assets/js/login.js"></script>
+    <script type="module" src="assets/js/main.js"></script>
   </body>
 </html>
