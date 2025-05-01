@@ -14,64 +14,63 @@
                     Sản phẩm dành riêng cho các đối tác của Go Travel <br />
                     giúp tối ưu hóa việc quản lý hoạt động của homestay
                 </p>
-                <form id="homestay-form">
+                <form>
                     <label for="ten-homestay">Tên Homestay</label>
-                    <input type="text" id="ten-homestay" name="ten-homestay" placeholder="Nhập tên homestay" required />
+                    <input type="text" id="ten-homestay" name="ten-homestay" placeholder="Nhập tên homestay" />
 
-                    <label for="duong">Tên đường (Street)</label>
-                    <input type="text" id="duong" name="duong" placeholder="Nhập tên đường" required />
+                    <label for="dia-chi-homestay">Địa chỉ homestay</label>
+                    <input type="text" id="dia-chi-homestay" name="dia-chi-homestay" placeholder="Nhập địa chỉ homestay" />
 
-                    <label for="phuong">Phường (Ward)</label>
-                    <input type="text" id="phuong" name="phuong" placeholder="Nhập phường" required />
-
-                    <label for="quan">Quận (District)</label>
-                    <input type="text" id="quan" name="quan" placeholder="Nhập quận" required />
+                    <label for="ho-ten">Họ tên</label>
+                    <input type="text" id="ho-ten" name="ho-ten" placeholder="Nhập họ tên" />
 
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Nhập email" required />
+                    <input type="email" id="email" name="email" placeholder="Nhập email" />
+
+                    <label for="so-dien-thoai">Số điện thoại</label>
+                    <input type="text" id="so-dien-thoai" name="so-dien-thoai" placeholder="Nhập số điện thoại" />
 
                     <label for="ghi-chu">Ghi chú</label>
-                    <textarea id="ghi-chu" name="ghi-chu" rows="4" placeholder="Nhập ghi chú"></textarea>
+                    <textarea id="ghi-chu" name="ghi-chu" rows="4"></textarea>
 
                     <button type="submit">Đăng ký</button>
                 </form>
 
                 <p class="hotline">Bạn cần hỗ trợ? Hotline: <a href="tel:02838270404">028 3827 0404</a></p>
             </div>
-        </div>
 
-        <div class="slider-container">
-            <div class="slider-content">
-                <div class="slide">
-                    <img src="/assets/img/partner-register-1.png" alt="" />
-                    <p class="slide-text">
-                        Đăng ký cho thuê phòng nhanh và <br />
-                        hoàn toàn miễn phí
-                    </p>
+            <div class="slider-container">
+                <div class="slider-content">
+                    <div class="slide">
+                        <img src="assets/img/partner-register-1.png" alt="" />
+                        <p class="slide-text">
+                            Đăng ký cho thuê phòng nhanh và <br />
+                            hoàn toàn miễn phí
+                        </p>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/partner-register-2.png" alt="" />
+                        <p class="slide-text">
+                            Tiếp cận được nhiều khách hàng <br />
+                            tiềm năng hơn
+                        </p>
+                    </div>
+                    <div class="slide">
+                        <img src="assets/img/partner-register-3.png" alt="" />
+                        <p class="slide-text">
+                            Trang OTA với hệ thống <br />
+                            quản lý thông minh, tối ưu tốt
+                        </p>
+                    </div>
                 </div>
-                <div class="slide">
-                    <img src="/assets/img/partner-register-2.png" alt="" />
-                    <p class="slide-text">
-                        Tiếp cận được nhiều khách hàng <br />
-                        tiềm năng hơn
-                    </p>
-                </div>
-                <div class="slide">
-                    <img src="/assets/img/partner-register-3.png" alt="" />
-                    <p class="slide-text">
-                        Trang OTA với hệ thống <br />
-                        quản lý thông minh, tối ưu tốt
-                    </p>
+
+                <div class="pagination">
+                    <div class="pagination-dot active" onclick="goToSlide(0)"></div>
+                    <div class="pagination-dot" onclick="goToSlide(1)"></div>
+                    <div class="pagination-dot" onclick="goToSlide(2)"></div>
                 </div>
             </div>
-
-            <div class="pagination">
-                <div class="pagination-dot active" onclick="goToSlide(0)"></div>
-                <div class="pagination-dot" onclick="goToSlide(1)"></div>
-                <div class="pagination-dot" onclick="goToSlide(2)"></div>
-            </div>
         </div>
-
         <script>
             let slideIndex = 0;
             const sliderContent = document.querySelector(".slider-content");
