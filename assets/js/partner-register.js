@@ -9,7 +9,6 @@ const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
 function handleValidValue(input) {
     const small = input.parentElement.nextElementSibling;
     small.style.visibility = "hidden";
-    small.textContent = "";
     input.classList.remove("error");
     input.classList.add("success");
 }
@@ -147,17 +146,11 @@ function setupSlider() {
     function goToSlide(index) {
         slideIndex = index;
         sliderContent.style.transform = `translateX(-${slideIndex * slideWidth}px)`;
+
         paginationDots.forEach((dot, i) => {
             dot.classList.toggle("active", i === slideIndex);
         });
     }
-
-    paginationDots.forEach((dot) => {
-        dot.addEventListener("click", () => {
-            const index = parseInt(dot.getAttribute("data-slide"));
-            goToSlide(index);
-        });
-    });
 
     setInterval(() => {
         slideIndex++;
