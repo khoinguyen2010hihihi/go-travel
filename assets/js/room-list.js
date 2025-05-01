@@ -16,12 +16,18 @@ let allHomestays = [];
 
 async function fetchPrimaryImageUrl(homestayId) {
   try {
-    const res = await fetch(`http://localhost:8080/homestay/api/homestays/${homestayId}/images/primary`);
+    const res = await fetch(
+      `http://localhost:8080/homestay/api/homestays/${homestayId}/images/primary`
+    );
     if (!res.ok) throw new Error("No primary image");
     const data = await res.json();
     return data.primaryImageUrl; // Đường link ảnh chính
   } catch (error) {
-    console.error("Không lấy được ảnh chính cho homestay ID:", homestayId, error);
+    console.error(
+      "Không lấy được ảnh chính cho homestay ID:",
+      homestayId,
+      error
+    );
     return "assets/img/default-thumbnail.webp"; // fallback ảnh mặc định
   }
 }
@@ -37,13 +43,15 @@ async function renderPage(page) {
     const primaryImageUrl = await fetchPrimaryImageUrl(item.id);
 
     const cardHTML = `
-      <div class="result-card">
+      <div class="result-card" data-id=${item.id}>
         <img src="${primaryImageUrl}" alt="${item.name}" />
         <div class="result-details">
           <h3>${item.name}</h3>
           <div class="stars">${item.surfRating ?? "?"}/5 ★</div>
           <div class="location">
-            <i class="ti-location-pin"></i> ${item.street ?? ""}, ${item.ward ?? ""}
+            <i class="ti-location-pin"></i> ${item.street ?? ""}, ${
+      item.ward ?? ""
+    }
           </div>
           <div class="amenities">
             ${item.description ?? "Chỗ nghỉ lý tưởng cho bạn."}
@@ -52,6 +60,12 @@ async function renderPage(page) {
       </div>
     `;
     resultsContainer.insertAdjacentHTML("beforeend", cardHTML);
+    const insertedCard = resultsContainer.querySelector(
+      `.result-card[data-id="${item.id}"]`
+    );
+    insertedCard.addEventListener("click", () => {
+      window.location.href = `room.html?id=${item.id}`;
+    });
   }
 }
 
@@ -114,7 +128,8 @@ async function loadHomestays() {
     renderPagination();
   } catch (error) {
     console.error(error);
-    resultsContainer.innerHTML = "<p>Lỗi khi tải dữ liệu. Vui lòng thử lại sau.</p>";
+    resultsContainer.innerHTML =
+      "<p>Lỗi khi tải dữ liệu. Vui lòng thử lại sau.</p>";
   }
 }
 
