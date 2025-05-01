@@ -127,13 +127,15 @@
     }
 
     .form-row .show-hide-btn {
+        width: 20px;
+        height: 20px;
+        background-color: transparent;
         position: absolute;
         right: 10px;
         top: 50%;
         transform: translateY(-50%);
-        color: #ccc;
-        font-size: 14px;
         cursor: pointer;
+        object-fit: contain;
     }
 
     .form-message {
@@ -251,7 +253,7 @@
                 <div class="form-row">
                     <input type="password" id="registerPassword" placeholder="" />
                     <label for="password">Mật khẩu</label>
-                    <div class="show-hide-btn">Show</div>
+                    <img src="/assets/img/icon/eye.svg" alt="" class="show-hide-btn" />
                 </div>
                 <small class="form-message">message</small>
 

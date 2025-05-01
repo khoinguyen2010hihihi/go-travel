@@ -1,24 +1,21 @@
+// show-hide-password.js
 function showHidePassword() {
-    const passwordInputs = document.querySelectorAll("#registerPassword, #loginPassword");
     const showHideButtons = document.querySelectorAll(".show-hide-btn");
 
-    showHideButtons.forEach((button, index) => {
+    showHideButtons.forEach((button) => {
         button.addEventListener("click", () => {
-            const passwordInput = passwordInputs[index];
+            const passwordInput = button.parentElement.querySelector("input");
             if (passwordInput.type === "password") {
                 passwordInput.type = "text";
-                button.textContent = "Hide";
+                button.src = "/assets/img/icon/eye-crossed.svg";
+                button.alt = "Ẩn mật khẩu";
             } else {
                 passwordInput.type = "password";
-                button.textContent = "Show";
+                button.src = "/assets/img/icon/eye.svg";
+                button.alt = "Hiện mật khẩu";
             }
         });
     });
 }
-
-// Initialize when the popup is loaded
-document.addEventListener("DOMContentLoaded", () => {
-    showHidePassword();
-});
 
 export { showHidePassword };
