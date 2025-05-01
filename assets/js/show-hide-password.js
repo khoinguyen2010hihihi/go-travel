@@ -1,7 +1,7 @@
 // show-hide-password.js
 function showHidePassword() {
     const showHideButtons = document.querySelectorAll(".show-hide-btn");
-    const passwordInputs = document.querySelectorAll("#registerPassword, #confirmPassword");
+    const passwordInputs = document.querySelectorAll("#registerPassword, #confirmPassword, #loginPassword");
 
     showHideButtons.forEach((button) => {
         button.addEventListener("click", () => {
