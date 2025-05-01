@@ -216,17 +216,12 @@
           </table>
         </section>
       </section>
-
-      <!-- Danh sách phòng -->
       <section class="room-list" id="room-list">
         <h3>Phòng còn trống tại Menora Grand Da Nang</h3>
         <div class="room-item">
-          <!-- Cột 1: Ảnh phòng -->
           <div class="room-img">
             <img src="assets/img/standard-double.webp" alt="Standard Double" />
           </div>
-
-          <!-- Cột 2: Tiện nghi -->
           <div class="room-facilities">
             <h4>Tiện nghi</h4>
             <div class="facilities-list">
@@ -245,13 +240,9 @@
               </div>
             </div>
           </div>
-
-          <!-- Cột 3: Giá -->
           <div class="room-price">
             <p class="price">461.837 VND/đêm</p>
           </div>
-
-          <!-- Cột 4: Nút Đặt ngay -->
           <div class="room-booking">
             <button class="btn-book-now">Đặt ngay</button>
           </div>
@@ -270,6 +261,151 @@
         setupPopupEventListeners();
       });
   </script>
-
   <script type="module" src="assets/js/main.js"></script>
+  <script type="module">
+    function decodeJWT(token) {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const payload = JSON.parse(
+        decodeURIComponent(
+          atob(base64)
+            .split("")
+            .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+            .join("")
+        )
+      );
+      return payload;
+    }
+
+    window.onload = function () {
+      const searchBtn = document.querySelector(".search-button");
+      const checkInInput = document.querySelector(".date1");
+      const checkOutInput = document.querySelector(".date2");
+      const roomListSection = document.getElementById("room-list");
+      const roomContainer = document.createElement("div");
+      roomContainer.classList.add("room-items");
+      roomListSection.appendChild(roomContainer);
+
+      searchBtn.addEventListener("click", () => {
+        const checkInDate = checkInInput.value;
+        const checkOutDate = checkOutInput.value;
+
+        if (!checkInDate || !checkOutDate) {
+          alert("Vui lòng chọn ngày nhận và trả phòng.");
+          return;
+        }
+
+        fetch(
+          `http://localhost:8080/homestay/api/rooms/available?homestayId=4&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            roomContainer.innerHTML = "";
+
+            if (!data.length) {
+              roomContainer.innerHTML =
+                "<p>Không có phòng trống trong thời gian này.</p>";
+              return;
+            }
+
+            data.forEach((r) => {
+              const item = document.createElement("div");
+              item.classList.add("room-item");
+              item.dataset.roomId = r.roomId;
+
+              item.innerHTML = `
+                <div class="room-img">
+                  <img src="assets/img/standard-double.webp" alt="Room Image" />
+                </div>
+                <div class="room-facilities">
+                  <h4>Tiện nghi</h4>
+                  <div class="facilities-list">
+                    ${
+                      typeof r.features === "string"
+                        ? r.features
+                            .split(",")
+                            .map(
+                              (a) =>
+                                `<div class="facility-item"><i class="ti-check"></i> ${a.trim()}</div>`
+                            )
+                            .join("")
+                        : "<div class='facility-item'>Không có thông tin</div>"
+                    }
+                  </div>
+                </div>
+                <div class="room-price">
+                  <p class="price">${r.price.toLocaleString(
+                    "vi-VN"
+                  )} VND/đêm</p>
+                </div>
+                <div class="room-booking">
+                  <button class="btn-book-now" data-room-id="${
+                    r.roomId
+                  }">Đặt ngay</button>
+                </div>
+              `;
+
+              roomContainer.appendChild(item);
+            });
+
+            attachBookingHandlers();
+          })
+          .catch((err) => {
+            console.error("Lỗi khi lấy phòng:", err);
+            alert("Không thể tải danh sách phòng.");
+          });
+      });
+
+      function attachBookingHandlers() {
+        document.querySelectorAll(".btn-book-now").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const token = localStorage.getItem("authToken");
+            if (!token) {
+              alert("Vui lòng đăng nhập để đặt phòng.");
+              return;
+            }
+
+            const payload = decodeJWT(token);
+            const userId = payload.host_id || payload.sub || payload.userId;
+            const roomId = btn.dataset.roomId;
+            const checkInDate = checkInInput.value;
+            const checkOutDate = checkOutInput.value;
+
+            if (!checkInDate || !checkOutDate) {
+              alert("Vui lòng chọn ngày nhận và trả phòng.");
+              return;
+            }
+
+            const body = {
+              userId: Number(userId),
+              roomId: Number(roomId),
+              checkInDate,
+              checkOutDate,
+            };
+
+            fetch("http://localhost:8080/homestay/api/bookings", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify(body),
+            })
+              .then((res) => {
+                if (!res.ok) throw new Error("Đặt phòng thất bại");
+                return res.json();
+              })
+              .then((data) => {
+                alert("Đặt phòng thành công!");
+                console.log("Booking:", data);
+              })
+              .catch((err) => {
+                console.error("Lỗi đặt phòng:", err);
+                alert("Không thể đặt phòng.");
+              });
+          });
+        });
+      }
+    };
+  </script>
 </html>
