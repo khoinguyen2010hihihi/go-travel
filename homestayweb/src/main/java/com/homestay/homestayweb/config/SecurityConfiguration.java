@@ -42,17 +42,27 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
+                        // PUBLIC
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/homestays", "/api/homestays/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/rooms/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/api/reviews/**").hasAuthority("LEAVE_REVIEW")
+
                         // ADMIN permissions
                         .requestMatchers("/admin/**").hasAuthority("ADMIN_ACCESS")
                         .requestMatchers(HttpMethod.POST, "/api/homestays").hasAuthority("CREATE_HOMESTAY")
 
+                        // HOST permissions
                         .requestMatchers("/host/**").hasAuthority("HOST_ACCESS")
                         .requestMatchers(HttpMethod.POST, "/api/homestays/{id}/rooms").hasAuthority("CREATE_ROOM")
                         .requestMatchers(HttpMethod.GET, "/api/rooms/**").permitAll()
 
+                        // USER permissions
                         .requestMatchers("/user/**").hasAuthority("USER_ACCESS")
+
+                        // All other endpoints require authentication
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

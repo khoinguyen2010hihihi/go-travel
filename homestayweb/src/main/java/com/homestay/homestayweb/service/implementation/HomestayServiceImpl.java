@@ -61,7 +61,7 @@ public class HomestayServiceImpl implements HomestayService {
                 .ward(request.getWard())
                 .district(request.getDistrict())
                 .description(request.getDescription())
-                .surfRating(request.getSurfRating())
+                .surfRating(0.0)
                 .approveStatus(request.getApproveStatus())
                 .approvedBy(request.getApprovedBy())
                 .contactInfo(request.getContactInfo())
@@ -106,7 +106,6 @@ public class HomestayServiceImpl implements HomestayService {
         homestay.setWard(request.getWard());
         homestay.setDistrict(request.getDistrict());
         homestay.setDescription(request.getDescription());
-        homestay.setSurfRating(request.getSurfRating());
         homestay.setApproveStatus(request.getApproveStatus());
         homestay.setApprovedBy(request.getApprovedBy());
         homestay.setContactInfo(request.getContactInfo());
