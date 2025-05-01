@@ -12,6 +12,7 @@
     />
   </head>
   <body>
+    <!-- Header -->
     <header>
       <div class="header-container">
         <div class="container">
@@ -35,16 +36,29 @@
             </nav>
           </div>
         </div>
-        <div class="btns desktop-btns">
-          <a href="partnership.html">
-            <button class="cooperate-btn">Hợp tác với chúng tôi</button>
-          </a>
-          <button class="dang-ky-btn" onclick="openPopup('register')">
-            Đăng ký
+
+        <div class="btns desktop-btns" id="auth-buttons">
+          <button
+            class="cooperate-btn"
+            onclick="location.href='partnership.html'"
+          >
+            Hợp tác với chúng tôi
           </button>
-          <button class="dang-nhap-btn" onclick="openPopup('login')">
-            Đăng nhập
-          </button>
+          <button class="dang-ky-btn signup" id="registerBtn">Đăng ký</button>
+          <button class="dang-nhap-btn login" id="loginBtn">Đăng nhập</button>
+        </div>
+
+        <div
+          id="user-info"
+          class="user-dropdown"
+          style="display: none; position: relative"
+        >
+          <img src="/assets/img/icon/user.svg" alt="user-icon" id="user-icon" />
+          <div id="user-menu" class="dropdown-menu">
+            <a href="profile.html" class="dropdown-item">Hồ sơ</a>
+            <a href="homestay.html" class="dropdown-item">Homestay</a>
+            <button id="logoutBtn" class="dropdown-item">Đăng xuất</button>
+          </div>
         </div>
 
         <button
@@ -86,6 +100,16 @@
       </div>
     </header>
 
+    <div class="hero">
+      <div class="search-box">
+        <div class="date-picker">
+          <input type="date" class="date1" />
+          <input type="date" class="date2" />
+        </div>
+        <button class="search-button">TÌM KIẾM</button>
+      </div>
+    </div>
+
     <!-- Nội dung chính -->
     <main class="room-detail">
       <!-- Ảnh + chọn phòng -->
@@ -126,7 +150,7 @@
 
       <!-- Thông tin mô tả -->
       <section class="info-section">
-        <!-- <section class="overview" id="overview">
+        <section class="overview" id="overview">
           <h2>Titan Hotel <span class="star">★★★</span></h2>
           <p class="address">
             102 - 104 Hồ Xuân Hương, Q. Ngũ Hành Sơn, Phước Mỹ, Đà Nẵng, Việt
@@ -136,13 +160,6 @@
             Hãy di chuyển đi của quý khách có mức khởi đầu tuyệt vời khi ở lại
             khách sạn này, nơi có Wi-Fi miễn phí trong tất cả các phòng.
           </p>
-        </section> -->
-        <section class="overview" id="overview">
-          <h2 id="homestay-name">
-            Homestay Name <span class="star">★★★</span>
-          </h2>
-          <p class="address" id="homestay-address">Địa chỉ</p>
-          <p class="desc" id="homestay-desc">Mô tả</p>
         </section>
 
         <section class="highlights" id="highlights">
@@ -200,20 +217,16 @@
         </section>
       </section>
 
-      <section class="room-list" id="room-list">
-        <h3 id="room-list-title">Phòng còn trống tại …</h3>
-        <div id="room-container"></div>
-      </section>
       <!-- Danh sách phòng -->
-      <!-- <section class="room-list" id="room-list">
+      <section class="room-list" id="room-list">
         <h3>Phòng còn trống tại Menora Grand Da Nang</h3>
         <div class="room-item">
-
+          <!-- Cột 1: Ảnh phòng -->
           <div class="room-img">
             <img src="assets/img/standard-double.webp" alt="Standard Double" />
           </div>
 
-
+          <!-- Cột 2: Tiện nghi -->
           <div class="room-facilities">
             <h4>Tiện nghi</h4>
             <div class="facilities-list">
@@ -233,117 +246,30 @@
             </div>
           </div>
 
+          <!-- Cột 3: Giá -->
           <div class="room-price">
             <p class="price">461.837 VND/đêm</p>
           </div>
 
+          <!-- Cột 4: Nút Đặt ngay -->
           <div class="room-booking">
             <button class="btn-book-now">Đặt ngay</button>
           </div>
         </div>
-      </section> -->
+      </section>
     </main>
   </body>
   <div id="popup-placeholder"></div>
-  <script>
-    // Popup functionality
+  <script type="module">
+    import { setupPopupEventListeners } from "./assets/js/popup-login.js";
+
     fetch("popup.html")
       .then((response) => response.text())
       .then((data) => {
         document.getElementById("popup-placeholder").innerHTML = data;
+        setupPopupEventListeners();
       });
   </script>
-<script>
-    window.addEventListener("DOMContentLoaded", () => {
-      const params = new URLSearchParams(window.location.search);
-      const homestayId = params.get("id");
-    
-      if (!homestayId) {
-        console.error("❌ Thiếu homestayId trong URL (query string)");
-        return;
-      }
-    
-      // 1) Lấy chi tiết homestay
-      fetch(`http://localhost:8080/homestay/api/homestays/${homestayId}`)
-        .then(res => {
-          if (!res.ok) {
-            throw new Error(`❌ Lỗi khi fetch homestay: ${res.status} ${res.statusText}`);
-          }
-          return res.json();
-        })
-        .then(h => {
-          // Cập nhật DOM
-          const stars = "★".repeat(Math.round(h.surfRating || 0));
-          document.getElementById("homestay-name").textContent = `${h.name} ${stars}`;
-          document.getElementById("homestay-address").textContent =
-            [h.street, h.ward, h.district].filter(Boolean).join(", ");
-          document.getElementById("homestay-desc").textContent = h.description || "Chưa có mô tả.";
-          document.querySelector(".tab-price-action .price").textContent =
-            new Intl.NumberFormat("vi-VN").format(h.minPrice || 0) + " VND/đêm";
-        })
-        .catch(err => {
-          console.error("❌ Lỗi khi lấy thông tin homestay:", err);
-        });
-    
-      // 2) Lấy danh sách phòng
-      fetch(`http://localhost:8080/homestay/api/rooms/valid-homestay/${homestayId}`)
-        .then(res => {
-          if (!res.ok) {
-            throw new Error(`❌ Lỗi khi fetch danh sách phòng: ${res.status} ${res.statusText}`);
-          }
-          return res.json();
-        })
-        .then(rooms => {
-          const container = document.getElementById("room-container");
-          if (!container) {
-            console.error("❌ Không tìm thấy phần tử #room-container");
-            return;
-          }
-          container.innerHTML = ""; // xóa hết
-    
-          if (!rooms || rooms.length === 0) {
-            container.innerHTML = "<p>Không có phòng nào.</p>";
-            return;
-          }
-    
-          rooms.forEach(r => {
-            // Tách chuỗi features thành mảng
-            const featuresArr = (r.features || "")
-              .split(",")
-              .map(f => f.trim())
-              .filter(f => f);
-    
-            // Tạo HTML cho features
-            const featuresHtml = featuresArr
-              .map(f => `<div class="facility-item"><i class="ti-check"></i> ${f}</div>`)
-              .join("");
-    
-            // Tạo div.room-item
-            const div = document.createElement("div");
-            div.className = "room-item";
-            div.innerHTML = `
-              <div class="room-img">
-                <img src="${r.imageUrl || 'assets/img/default-room.jpg'}" alt="${r.roomType}" />
-              </div>
-              <div class="room-facilities">
-                <h4>Tiện nghi</h4>
-                <div class="facilities-list">${featuresHtml}</div>
-              </div>
-              <div class="room-price">
-                <p class="price">${new Intl.NumberFormat("vi-VN").format(r.price || 0)} VND/đêm</p>
-              </div>
-              <div class="room-booking">
-                <button class="btn-book-now">Đặt ngay</button>
-              </div>
-            `;
-            container.appendChild(div);
-          });
-        })
-        .catch(err => {
-          console.error("❌ Lỗi khi lấy danh sách phòng:", err);
-        });
-    });
-    </script>    
 
-  <script src="assets/js/popup-login.js"></script>
+  <script type="module" src="assets/js/main.js"></script>
 </html>

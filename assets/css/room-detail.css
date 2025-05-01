@@ -11,8 +11,56 @@ body {
   background-color: #f9f9f9;
 }
 
+/* thanh tìm kiếm */
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #020a33;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 60px;
+  width: 100%;
+}
+
+.search-box {
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.date-picker {
+  display: flex;
+  gap: 10px;
+}
+
+.date-picker input {
+  width: 200px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  flex: 1;
+}
+
+.search-button {
+  background-color: #0099ff;
+  color: white;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.search-button:hover {
+  background-color: #007acc;
+}
+
+/* chi tiết phòng */
 main.room-detail {
-  padding: 100px 40px 40px;
+  padding: 40px 40px 40px;
   max-width: 1200px;
   margin: 0 auto;
 }
