@@ -6,6 +6,7 @@ import com.homestay.homestayweb.entity.Homestay;
 import com.homestay.homestayweb.entity.User;
 import com.homestay.homestayweb.exception.BadRequestException;
 import com.homestay.homestayweb.exception.DuplicateResourceException;
+import com.homestay.homestayweb.exception.ForbiddenException;
 import com.homestay.homestayweb.exception.ResourceNotFoundException;
 import com.homestay.homestayweb.repository.HomestayRepository;
 import com.homestay.homestayweb.repository.UserRepository;
@@ -61,7 +62,7 @@ public class HomestayServiceImpl implements HomestayService {
                 .ward(request.getWard())
                 .district(request.getDistrict())
                 .description(request.getDescription())
-                .surfRating(request.getSurfRating())
+                .surfRating(0.0)
                 .approveStatus(request.getApproveStatus())
                 .approvedBy(request.getApprovedBy())
                 .contactInfo(request.getContactInfo())
@@ -101,12 +102,16 @@ public class HomestayServiceImpl implements HomestayService {
         Homestay homestay = homestayRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Homestay not found"));
 
+        UserDetailsImpl currentUser = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Chỉ cho host sửa nếu là chủ homestay
+        checkOwnership(homestay);
+
         homestay.setName(request.getName());
         homestay.setStreet(request.getStreet());
         homestay.setWard(request.getWard());
         homestay.setDistrict(request.getDistrict());
         homestay.setDescription(request.getDescription());
-        homestay.setSurfRating(request.getSurfRating());
         homestay.setApproveStatus(request.getApproveStatus());
         homestay.setApprovedBy(request.getApprovedBy());
         homestay.setContactInfo(request.getContactInfo());
@@ -117,10 +122,15 @@ public class HomestayServiceImpl implements HomestayService {
 
     @Override
     public void deleteHomestay(Long id) {
-        if (!homestayRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Homestay not found");
-        }
-        homestayRepository.deleteById(id);
+        Homestay homestay = homestayRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Homestay not found"));
+
+        UserDetailsImpl currentUser = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Chỉ cho host xóa nếu là chủ homestay
+        checkOwnership(homestay);
+
+        homestayRepository.delete(homestay);
     }
 
     @Override
@@ -131,7 +141,6 @@ public class HomestayServiceImpl implements HomestayService {
         homestayRepository.save(homestay);
         return mapToResponse(homestay);
     }
-
 
     @Override
     public List<HomestayResponse> getHomestayByHost(Long id) {
@@ -176,5 +185,14 @@ public class HomestayServiceImpl implements HomestayService {
     public Homestay findEntityById(Long id) {
         return homestayRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Homestay not found"));
+    }
+
+    private void checkOwnership(Homestay homestay) {
+        UserDetailsImpl currentUser = (UserDetailsImpl) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+
+        if (homestay.getHost() != null && !homestay.getHost().getId().equals(currentUser.getId())) {
+            throw new ForbiddenException("Bạn không có quyền thực hiện hành động này>");
+        }
     }
 }

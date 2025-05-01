@@ -9,7 +9,6 @@ public class HomestayRequest {
     private String ward;
     private String district;
     private String description;
-    private Double surfRating;
     private String approveStatus;
     private Long approvedBy;
     private String contactInfo;
