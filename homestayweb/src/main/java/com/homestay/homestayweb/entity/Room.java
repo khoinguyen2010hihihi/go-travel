@@ -3,6 +3,8 @@ package com.homestay.homestayweb.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "room")
 @Getter
@@ -31,4 +33,7 @@ public class Room {
     private String features;
 
     private String roomStatus;
+
+    @OneToMany(mappedBy = "room")
+    private List<Booking> bookings;
 }

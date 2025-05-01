@@ -3,6 +3,7 @@ package com.homestay.homestayweb.service;
 import com.homestay.homestayweb.dto.request.RoomRequest;
 import com.homestay.homestayweb.dto.response.RoomResponse;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RoomService {
@@ -20,4 +21,6 @@ public interface RoomService {
     RoomResponse pendingRoom(Long id);
 
     List<RoomResponse> getAllPendingRooms();
+
+    List<RoomResponse> getAvailableRooms(Long homestayId, LocalDate checkInDate, LocalDate checkOutDate);
 }

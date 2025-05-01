@@ -5,10 +5,12 @@ import com.homestay.homestayweb.dto.response.HomestayResponse;
 import com.homestay.homestayweb.dto.response.RoomResponse;
 import com.homestay.homestayweb.service.RoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -69,6 +71,16 @@ public class RoomController {
     @PreAuthorize("hasAuthority('ADMIN_ACCESS')")
     public ResponseEntity<RoomResponse> pending(@PathVariable Long id) {
         return ResponseEntity.ok(roomService.pendingRoom(id));
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<List<RoomResponse>> getAvailableRooms(
+            @RequestParam Long homestayId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate
+    ) {
+        List<RoomResponse> availableRooms = roomService.getAvailableRooms(homestayId, checkInDate, checkOutDate);
+        return ResponseEntity.ok(availableRooms);
     }
 
 

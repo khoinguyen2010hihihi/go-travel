@@ -53,6 +53,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/api/rooms/**").permitAll()
 
                         .requestMatchers("/user/**").hasAuthority("USER_ACCESS")
+
+                        .requestMatchers(HttpMethod.POST,"/api/bookings/**").hasAuthority("USER_ACCESS")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

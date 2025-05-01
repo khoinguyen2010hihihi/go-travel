@@ -11,6 +11,7 @@ import com.homestay.homestayweb.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -129,4 +130,11 @@ public class RoomServiceImpl implements RoomService {
                 .street(room.getHomestay().getStreet())
                 .build();
     }
+
+    public List<RoomResponse> getAvailableRooms(Long homestayId, LocalDate checkIn, LocalDate checkOut) {
+        List<Room> rooms = roomRepository.findAvailableRooms(homestayId, checkIn, checkOut);
+        return rooms.stream().map(this::mapToResponse).toList();
+    }
+
+
 }
