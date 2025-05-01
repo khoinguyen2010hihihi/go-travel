@@ -5,6 +5,7 @@ import com.homestay.homestayweb.dto.response.BookingResponse;
 import com.homestay.homestayweb.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,11 @@ public class BookingController {
     @GetMapping("/{id}")
     public ResponseEntity<BookingResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(bookingService.getBookingById(id));
+    }
+
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<List<BookingResponse>> getByCustomer(@PathVariable Long id){
+        return ResponseEntity.ok(bookingService.getBookingsByUserId(id));
     }
 
     @PostMapping
