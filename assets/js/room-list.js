@@ -131,6 +131,10 @@ async function loadHomestays() {
     resultsContainer.innerHTML =
       "<p>Lỗi khi tải dữ liệu. Vui lòng thử lại sau.</p>";
   }
+
+  allHomestays = data;
+  await renderPage(currentPage);
+  renderPagination();
 }
 
 // Khởi động

@@ -9,31 +9,37 @@
     <body>
         <div class="container">
             <div class="form-container">
-                <h1>ĐĂNG KÝ ĐỐI TÁC GO TRAVEL</h1>
+                <div class="form-title">ĐĂNG KÝ ĐỐI TÁC GO TRAVEL</div>
                 <p>
                     Sản phẩm dành riêng cho các đối tác của Go Travel <br />
                     giúp tối ưu hóa việc quản lý hoạt động của homestay
                 </p>
-                <form>
-                    <label for="ten-homestay">Tên Homestay</label>
-                    <input type="text" id="ten-homestay" name="ten-homestay" placeholder="Nhập tên homestay" />
+                <form id="partner-register-form">
+                    <div class="form-row">
+                        <input type="text" id="username" placeholder="" />
+                        <label for="text">Tên người dùng</label>
+                    </div>
+                    <small class="form-message">message</small>
 
-                    <label for="dia-chi-homestay">Địa chỉ homestay</label>
-                    <input type="text" id="dia-chi-homestay" name="dia-chi-homestay" placeholder="Nhập địa chỉ homestay" />
+                    <div class="form-row">
+                        <input type="email" id="registerEmail" placeholder="" />
+                        <label for="email">Email</label>
+                    </div>
+                    <small class="form-message">message</small>
 
-                    <label for="ho-ten">Họ tên</label>
-                    <input type="text" id="ho-ten" name="ho-ten" placeholder="Nhập họ tên" />
+                    <div class="form-row">
+                        <input type="password" id="registerPassword" placeholder="" />
+                        <label for="password">Mật khẩu</label>
+                        <img src="/assets/img/icon/eye.svg" alt="" class="show-hide-btn" />
+                    </div>
+                    <small class="form-message">message</small>
 
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Nhập email" />
-
-                    <label for="so-dien-thoai">Số điện thoại</label>
-                    <input type="text" id="so-dien-thoai" name="so-dien-thoai" placeholder="Nhập số điện thoại" />
-
-                    <label for="ghi-chu">Ghi chú</label>
-                    <textarea id="ghi-chu" name="ghi-chu" rows="4"></textarea>
-
-                    <button type="submit">Đăng ký</button>
+                    <div class="form-row">
+                        <input type="password" id="confirmPassword" placeholder="" />
+                        <label for="password">Nhập lại mật khẩu</label>
+                    </div>
+                    <small class="form-message">message</small>
+                    <button class="submit-register-btn">Đăng Ký</button>
                 </form>
 
                 <p class="hotline">Bạn cần hỗ trợ? Hotline: <a href="tel:02838270404">028 3827 0404</a></p>
@@ -43,24 +49,15 @@
                 <div class="slider-content">
                     <div class="slide">
                         <img src="assets/img/partner-register-1.png" alt="" />
-                        <p class="slide-text">
-                            Đăng ký cho thuê phòng nhanh và <br />
-                            hoàn toàn miễn phí
-                        </p>
+                        <p class="slide-text">Đăng ký cho thuê phòng nhanh và hoàn toàn miễn phí</p>
                     </div>
                     <div class="slide">
                         <img src="assets/img/partner-register-2.png" alt="" />
-                        <p class="slide-text">
-                            Tiếp cận được nhiều khách hàng <br />
-                            tiềm năng hơn
-                        </p>
+                        <p class="slide-text">Tiếp cận được nhiều khách hàng tiềm năng hơn</p>
                     </div>
                     <div class="slide">
                         <img src="assets/img/partner-register-3.png" alt="" />
-                        <p class="slide-text">
-                            Trang OTA với hệ thống <br />
-                            quản lý thông minh, tối ưu tốt
-                        </p>
+                        <p class="slide-text">Trang OTA với hệ thống quản lý thông minh, tối ưu tốt</p>
                     </div>
                 </div>
 
@@ -71,63 +68,7 @@
                 </div>
             </div>
         </div>
-        <script>
-            let slideIndex = 0;
-            const sliderContent = document.querySelector(".slider-content");
-            const paginationDots = document.querySelectorAll(".pagination-dot");
-            const slideWidth = document.querySelector(".slide").offsetWidth;
 
-            function goToSlide(index) {
-                slideIndex = index;
-                sliderContent.style.transform = `translateX(-${slideIndex * slideWidth}px)`;
-
-                paginationDots.forEach((dot, i) => {
-                    dot.classList.toggle("active", i === slideIndex);
-                });
-            }
-
-            setInterval(() => {
-                slideIndex++;
-                if (slideIndex >= 3) {
-                    slideIndex = 0;
-                }
-                goToSlide(slideIndex);
-            }, 3000);
-
-            goToSlide(slideIndex);
-
-            document.getElementById("homestay-form").addEventListener("submit", function (event) {
-                event.preventDefault();
-
-                const homestayData = {
-                    name: document.getElementById("ten-homestay").value,
-                    street: document.getElementById("duong").value,
-                    ward: document.getElementById("phuong").value,
-                    district: document.getElementById("quan").value,
-                    description: document.getElementById("ghi-chu").value || "",
-                    contactInfo: document.getElementById("email").value,
-                    createdAt: new Date().toISOString().split("T")[0],
-                };
-
-                console.log("Dữ liệu gửi đi:", homestayData);
-
-                fetch("http://localhost:8081/homestay/", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(homestayData),
-                })
-                    .then((response) => response.text())
-                    .then((message) => {
-                        alert(message);
-                        document.getElementById("homestay-form").reset();
-                    })
-                    .catch((error) => {
-                        alert("Lỗi: " + error.message);
-                        console.error("Lỗi:", error);
-                    });
-            });
-        </script>
+        <script type="module" src="assets/js/partner-register.js"></script>
     </body>
 </html>

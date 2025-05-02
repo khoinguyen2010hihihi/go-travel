@@ -1,30 +1,74 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chi tiết Homestay</title>
-    <link rel="stylesheet" href="assets/css/room-detail.css" />
-    <link rel="stylesheet" href="assets/css/header.css" />
-    <link
-      rel="stylesheet"
-      href="./assets/fonts/themify-icons/themify-icons.css"
-    />
-  </head>
-  <body>
-    <!-- Header -->
-    <header>
-      <div class="header-container">
-        <div class="container">
-          <div class="header-content">
-            <div class="logo">
-              <a href="trang-chu.html">
-                <img
-                  class="logo-image"
-                  src="assets/img/gotravel_logo_air.png"
-                  alt=""
-                />
-              </a>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chi tiết Homestay</title>
+        <link rel="stylesheet" href="assets/css/room-detail.css" />
+        <link rel="stylesheet" href="assets/css/header.css" />
+        <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css" />
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <div class="header-container">
+                <div class="container">
+                    <div class="header-content">
+                        <div class="logo">
+                            <a href="trang-chu.html">
+                                <img class="logo-image" src="assets/img/gotravel_logo_air.png" alt="" />
+                            </a>
+                        </div>
+                        <nav class="nav">
+                            <ul>
+                                <li><a href="trang-chu.html">TRANG CHỦ</a></li>
+                                <li><a href="homestay.html">HOMESTAYS</a></li>
+                                <li><a href="about.html" target="_blank">VỀ CHÚNG TÔI</a></li>
+                                <li><a href="contact.html" target="_blank">LIÊN HỆ</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="btns desktop-btns" id="auth-buttons">
+                    <button class="cooperate-btn" onclick="location.href='partnership.html'">Hợp tác với chúng tôi</button>
+                    <button class="dang-ky-btn signup" id="registerBtn">Đăng ký</button>
+                    <button class="dang-nhap-btn login" id="loginBtn">Đăng nhập</button>
+                </div>
+
+                <div id="user-info" class="user-dropdown" style="display: none; position: relative">
+                    <img src="/assets/img/icon/user.svg" alt="user-icon" id="user-icon" />
+                    <div id="user-menu" class="dropdown-menu">
+                        <a href="profile.html" class="dropdown-item">Hồ sơ</a>
+                        <a href="homestay.html" class="dropdown-item">Homestay</a>
+                        <button id="logoutBtn" class="dropdown-item">Đăng xuất</button>
+                    </div>
+                </div>
+
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+                    <i class="ti-menu"></i>
+                </button>
+
+                <div class="mobile-menu">
+                    <a href="#" class="mobile-menu-link mobile-nav-link">TRANG CHỦ</a>
+                    <a href="homestay.html" class="mobile-menu-link mobile-nav-link">HOMESTAYS</a>
+                    <a href="about.html" class="mobile-menu-link mobile-nav-link">VỀ CHÚNG TÔI</a>
+                    <a href="contact.html" class="mobile-menu-link mobile-nav-link">LIÊN HỆ</a>
+                    <hr class="mobile-menu-divider" />
+                    <a href="partnership.html" class="mobile-menu-link">Hợp tác với chúng tôi</a>
+                    <button class="mobile-menu-btn" onclick="openPopup('register'); closeMobileMenu();">Đăng ký</button>
+                    <button class="mobile-menu-btn" onclick="openPopup('login'); closeMobileMenu();">Đăng nhập</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="hero">
+            <div class="search-box">
+                <div class="date-picker">
+                    <input type="date" class="date1" />
+                    <input type="date" class="date2" />
+                </div>
+                <button class="search-button">TÌM KIẾM</button>
             </div>
             <nav class="nav">
               <ul>

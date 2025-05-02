@@ -96,10 +96,10 @@ export function initializeCarousel() {
 
     window.addEventListener("resize", calculateDimensions);
     carouselContainer.addEventListener("touchstart", touchStart, {
-        passive: true
+        passive: true,
     });
     carouselContainer.addEventListener("touchmove", touchMove, {
-        passive: true
+        passive: true,
     });
     carouselContainer.addEventListener("touchend", touchEnd);
     prevButton.addEventListener("click", prevSlide);
