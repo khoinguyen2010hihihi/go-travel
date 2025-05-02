@@ -126,8 +126,6 @@
             <img src="assets/img/room3.webp" alt="Ảnh nhỏ 2" />
             <img src="assets/img/room4.webp" alt="Ảnh nhỏ 3" />
             <img src="assets/img/room5.webp" alt="Ảnh nhỏ 4" />
-            <img src="assets/img/room6.webp" alt="Ảnh nhỏ 5" />
-            <img src="assets/img/room7.jpg" alt="Ảnh nhỏ 6" />
           </div>
         </div>
 
@@ -135,14 +133,13 @@
           <div class="tab-links">
             <a href="#overview">Tổng quan</a>
             <a href="#room-list">Phòng nghỉ</a>
-            <a href="#highlights">Điểm nổi bật</a>
             <a href="#facilities">Cơ sở vật chất</a>
             <a href="#hotel-facts">Đánh giá</a>
             <a href="#location">Vị trí</a>
           </div>
           <div class="tab-price-action">
-            <span class="label">từ</span>
-            <p class="price">388.591 VND/đêm</p>
+            <span class="label">Từ</span>
+            <p class="price"><span id="min-price">---</span> VND/đêm</p>
             <button class="btn-book-now">Đặt ngay</button>
           </div>
         </div>
@@ -151,70 +148,42 @@
       <!-- Thông tin mô tả -->
       <section class="info-section">
         <section class="overview" id="overview">
-          <h2>Titan Hotel <span class="star">★★★</span></h2>
-          <p class="address">
-            102 - 104 Hồ Xuân Hương, Q. Ngũ Hành Sơn, Phước Mỹ, Đà Nẵng, Việt
-            Nam
-          </p>
-          <p class="desc">
-            Hãy di chuyển đi của quý khách có mức khởi đầu tuyệt vời khi ở lại
-            khách sạn này, nơi có Wi-Fi miễn phí trong tất cả các phòng.
-          </p>
+          <h2 class="homestay-name" id="homestay-name"></h2>
+          <p class="address" id="homestay-address"></p>
+          <p class="desc" id="homestay-description"></p>
         </section>
 
-        <section class="highlights" id="highlights">
-          <h3>Điểm nổi bật nhất</h3>
-          <div class="highlight-grid">
-            <div class="item">
-              <i class="ti-thumb-up"></i> Thích hợp cho các hoạt động
-            </div>
-            <div class="item"><i class="ti-car"></i> Đưa đón sân bay</div>
-            <div class="item"><i class="ti-time"></i> Nhận phòng 24 giờ</div>
-            <div class="item">
-              <i class="ti-location-pin"></i> Cách bãi biển 670m
-            </div>
+        <section class="homestay-review" id="homestay-review">
+          <h3>Đánh giá về Homestay của chúng tôi</h3>
+        
+          <!-- Danh sách đánh giá -->
+          <div class="review-list" id="review-list">
+
+          </div>
+        
+          <!-- Form đánh giá -->
+          <div class="review-form">
+            <h4>Viết đánh giá của bạn</h4>
+            <form id="submit-review-form">
+              <label for="rating">Số sao:</label>
+              <select id="rating" name="rating" required>
+                <option value="">-- Chọn số sao --</option>
+                <option value="5">★★★★★</option>
+                <option value="4">★★★★</option>
+                <option value="3">★★★</option>
+                <option value="2">★★</option>
+                <option value="1">★</option>
+              </select>
+        
+              <label for="comment">Nhận xét:</label>
+              <textarea id="comment" name="comment" rows="4" placeholder="Hãy chia sẻ trải nghiệm của bạn..." required></textarea>
+        
+              <button type="submit">Gửi đánh giá</button>
+            </form>
           </div>
         </section>
-
-        <section class="facilities" id="facilities">
-          <h3>Cơ sở vật chất</h3>
-          <ul>
-            <li>Bãi biển</li>
-            <li>Nhà hàng</li>
-            <li>Miễn phí Wi-Fi</li>
-            <li>Đưa đón sân bay</li>
-            <li>Đỗ xe miễn phí</li>
-            <li>Phòng gia đình</li>
-            <li>Bàn tiếp tân 24 giờ</li>
-            <li>Giữ hành lý</li>
-          </ul>
-        </section>
-
-        <section class="hotel-facts" id="hotel-facts">
-          <h3>Thông tin hữu ích</h3>
-          <table>
-            <tr>
-              <td>Đáng giá tiền</td>
-              <td>8,3</td>
-            </tr>
-            <tr>
-              <td>Cách trung tâm</td>
-              <td>5 km</td>
-            </tr>
-            <tr>
-              <td>Đánh giá vị trí</td>
-              <td>8,1</td>
-            </tr>
-            <tr>
-              <td>Sân bay gần nhất</td>
-              <td>Sân Bay Quốc Tế Đà Nẵng (DAD)</td>
-            </tr>
-            <tr>
-              <td>Cách sân bay</td>
-              <td>5,2 km</td>
-            </tr>
-          </table>
-        </section>
+        
+        
       </section>
       <section class="room-list" id="room-list">
         <h3>Phòng còn trống tại Menora Grand Da Nang</h3>
@@ -408,4 +377,5 @@
       }
     };
   </script>
+  <script type="module" src="assets/js/review-and-info.js"></script>
 </html>
