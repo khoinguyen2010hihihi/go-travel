@@ -35,6 +35,16 @@ function login() {
                 .then((data) => {
                     if (data.token) {
                         localStorage.setItem("authToken", data.token);
+
+                        const roles = data.roles || [];
+                        localStorage.setItem(
+                            "user",
+                            JSON.stringify({
+                                email: data.email,
+                                roles: roles,
+                            })
+                        );
+
                         alert("Đăng nhập thành công!");
                         checkLoginStatus();
                         closePopup();
