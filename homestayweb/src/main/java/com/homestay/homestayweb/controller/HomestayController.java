@@ -109,28 +109,19 @@ public class HomestayController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/{id}/images")
+    @PostMapping("/{homestayId}/images")
     @PreAuthorize("hasAuthority('CREATE_HOMESTAY')")
     public ResponseEntity<String> uploadImageToHomestay(
-            @PathVariable("id") Long homestayId,
-            @RequestParam("file") MultipartFile file,
-            @RequestParam(name = "isPrimary", defaultValue = "false") boolean isPrimary
-    ) {
+            @PathVariable Long homestayId,
+            @RequestParam("file") MultipartFile file) {
         try {
             // Upload ảnh lên Cloudinary
             String imageUrl = cloudinaryService.uploadFile(file);
 
-            // Gán Homestay cho ảnh
-            HomestayImage image = new HomestayImage();
-            image.setImageUrl(imageUrl);
-            image.setIsPrimary(isPrimary);
-            image.setHomestay(homestayService.findEntityById(homestayId));
+            // Lưu ảnh cho Homestay
+            homestayImageService.uploadImageForHomestay(homestayId, imageUrl);
 
-            // Lưu vào DB thông qua service
-            homestayImageService.saveHomestayImage(image);
-
-            return ResponseEntity.ok(imageUrl);
-
+            return ResponseEntity.ok(imageUrl); // Trả về URL ảnh đã upload
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Upload thất bại: " + e.getMessage());
         }

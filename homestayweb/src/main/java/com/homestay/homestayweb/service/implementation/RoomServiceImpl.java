@@ -171,5 +171,9 @@ public class RoomServiceImpl implements RoomService {
         return rooms.stream().map(this::mapToResponse).toList();
     }
 
-
+    @Override
+    public Room getRoomEntityById(Long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+    }
 }
