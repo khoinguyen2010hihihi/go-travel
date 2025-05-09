@@ -231,7 +231,7 @@
       </section>
       <section class="room-list" id="room-list">
         <h3>Phòng còn trống tại Menora Grand Da Nang</h3>
-        <div class="room-item">
+        <!-- <div class="room-item">
           <div class="room-img">
             <img src="assets/img/standard-double.webp" alt="Standard Double" />
           </div>
@@ -259,7 +259,7 @@
           <div class="room-booking">
             <button class="btn-book-now">Đặt ngay</button>
           </div>
-        </div>
+        </div> -->
       </section>
     </main>
   </body>
@@ -411,6 +411,7 @@
               .then((data) => {
                 alert("Đặt phòng thành công!");
                 console.log("Booking:", data);
+                window.location.reload();
               })
               .catch((err) => {
                 console.error("Lỗi đặt phòng:", err);

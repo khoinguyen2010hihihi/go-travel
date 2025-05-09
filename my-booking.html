@@ -1,272 +1,359 @@
 <!DOCTYPE html>
 <html lang="vi">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Trang Tài Khoản</title>
-        <link rel="stylesheet" href="assets/css/my-booking.css" />
-        <link rel="stylesheet" href="assets/css/header.css" />
-        <link rel="stylesheet" href="assets/fonts/themify-icons/themify-icons.css" />
-    </head>
-    <body>
-        <!-- Header -->
-        <header>
-            <div class="header-container">
-                <div class="container">
-                    <div class="header-content">
-                        <div class="logo">
-                            <a href="trang-chu.html">
-                                <img class="logo-image" src="assets/img/gotravel_logo_air.png" alt="" />
-                            </a>
-                        </div>
-                        <nav class="nav">
-                            <ul>
-                                <li><a href="trang-chu.html">TRANG CHỦ</a></li>
-                                <li><a href="homestay.html">HOMESTAYS</a></li>
-                                <li><a href="about.html" target="_blank">VỀ CHÚNG TÔI</a></li>
-                                <li><a href="contact.html" target="_blank">LIÊN HỆ</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="btns desktop-btns" id="auth-buttons">
-                    <button class="cooperate-btn" onclick="location.href='partnership.html'">Hợp tác với chúng tôi</button>
-                    <button class="dang-ky-btn signup" id="registerBtn">Đăng ký</button>
-                    <button class="dang-nhap-btn login" id="loginBtn">Đăng nhập</button>
-                </div>
-
-                <div id="user-info" class="user-dropdown" style="display: none; position: relative">
-                    <img src="/assets/img/icon/user.svg" alt="user-icon" id="user-icon" />
-                    <div id="user-menu" class="dropdown-menu">
-                        <a href="profile.html" class="dropdown-item">Hồ sơ</a>
-                        <a href="my-booking.html" id="homestayLink" class="dropdown-item">Homestay</a>
-                        <button id="logoutBtn" class="dropdown-item">Đăng xuất</button>
-                    </div>
-                </div>
-
-                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
-                    <i class="ti-menu"></i>
-                </button>
-
-                <div class="mobile-menu">
-                    <a href="#" class="mobile-menu-link mobile-nav-link">TRANG CHỦ</a>
-                    <a href="homestay.html" class="mobile-menu-link mobile-nav-link">HOMESTAYS</a>
-                    <a href="about.html" class="mobile-menu-link mobile-nav-link">VỀ CHÚNG TÔI</a>
-                    <a href="contact.html" class="mobile-menu-link mobile-nav-link">LIÊN HỆ</a>
-                    <hr class="mobile-menu-divider" />
-                    <a href="partnership.html" class="mobile-menu-link">Hợp tác với chúng tôi</a>
-                    <button class="mobile-menu-btn" onclick="openPopup('register'); closeMobileMenu();">Đăng ký</button>
-                    <button class="mobile-menu-btn" onclick="openPopup('login'); closeMobileMenu();">Đăng nhập</button>
-                </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang Tài Khoản</title>
+    <link rel="stylesheet" href="assets/css/my-booking.css" />
+    <link rel="stylesheet" href="assets/css/header.css" />
+    <link
+      rel="stylesheet"
+      href="assets/fonts/themify-icons/themify-icons.css"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="header-container">
+        <div class="container">
+          <div class="header-content">
+            <div class="logo">
+              <a href="trang-chu.html">
+                <img
+                  class="logo-image"
+                  src="assets/img/gotravel_logo_air.png"
+                  alt=""
+                />
+              </a>
             </div>
-        </header>
-
-        <!-- Sidebar Menu -->
-        <aside class="sidebar">
             <nav class="nav">
-                <ul>
-                    <!-- <li><a href="#">Đơn đặt chỗ của tôi</a></li> -->
-                    <h3>Đơn đặt chỗ của tôi</h3>
-                    <li><a href="#">Khách Sạn</a></li>
-                    <li><a href="#">Hoạt động</a></li>
-                    <li><a href="#">Tin nhắn từ chỗ nghỉ</a></li>
-                    <li><a href="#">Nhận xét</a></li>
-                    <li><a href="#">Tiền GoTravel</a></li>
-                    <li><a href="#">Hồ sơ</a></li>
-                </ul>
+              <ul>
+                <li><a href="trang-chu.html">TRANG CHỦ</a></li>
+                <li><a href="homestay.html">HOMESTAYS</a></li>
+                <li><a href="about.html" target="_blank">VỀ CHÚNG TÔI</a></li>
+                <li><a href="contact.html" target="_blank">LIÊN HỆ</a></li>
+              </ul>
             </nav>
-        </aside>
+          </div>
+        </div>
+        <div class="btns desktop-btns" id="auth-buttons">
+          <button
+            class="cooperate-btn"
+            onclick="location.href='partnership.html'"
+          >
+            Hợp tác với chúng tôi
+          </button>
+          <button class="dang-ky-btn signup" id="registerBtn">Đăng ký</button>
+          <button class="dang-nhap-btn login" id="loginBtn">Đăng nhập</button>
+        </div>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="container">
-                <!-- Tabs for Upcoming, Completed, and Canceled -->
-                <div class="tabs">
-                    <button class="tab-btn active" onclick="openTab('upcoming')">Sắp tới</button>
-                    <button class="tab-btn" onclick="openTab('completed')">Hoàn tất</button>
-                    <button class="tab-btn" onclick="openTab('canceled')">Đã hủy</button>
-                </div>
+        <div
+          id="user-info"
+          class="user-dropdown"
+          style="display: none; position: relative"
+        >
+          <img src="/assets/img/icon/user.svg" alt="user-icon" id="user-icon" />
+          <div id="user-menu" class="dropdown-menu">
+            <a href="profile.html" class="dropdown-item">Hồ sơ</a>
+            <a href="my-booking.html" id="homestayLink" class="dropdown-item"
+              >Homestay</a
+            >
+            <button id="logoutBtn" class="dropdown-item">Đăng xuất</button>
+          </div>
+        </div>
 
-                <div class="search-box-container">
-                    <input type="text" class="search-box" placeholder="Tìm kiếm theo mã đặt phòng" />
-                    <button class="search-btn">Tìm</button>
-                </div>
+        <button
+          class="mobile-menu-toggle"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <i class="ti-menu"></i>
+        </button>
 
-                <!-- Tab Content -->
-                <div id="upcoming" class="tab-content active">
-                    <h2>Sắp tới</h2>
-                    <div class="homestay-list" id="upcoming-list">
-                        <!-- Danh sách homestay sẽ được render bằng JavaScript -->
-                    </div>
-                    <p id="no-upcoming" style="display: none">Xin chào Phuc Thinh. Quý khách không có chuyến đi sắp tới nào.</p>
-                </div>
+        <div class="mobile-menu">
+          <a href="#" class="mobile-menu-link mobile-nav-link">TRANG CHỦ</a>
+          <a href="homestay.html" class="mobile-menu-link mobile-nav-link"
+            >HOMESTAYS</a
+          >
+          <a href="about.html" class="mobile-menu-link mobile-nav-link"
+            >VỀ CHÚNG TÔI</a
+          >
+          <a href="contact.html" class="mobile-menu-link mobile-nav-link"
+            >LIÊN HỆ</a
+          >
+          <hr class="mobile-menu-divider" />
+          <a href="partnership.html" class="mobile-menu-link"
+            >Hợp tác với chúng tôi</a
+          >
+          <button
+            class="mobile-menu-btn"
+            onclick="openPopup('register'); closeMobileMenu();"
+          >
+            Đăng ký
+          </button>
+          <button
+            class="mobile-menu-btn"
+            onclick="openPopup('login'); closeMobileMenu();"
+          >
+            Đăng nhập
+          </button>
+        </div>
+      </div>
+    </header>
 
-                <div id="completed" class="tab-content">
-                    <h2>Hoàn tất</h2>
-                    <div class="homestay-list" id="completed-list">
-                        <!-- Danh sách homestay sẽ được render bằng JavaScript -->
-                    </div>
-                    <p id="no-completed" style="display: none">Chào Phuc Thinh. Quý khách không có đặt chỗ đã hoàn thành gần đây.</p>
-                </div>
+    <!-- Sidebar Menu -->
+    <aside class="sidebar">
+      <nav class="nav">
+        <ul>
+          <!-- <li><a href="#">Đơn đặt chỗ của tôi</a></li> -->
+          <h3>Đơn đặt chỗ của tôi</h3>
+          <li><a href="#">Khách Sạn</a></li>
+          <li><a href="#">Hoạt động</a></li>
+          <li><a href="#">Tin nhắn từ chỗ nghỉ</a></li>
+          <li><a href="#">Nhận xét</a></li>
+          <li><a href="#">Tiền GoTravel</a></li>
+          <li><a href="#">Hồ sơ</a></li>
+        </ul>
+      </nav>
+    </aside>
 
-                <div id="canceled" class="tab-content">
-                    <h2>Đã hủy</h2>
-                    <div class="homestay-list" id="canceled-list">
-                        <!-- Danh sách homestay sẽ được render bằng JavaScript -->
-                    </div>
-                    <p id="no-canceled" style="display: none">Chào Phuc Thinh. Quý khách không có đặt chỗ đã hủy gần đây.</p>
-                </div>
-            </div>
-        </main>
-        <script>
-            function openTab(tabId) {
-                // Ẩn tất cả nội dung tab
-                const tabContents = document.querySelectorAll(".tab-content");
-                tabContents.forEach((content) => content.classList.remove("active"));
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <!-- Tabs for Upcoming, Completed, and Canceled -->
+        <div class="tabs">
+          <button class="tab-btn active" onclick="openTab('upcoming')">
+            Sắp tới
+          </button>
+          <button class="tab-btn" onclick="openTab('completed')">
+            Hoàn tất
+          </button>
+          <button class="tab-btn" onclick="openTab('canceled')">Đã hủy</button>
+        </div>
 
-                // Xóa class active ở tất cả các nút tab
-                const tabButtons = document.querySelectorAll(".tab-btn");
-                tabButtons.forEach((btn) => btn.classList.remove("active"));
+        <div class="search-box-container">
+          <input
+            type="text"
+            class="search-box"
+            placeholder="Tìm kiếm theo mã đặt phòng"
+          />
+          <button class="search-btn">Tìm</button>
+        </div>
 
-                // Hiển thị nội dung tab được chọn
-                document.getElementById(tabId).classList.add("active");
+        <!-- Tab Content -->
+        <div id="upcoming" class="tab-content active">
+          <h2>Sắp tới</h2>
+          <div class="homestay-list" id="upcoming-list">
+            <!-- Danh sách homestay sẽ được render bằng JavaScript -->
+          </div>
+          <p id="no-upcoming" style="display: none">
+            Xin chào Phuc Thinh. Quý khách không có chuyến đi sắp tới nào.
+          </p>
+        </div>
 
-                // Thêm class active vào nút tab được nhấn
-                const clickedButton = [...tabButtons].find(
-                    (btn) => btn.textContent.trim() === document.getElementById(tabId).querySelector("h2").textContent.trim()
-                );
-                if (clickedButton) {
-                    clickedButton.classList.add("active");
-                }
-            }
+        <div id="completed" class="tab-content">
+          <h2>Hoàn tất</h2>
+          <div class="homestay-list" id="completed-list">
+            <!-- Danh sách homestay sẽ được render bằng JavaScript -->
+          </div>
+          <p id="no-completed" style="display: none">
+            Chào Phuc Thinh. Quý khách không có đặt chỗ đã hoàn thành gần đây.
+          </p>
+        </div>
 
-            // Hàm định dạng ngày
-            function formatDate(dateStr) {
-                const date = new Date(dateStr);
-                const day = String(date.getDate()).padStart(2, "0");
-                const month = String(date.getMonth() + 1).padStart(2, "0");
-                const year = date.getFullYear();
-                return `${day}/${month}/${year}`;
-            }
-            // Hàm render danh sách homestay
-            function renderHomestays(homestays, containerId, noDataElementId, isUpcoming = false) {
-                const container = document.getElementById(containerId);
-                const noDataElement = document.getElementById(noDataElementId);
+        <div id="canceled" class="tab-content">
+          <h2>Đã hủy</h2>
+          <div class="homestay-list" id="canceled-list">
+            <!-- Danh sách homestay sẽ được render bằng JavaScript -->
+          </div>
+          <p id="no-canceled" style="display: none">
+            Chào Phuc Thinh. Quý khách không có đặt chỗ đã hủy gần đây.
+          </p>
+        </div>
+      </div>
+    </main>
+    <script>
+      function openTab(tabId) {
+        // Ẩn tất cả nội dung tab
+        const tabContents = document.querySelectorAll(".tab-content");
+        tabContents.forEach((content) => content.classList.remove("active"));
 
-                container.innerHTML = "";
+        // Xóa class active ở tất cả các nút tab
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        tabButtons.forEach((btn) => btn.classList.remove("active"));
 
-                if (homestays.length === 0) {
-                    noDataElement.style.display = "block";
-                    return;
-                }
+        // Hiển thị nội dung tab được chọn
+        document.getElementById(tabId).classList.add("active");
 
-                noDataElement.style.display = "none";
+        // Thêm class active vào nút tab được nhấn
+        const clickedButton = [...tabButtons].find(
+          (btn) =>
+            btn.textContent.trim() ===
+            document
+              .getElementById(tabId)
+              .querySelector("h2")
+              .textContent.trim()
+        );
+        if (clickedButton) {
+          clickedButton.classList.add("active");
+        }
+      }
 
-                homestays.forEach((homestay) => {
-                    const homestayCard = document.createElement("div");
-                    homestayCard.className = "homestay-card";
-                    homestayCard.innerHTML = `
+      // Hàm định dạng ngày
+      function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      }
+      // Hàm render danh sách homestay
+      function renderHomestays(
+        homestays,
+        containerId,
+        noDataElementId,
+        isUpcoming = false
+      ) {
+        const container = document.getElementById(containerId);
+        const noDataElement = document.getElementById(noDataElementId);
+
+        container.innerHTML = "";
+
+        if (homestays.length === 0) {
+          noDataElement.style.display = "block";
+          return;
+        }
+
+        noDataElement.style.display = "none";
+
+        homestays.forEach((homestay) => {
+          const homestayCard = document.createElement("div");
+          homestayCard.className = "homestay-card";
+          homestayCard.innerHTML = `
                         <div class="homestay-image">
-                            <img src="${homestay.image}" alt="${homestay.name}" />
+                            <img src="${homestay.image}" alt="${
+            homestay.name
+          }" />
                         </div>
                         <div class="homestay-info">
                             <h3>${homestay.name}</h3>
-                            <p><span class="label">Địa chỉ:</span> ${homestay.address}</p>
-                            <p><span class="label">Giá:</span> ${homestay.price.toLocaleString("vi-VN")} VND</p>
-                            <p><span class="label">Ngày Check In:</span> ${formatDate(homestay.checkIn)}</p>
-                            <p><span class="label">Ngày Check Out:</span> ${formatDate(homestay.checkOut)}</p>
-                            <p><span class="label">Ngày Đặt:</span> ${formatDate(homestay.bookingDate)}</p>
+                            <p><span class="label">Địa chỉ:</span> ${
+                              homestay.address
+                            }</p>
+                            <p><span class="label">Giá:</span> ${homestay.price.toLocaleString(
+                              "vi-VN"
+                            )} VND</p>
+                            <p><span class="label">Ngày Check In:</span> ${formatDate(
+                              homestay.checkIn
+                            )}</p>
+                            <p><span class="label">Ngày Check Out:</span> ${formatDate(
+                              homestay.checkOut
+                            )}</p>
+                            <p><span class="label">Ngày Đặt:</span> ${formatDate(
+                              homestay.bookingDate
+                            )}</p>
                             <div class="action-buttons">
-                                <button class="detail-btn" onclick="viewDetails('${homestay.id}')">Xem chi tiết</button>
-                                ${isUpcoming ? `<button class="cancel-btn" onclick="cancelBooking('${homestay.id}')">Hủy đặt chỗ</button>` : ""}
+                                <button class="detail-btn" onclick="viewDetails('${
+                                  homestay.id
+                                }')">Xem chi tiết</button>
+                                ${
+                                  isUpcoming
+                                    ? `<button class="cancel-btn" onclick="cancelBooking('${homestay.id}')">Hủy đặt chỗ</button>`
+                                    : ""
+                                }
                             </div>
                         </div>
                     `;
-                    container.appendChild(homestayCard);
-                });
-            }
+          container.appendChild(homestayCard);
+        });
+      }
 
-            // Hàm xử lý nút Xem chi tiết
-            function viewDetails(id) {
-                alert(`Xem chi tiết cho đặt chỗ ID: ${id}`);
-                // Thay bằng logic chuyển hướng hoặc mở modal
-            }
+      // Hàm xử lý nút Xem chi tiết
+      function viewDetails(id) {
+        alert(`Xem chi tiết cho đặt chỗ ID: ${id}`);
+        // Thay bằng logic chuyển hướng hoặc mở modal
+      }
 
-            // Hàm xử lý nút Hủy đặt chỗ
-            function cancelBooking(id) {
-                if (confirm("Bạn có chắc muốn hủy đặt chỗ này?")) {
-                    alert(`Đã hủy đặt chỗ ID: ${id}`);
-                    // Thay bằng logic gọi API để hủy
-                }
-            }
+      // Hàm xử lý nút Hủy đặt chỗ
+      function cancelBooking(id) {
+        if (confirm("Bạn có chắc muốn hủy đặt chỗ này?")) {
+          alert(`Đã hủy đặt chỗ ID: ${id}`);
+          // Thay bằng logic gọi API để hủy
+        }
+      }
 
-            // Dữ liệu mẫu
-            const homestays = {
-                upcoming: [
-                    {
-                        id: "1",
-                        name: "Homestay Biển Xanh",
-                        address: "123 Đường Biển, Đà Nẵng",
-                        price: 1500000,
-                        checkIn: "2025-05-10",
-                        checkOut: "2025-05-12",
-                        bookingDate: "2025-05-01",
-                        image: "https://via.placeholder.com/150",
-                    },
-                    {
-                        id: "2",
-                        name: "Nhà Gỗ Núi Rừng",
-                        address: "45 Đường Rừng, Đà Lạt",
-                        price: 2000000,
-                        checkIn: "2025-06-01",
-                        checkOut: "2025-06-03",
-                        bookingDate: "2025-04-25",
-                        image: "https://via.placeholder.com/150",
-                    },
-                    {
-                        id: "3",
-                        name: "Villa Cát Vàng",
-                        address: "78 Đường Cát, Phú Quốc",
-                        price: 3000000,
-                        checkIn: "2025-04-15",
-                        checkOut: "2025-04-18",
-                        bookingDate: "2025-03-20",
-                        image: "https://via.placeholder.com/150",
-                    },
-                ],
-                completed: [
-                    {
-                        id: "4",
-                        name: "Villa Cát Vàng",
-                        address: "78 Đường Cát, Phú Quốc",
-                        price: 3000000,
-                        checkIn: "2025-04-15",
-                        checkOut: "2025-04-18",
-                        bookingDate: "2025-03-20",
-                        image: "https://via.placeholder.com/150",
-                    },
-                ],
-                canceled: [
-                    {
-                        id: "5",
-                        name: "Homestay Sông Nước",
-                        address: "12 Đường Sông, Cần Thơ",
-                        price: 1200000,
-                        checkIn: "2025-03-10",
-                        checkOut: "2025-03-12",
-                        bookingDate: "2025-02-15",
-                        image: "https://via.placeholder.com/150",
-                    },
-                ],
-            };
+      // Dữ liệu mẫu
+      const homestays = {
+        upcoming: [
+          {
+            id: "1",
+            name: "Homestay Biển Xanh",
+            address: "123 Đường Biển, Đà Nẵng",
+            price: 1500000,
+            checkIn: "2025-05-10",
+            checkOut: "2025-05-12",
+            bookingDate: "2025-05-01",
+            image: "https://via.placeholder.com/150",
+          },
+          {
+            id: "2",
+            name: "Nhà Gỗ Núi Rừng",
+            address: "45 Đường Rừng, Đà Lạt",
+            price: 2000000,
+            checkIn: "2025-06-01",
+            checkOut: "2025-06-03",
+            bookingDate: "2025-04-25",
+            image: "https://via.placeholder.com/150",
+          },
+          {
+            id: "3",
+            name: "Villa Cát Vàng",
+            address: "78 Đường Cát, Phú Quốc",
+            price: 3000000,
+            checkIn: "2025-04-15",
+            checkOut: "2025-04-18",
+            bookingDate: "2025-03-20",
+            image: "https://via.placeholder.com/150",
+          },
+        ],
+        completed: [
+          {
+            id: "4",
+            name: "Villa Cát Vàng",
+            address: "78 Đường Cát, Phú Quốc",
+            price: 3000000,
+            checkIn: "2025-04-15",
+            checkOut: "2025-04-18",
+            bookingDate: "2025-03-20",
+            image: "https://via.placeholder.com/150",
+          },
+        ],
+        canceled: [
+          {
+            id: "5",
+            name: "Homestay Sông Nước",
+            address: "12 Đường Sông, Cần Thơ",
+            price: 1200000,
+            checkIn: "2025-03-10",
+            checkOut: "2025-03-12",
+            bookingDate: "2025-02-15",
+            image: "https://via.placeholder.com/150",
+          },
+        ],
+      };
 
-            // Gọi hàm render khi trang tải
-            document.addEventListener("DOMContentLoaded", () => {
-                renderHomestays(homestays.upcoming, "upcoming-list", "no-upcoming", true);
-                renderHomestays(homestays.completed, "completed-list", "no-completed");
-                renderHomestays(homestays.canceled, "canceled-list", "no-canceled");
-            });
-        </script>
-        <script type="module" src="assets/js/main.js"></script>
-    </body>
+      // Gọi hàm render khi trang tải
+      document.addEventListener("DOMContentLoaded", () => {
+        renderHomestays(
+          homestays.upcoming,
+          "upcoming-list",
+          "no-upcoming",
+          true
+        );
+        renderHomestays(homestays.completed, "completed-list", "no-completed");
+        renderHomestays(homestays.canceled, "canceled-list", "no-canceled");
+      });
+    </script>
+    <script type="module" src="assets/js/main.js"></script>
+  </body>
 </html>
