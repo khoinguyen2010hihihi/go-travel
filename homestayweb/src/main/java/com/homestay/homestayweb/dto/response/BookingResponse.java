@@ -19,4 +19,7 @@ public class BookingResponse {
     private Long userId;
     private Long roomId;
     private LocalDate createdAt;
+
+    private String userEmail;
+    private String homestayName;
 }

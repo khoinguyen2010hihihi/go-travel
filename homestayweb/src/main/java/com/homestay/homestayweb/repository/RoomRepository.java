@@ -24,6 +24,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
         SELECT b.room_id FROM booking b
         WHERE b.check_in_date < :checkOutDate
           AND b.check_out_date > :checkInDate
+          AND b.booking_status = 'ACCEPTED'
       )
     """, nativeQuery = true)
     List<Room> findAvailableRooms(

@@ -62,19 +62,21 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingResponse updateBooking(Long id, BookingRequest request) {
-        Booking existing = bookingRepository.findById(id)
+    public BookingResponse pendingBooking(Long id) {
+        Booking book = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: " + id));
+        book.setBookingStatus("ACCPEPTED");
+        bookingRepository.save(book);
+        return mapToResponse(book);
+    }
 
-        existing.setCheckInDate(request.getCheckInDate());
-        existing.setCheckOutDate(request.getCheckOutDate());
-        existing.setTotalPrice(BookingUtil.calculatePrice(existing.getRoom(), request.getCheckInDate(), request.getCheckOutDate()));
-        if (request.getBookingStatus() != null) {
-            existing.setBookingStatus(request.getBookingStatus());
-        }
-
-        Booking updated = bookingRepository.save(existing);
-        return mapToResponse(updated);
+    @Override
+    public BookingResponse rejectBooking(Long id) {
+        Booking book = bookingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: " + id));
+        book.setBookingStatus("REJECTED");
+        bookingRepository.save(book);
+        return mapToResponse(book);
     }
 
     @Override
@@ -99,6 +101,12 @@ public class BookingServiceImpl implements BookingService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<BookingResponse> getBookingsForHost(Long hostId) {
+        return bookingRepository.findPendingByHostId(hostId).stream().map(this::mapToResponse).collect(Collectors.toList());
+    }
+
+
     private BookingResponse mapToResponse(Booking booking) {
         return BookingResponse.builder()
                 .bookingId(booking.getBookingId())
@@ -106,8 +114,11 @@ public class BookingServiceImpl implements BookingService {
                 .checkOutDate(booking.getCheckOutDate())
                 .totalPrice(booking.getTotalPrice())
                 .userId(booking.getUser().getId())
+                .userEmail(booking.getUser().getEmail())
                 .roomId(booking.getRoom().getRoomId())
+                .homestayName(booking.getRoom().getHomestay().getName())
                 .createdAt(booking.getCreatedAt())
                 .build();
     }
+
 }

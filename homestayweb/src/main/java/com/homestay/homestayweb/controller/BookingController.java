@@ -38,15 +38,26 @@ public class BookingController {
         return ResponseEntity.status(201).body(resp);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<BookingResponse> update(@PathVariable Long id, @RequestBody BookingRequest request) {
-        return ResponseEntity.ok(bookingService.updateBooking(id, request));
+    @PutMapping("host/pending/{id}")
+    public ResponseEntity<BookingResponse> pending(@PathVariable Long id) {
+        return ResponseEntity.ok(bookingService.pendingBooking(id));
+    }
+
+    @PutMapping("host/reject/{id}")
+    public ResponseEntity<BookingResponse> reject(@PathVariable Long id) {
+        return ResponseEntity.ok(bookingService.rejectBooking(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         bookingService.deleteBooking(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/pending/{hostId}")
+    public ResponseEntity<List<BookingResponse>> getPendingBookingsByHost(@PathVariable Long hostId) {
+        List<BookingResponse> bookings = bookingService.getBookingsForHost(hostId);
+        return ResponseEntity.ok(bookings);
     }
 
 }
