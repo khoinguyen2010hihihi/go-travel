@@ -1,14 +1,12 @@
 window.onload = function () {
   const homestayList = document.querySelector(".homestay-list");
 
-  // Lấy token từ localStorage
   const token = localStorage.getItem("authToken");
 
-  // Giải mã token để lấy host_id (giả sử token chứa host_id dưới dạng claim)
   const decodedToken = jwt_decode(token);
   const hostId = decodedToken.host_id;
 
-  fetch(`http://localhost:8081/homestay/api/homestays/host/${hostId}`, {
+  fetch(`http://localhost:8080/homestay/api/homestays/host/${hostId}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -33,11 +31,6 @@ window.onload = function () {
               <a href="#" class="tab-link" data-tab="add-room" data-hid="${homestay.id}">
                 Thêm phòng
               </a>
-            </li>
-            <li>
-              <a href="#" class="tab-link" data-tab="view-all-pending-room" data-hid="${homestay.id}">
-                Phòng đang chờ duyệt
-                </a>
             </li>
           </ul>
         `;
@@ -67,8 +60,14 @@ window.onload = function () {
       showRoomList(homestayId);
     } else if (tabId == "add-room") {
       showAddForm(homestayId);
-    } else {
+    } else if (tabId == "view-all-pending-room") {
       showPendingRoomList(homestayId);
+    } else {
+      const tab = document.getElementById(tabId);
+      if (tab) {
+        tab.style.display = "block";
+        renderBookingTable(bookings);
+      }
     }
   });
 
@@ -77,7 +76,7 @@ window.onload = function () {
     viewTab.style.display = "block";
 
     fetch(
-      `http://localhost:8081/homestay/api/rooms/valid-homestay/${homestayId}`
+      `http://localhost:8080/homestay/api/rooms/valid-homestay/${homestayId}`
     )
       .then((res) => res.json())
       .then((rooms) => {
@@ -127,40 +126,6 @@ window.onload = function () {
     document.getElementById("default-content").style.display = "block";
   };
 
-  function showPendingRoomList(homestayId) {
-    const viewTab = document.getElementById("view-all-pending-room");
-    viewTab.style.display = "block";
-
-    fetch(
-      `http://localhost:8081/homestay/api/rooms/pending-homestay/${homestayId}`
-    )
-      .then((res) => res.json())
-      .then((rooms) => {
-        const tbody = viewTab.querySelector(".room-table tbody");
-        tbody.innerHTML = "";
-        if (!rooms.length) {
-          tbody.innerHTML = '<tr><td colspan="6">Không có phòng nào.</td></tr>';
-          return;
-        }
-        rooms.forEach((r) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${r.roomId}</td>
-            <td>${r.roomType}</td>
-            <td>${Number(r.price).toLocaleString("vi-VN")}đ</td>
-            <td>${r.availability ? "Còn trống" : "Đang được sử dụng"}</td>
-            <td>
-              <button class="btn btn-view"  data-id="${r.roomIdd}">Xem</button>
-              <button class="btn btn-edit"  data-id="${r.roomId}">Sửa</button>
-              <button class="btn btn-delete" data-id="${r.roomId}">Xóa</button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
-      })
-      .catch((err) => console.error("Lỗi load phòng:", err));
-  }
-
   function showAddForm(homestayId) {
     const addTab = document.getElementById("add-room");
     addTab.style.display = "block";
@@ -173,6 +138,35 @@ window.onload = function () {
       addTab.querySelector(".card-box").appendChild(hidden);
     }
     hidden.value = homestayId;
+  }
+
+  function renderBookingTable(data) {
+    const tbody = document.querySelector("#manage-bookings tbody");
+    tbody.innerHTML = "";
+
+    if (data.length === 0) {
+      tbody.innerHTML =
+        '<tr><td colspan="8">Không có đơn đặt phòng nào.</td></tr>';
+      return;
+    }
+
+    data.forEach((b) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+            <td>${b.homestayName}</td>
+            <td>${b.room_id}</td>
+            <td>${b.email}</td>
+            <td>${b.check_in_date}</td>
+            <td>${b.check_out_date}</td>
+            <td>${Number(b.total_price).toLocaleString("vi-VN")}đ</td>
+            <td>${b.created_at}</td>
+            <td>
+                <button class="btn btn-view">Phê duyệt</button>
+                <button class="btn btn-delete">Từ chối</button>
+            </td>
+        `;
+      tbody.appendChild(tr);
+    });
   }
 
   window.returnToDefault = function () {
@@ -212,7 +206,7 @@ window.onload = function () {
 
     const token = localStorage.getItem("authToken");
 
-    fetch(`http://localhost:8081/homestay/api/rooms/homestay/${homestayId}`, {
+    fetch(`http://localhost:8080/homestay/api/rooms/homestay/${homestayId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -228,9 +222,123 @@ window.onload = function () {
       })
       .then((data) => {
         console.log("Phòng được thêm thành công:", data);
+        alert("Phòng đã được thêm thành công!");
       })
       .catch((error) => {
         console.error("Lỗi:", error);
+        alert("Đã xảy ra lỗi khi thêm phòng!");
       });
   });
 };
+
+window.loadPendingBookings = function () {
+  const token = localStorage.getItem("authToken");
+  if (!token) return console.error("Token không tồn tại");
+
+  const decodedToken = jwt_decode(token);
+  const hostId = decodedToken.host_id;
+
+  fetch(`http://localhost:8080/homestay/api/bookings/pending/${hostId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Không thể tải danh sách booking");
+      return res.json();
+    })
+    .then((bookings) => {
+      const tableBody = document.getElementById("booking-table-body");
+      tableBody.innerHTML = "";
+
+      bookings.forEach((booking) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${booking.homestayName}</td>
+          <td>${booking.roomId}</td>
+          <td>${booking.userEmail}</td>
+          <td>${booking.checkInDate}</td>
+          <td>${booking.checkOutDate}</td>
+          <td>${booking.totalPrice.toLocaleString()}₫</td>
+          <td>${booking.createdAt}</td>
+          <td>
+            <button class="approve-btn" data-id="${
+              booking.bookingId
+            }">✔️</button>
+            <button class="reject-btn" data-id="${
+              booking.bookingId
+            }">❌</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+      // Thêm event listeners cho các nút approve/reject
+      document.querySelectorAll(".approve-btn").forEach((btn) => {
+        btn.addEventListener("click", handleApprove);
+      });
+
+      document.querySelectorAll(".reject-btn").forEach((btn) => {
+        btn.addEventListener("click", handleReject);
+      });
+    })
+    .catch((err) => console.error("Lỗi khi load booking:", err));
+};
+
+// Hàm xử lý Approve
+function handleApprove(event) {
+  const bookingId = event.target.getAttribute("data-id");
+  const token = localStorage.getItem("authToken");
+
+  fetch(
+    `http://localhost:8080/homestay/api/bookings/host/pending/${bookingId}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response) => {
+      if (!response.ok) throw new Error("Lỗi khi duyệt booking");
+      return response.json();
+    })
+    .then((data) => {
+      alert("Đã duyệt thành công!");
+      loadPendingBookings();
+    })
+    .catch((error) => {
+      console.error("Lỗi:", error);
+      alert("Có lỗi xảy ra khi duyệt");
+    });
+}
+
+// Hàm xử lý Reject
+function handleReject(event) {
+  const bookingId = event.target.getAttribute("data-id");
+  const token = localStorage.getItem("authToken");
+
+  fetch(
+    `http://localhost:8080/homestay/api/bookings/host/reject/${bookingId}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response) => {
+      if (!response.ok) throw new Error("Lỗi khi reject booking");
+      return response.json();
+    })
+    .then((data) => {
+      alert("Đã reject booking thành công!");
+      loadPendingBookings(); // Refresh danh sách
+    })
+    .catch((error) => {
+      console.error("Lỗi:", error);
+      alert("Có lỗi xảy ra khi reject booking");
+    });
+}

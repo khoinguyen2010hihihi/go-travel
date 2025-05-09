@@ -1,15 +1,21 @@
-document.addEventListener("DOMContentLoaded", () => {
+export function initializeCarousel() {
     const carousel = document.querySelector(".carousel");
+    if (!carousel) {
+        console.warn("No carousel found on this page.");
+        return; // 🚀 Nếu không có carousel thì dừng luôn, không lỗi
+    }
+
     const slides = Array.from(carousel.querySelectorAll(".slide"));
     const prevButton = document.querySelector(".carousel-button.prev");
     const nextButton = document.querySelector(".carousel-button.next");
     const carouselContainer = document.querySelector(".carousel-container");
 
-    if (!carousel || !prevButton || !nextButton || slides.length === 0) {
+    if (!carouselContainer || !prevButton || !nextButton || slides.length === 0) {
         console.error("Carousel elements not found!");
         return;
     }
 
+    // 🚀 Phần code carousel bình thường ở dưới
     let currentTranslate = 0;
     let prevTranslate = 0;
     let isDragging = false;
@@ -89,12 +95,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.addEventListener("resize", calculateDimensions);
-    carouselContainer.addEventListener("touchstart", touchStart, { passive: true });
-    carouselContainer.addEventListener("touchmove", touchMove, { passive: true });
+    carouselContainer.addEventListener("touchstart", touchStart, {
+        passive: true,
+    });
+    carouselContainer.addEventListener("touchmove", touchMove, {
+        passive: true,
+    });
     carouselContainer.addEventListener("touchend", touchEnd);
     prevButton.addEventListener("click", prevSlide);
     nextButton.addEventListener("click", nextSlide);
 
     calculateDimensions();
     startAutoSlide();
-});
+}

@@ -1,111 +1,115 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Đảm bảo rằng tất cả các phần tử đã được tải
-  const loginBtn = document.querySelector(".submit-login-btn");
-  const signupBtn = document.querySelector(".submit-register-btn");
-  const logoutBtn = document.getElementById("logoutBtn"); // Phần tử đăng xuất
-  const popup = document.getElementById("popup");
+// assets/js/login.js
+import { closePopup } from "./popup-login.js";
 
-  // Kiểm tra trạng thái đăng nhập và cập nhật giao diện
-  checkLoginStatus();
-
-  // Giải mã JWT
-  function decodeJWT(token) {
+function decodeJWT(token) {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split("")
-        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-        .join("")
+        atob(base64)
+            .split("")
+            .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+            .join("")
     );
     return JSON.parse(jsonPayload);
-  }
+}
 
-  // Đăng nhập
-  if (loginBtn) {
-    loginBtn.addEventListener("click", function () {
-      const email = document.getElementById("loginEmail").value;
-      const password = document.getElementById("loginPassword").value;
+function login() {
+    const loginBtn = document.querySelector(".submit-login-btn");
 
-      if (!email.trim() || !password.trim()) {
-        alert("Vui lòng nhập đầy đủ email và mật khẩu.");
-        return;
-      }
+    if (loginBtn) {
+        loginBtn.addEventListener("click", function () {
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
 
-      fetch("http://localhost:8081/homestay/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.token) {
-            localStorage.setItem("authToken", data.token);
-            alert("Đăng nhập thành công!");
-            checkLoginStatus(); // Gọi lại để cập nhật giao diện
-            closePopup();
-          } else {
-            alert("Đăng nhập thất bại.");
-          }
-        })
-        .catch(() => alert("Đã có lỗi xảy ra. Thử lại sau."));
-    });
-  }
+            if (!email.trim() || !password.trim()) {
+                alert("Vui lòng nhập đầy đủ email và mật khẩu.");
+                return;
+            }
 
-  // Đăng ký (Hiện tại chỉ là thông báo)
-  if (signupBtn) {
-    signupBtn.addEventListener("click", function () {
-      alert("Đăng ký được nhấn.");
-    });
-  }
+            fetch("http://localhost:8080/homestay/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.token) {
+                        localStorage.setItem("authToken", data.token);
 
-  // Đóng popup khi nhấn ngoài
-  if (popup) {
-    popup.addEventListener("click", function (event) {
-      if (event.target === popup) {
-        closePopup();
-      }
-    });
-  }
+                        const roles = data.roles || [];
+                        localStorage.setItem(
+                            "user",
+                            JSON.stringify({
+                                email: data.email,
+                                roles: roles,
+                            })
+                        );
 
-  // Đóng popup
-  function closePopup() {
-    popup.style.display = "none";
-  }
+                        alert("Đăng nhập thành công!");
+                        checkLoginStatus();
+                        closePopup();
+                    } else {
+                        alert("Đăng nhập thất bại.");
+                    }
+                })
+                .catch(() => alert("Đã có lỗi xảy ra. Thử lại sau."));
+        });
+    }
+}
 
-  // Đăng xuất
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", function () {
-      localStorage.removeItem("authToken"); // Xóa token khỏi localStorage
-      checkLoginStatus(); // Cập nhật lại giao diện sau khi đăng xuất
-    });
-  }
+function isTokenExpired(token) {
+    try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const exp = payload.exp;
+        if (!exp) return true; // Không có exp thì xem như hết hạn
+        const now = Math.floor(Date.now() / 1000);
+        return exp < now; // Nếu exp < now thì token đã hết hạn
+    } catch (error) {
+        console.error("Token invalid:", error);
+        return true; // Token lỗi thì xem như hết hạn
+    }
+}
 
-  // Kiểm tra trạng thái đăng nhập và cập nhật giao diện
-  function checkLoginStatus() {
+function checkLoginStatus() {
     const token = localStorage.getItem("authToken");
     const authButtons = document.getElementById("auth-buttons");
     const userInfo = document.getElementById("user-info");
-    const userEmail = document.getElementById("user-email");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userIcon = document.getElementById("user-icon");
+    const userMenu = document.getElementById("user-menu");
 
-    if (authButtons && userInfo && userEmail) {
-      if (token) {
-        authButtons.style.display = "none"; // Ẩn nút đăng nhập, đăng ký
-        userInfo.style.display = "block"; // Hiển thị thông tin người dùng
-        const user = decodeJWT(token); // Giải mã token JWT
-        userEmail.textContent = `Chào, ${user.sub}`; // Hiển thị email người dùng
+    if (authButtons && userInfo && userIcon && userMenu && logoutBtn) {
+        if (token && !isTokenExpired(token)) {
+            // Hiện icon người dùng, ẩn các nút đăng nhập/đăng ký
+            authButtons.style.display = "none";
+            userInfo.style.display = "inline-block";
 
-        // Hiển thị nút đăng xuất nếu người dùng đã đăng nhập
-        if (logoutBtn) {
-          logoutBtn.style.display = "inline-block"; // Hiển thị nút đăng xuất
+            // Gán sự kiện đăng xuất
+            logoutBtn.onclick = () => {
+                localStorage.removeItem("authToken");
+                checkLoginStatus(); // Reload UI
+            };
+
+            // Toggle menu khi nhấn vào icon
+            userIcon.onclick = () => {
+                userMenu.style.display = userMenu.style.display === "block" ? "none" : "block";
+            };
+
+            // Ẩn menu nếu click ra ngoài
+            document.addEventListener("click", function (event) {
+                if (!userInfo.contains(event.target)) {
+                    userMenu.style.display = "none";
+                }
+            });
+        } else {
+            // Token hết hạn hoặc không có
+            localStorage.removeItem("authToken");
+            authButtons.style.display = "flex";
+            userInfo.style.display = "none";
+            userMenu.style.display = "none";
+            logoutBtn.onclick = null;
         }
-      } else {
-        authButtons.style.display = "block"; // Hiển thị nút đăng nhập, đăng ký
-        userInfo.style.display = "none"; // Ẩn thông tin người dùng
-        if (logoutBtn) {
-          logoutBtn.style.display = "none"; // Ẩn nút đăng xuất nếu chưa đăng nhập
-        }
-      }
     }
-  }
-});
+}
+
+export { login, checkLoginStatus };

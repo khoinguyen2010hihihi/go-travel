@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GoTravel - Đà Nẵng</title>
+    <link rel="stylesheet" href="" />
     <link rel="stylesheet" href="assets/css/trang-chu.css" />
     <link rel="stylesheet" href="assets/css/header.css" />
     <link
@@ -30,29 +31,34 @@
               <ul>
                 <li><a href="#">TRANG CHỦ</a></li>
                 <li><a href="homestay.html">HOMESTAYS</a></li>
-                <li><a href="about.html">VỀ CHÚNG TÔI</a></li>
-                <li><a href="contact.html">LIÊN HỆ</a></li>
+                <li><a href="about.html" target="_blank">VỀ CHÚNG TÔI</a></li>
+                <li><a href="contact.html" target="_blank">LIÊN HỆ</a></li>
               </ul>
             </nav>
           </div>
         </div>
+
         <div class="btns desktop-btns" id="auth-buttons">
-          <a href="partnership.html">
-            <button class="cooperate-btn">Hợp tác với chúng tôi</button>
-          </a>
-          <button class="dang-ky-btn" onclick="openPopup('register')">
-            Đăng ký
+          <button
+            class="cooperate-btn"
+            onclick="location.href='partnership.html'"
+          >
+            Hợp tác với chúng tôi
           </button>
-          <button class="dang-nhap-btn" onclick="openPopup('login')">
-            Đăng nhập
-          </button>
+          <button class="dang-ky-btn signup" id="registerBtn">Đăng ký</button>
+          <button class="dang-nhap-btn login" id="loginBtn">Đăng nhập</button>
         </div>
 
-        <div id="user-info" style="display: none">
-          <span id="user-email"></span>
-          <!-- Hiển thị email người dùng -->
-          <button id="logoutBtn" style="display: none">Đăng xuất</button>
-          <!-- Nút đăng xuất -->
+        <div
+          id="user-info"
+          class="user-dropdown"
+          style="display: none; position: relative"
+        >
+          <img src="/assets/img/icon/user.svg" alt="user-icon" id="user-icon" />
+          <div id="user-menu" class="dropdown-menu">
+            <a href="#" id="profileLink" class="dropdown-item">Hồ sơ</a>
+            <button id="logoutBtn" class="dropdown-item">Đăng xuất</button>
+          </div>
         </div>
 
         <button
@@ -114,7 +120,11 @@
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="text" placeholder="Nhập địa điểm..." />
+            <input
+              type="text"
+              autocomplete="off"
+              placeholder="Nhập địa điểm..."
+            />
           </div>
           <div class="date-picker">
             <input type="date" class="date1" />
@@ -292,23 +302,18 @@
       </div>
     </section>
     <div id="popup-placeholder"></div>
-    <script>
-      // Popup functionality
+    <script type="module">
+      import { setupPopupEventListeners } from "./assets/js/popup-login.js";
+
       fetch("popup.html")
         .then((response) => response.text())
         .then((data) => {
           document.getElementById("popup-placeholder").innerHTML = data;
+          setupPopupEventListeners();
         });
     </script>
 
-    <script src="assets/js/carousel.js"></script>
-    <script src="assets/js/tabs-location.js"></script>
-
-    <script src="assets/js/popup-login.js"></script>
-    <script src="assets/js/toggle-mobile-menu.js"></script>
-    
-    <script src="assets/js/slide.js"></script>
-
-    <script src="assets/js/login.js"></script>
+    <script type="module" src="assets/js/role-redirect.js"></script>
+    <script type="module" src="assets/js/main.js"></script>
   </body>
 </html>
