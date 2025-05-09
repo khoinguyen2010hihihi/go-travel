@@ -118,7 +118,7 @@ public class RoomController {
     @GetMapping("/{roomId}/images")
     public ResponseEntity<List<RoomImageResponse>> getRoomImagesByRoomId(@PathVariable Long roomId) {
         List<RoomImageResponse> roomImages = roomImageService.getRoomImagesByRoomId(roomId);
-        return ResponseEntity.ok(roomImages); // Trả về danh sách ảnh của phòng
+        return ResponseEntity.ok(roomImages); 
     }
 }
 

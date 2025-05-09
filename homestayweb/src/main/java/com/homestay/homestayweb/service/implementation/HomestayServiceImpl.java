@@ -63,7 +63,7 @@ public class HomestayServiceImpl implements HomestayService {
                 .district(request.getDistrict())
                 .description(request.getDescription())
                 .surfRating(0.0)
-                .approveStatus(request.getApproveStatus())
+                .approveStatus("PENDING")
                 .approvedBy(request.getApprovedBy())
                 .contactInfo(request.getContactInfo())
                 .host(user) // Gán host
@@ -144,7 +144,7 @@ public class HomestayServiceImpl implements HomestayService {
 
     @Override
     public List<HomestayResponse> getHomestayByHost(Long id) {
-        List<Homestay> homestays = homestayRepository.findByHost_Id(id);
+        List<Homestay> homestays = homestayRepository.findByHost_IdAndApproveStatus(id,"ACCEPTED");
         return homestays.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
@@ -185,6 +185,15 @@ public class HomestayServiceImpl implements HomestayService {
     public Homestay findEntityById(Long id) {
         return homestayRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Homestay not found"));
+    }
+
+    @Override
+    public HomestayResponse rejectHomestay(Long id) {
+        Homestay homestay = homestayRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Homestay not found"));
+        homestay.setApproveStatus("REJECTED");
+        homestayRepository.save(homestay);
+        return mapToResponse(homestay);
     }
 
     private void checkOwnership(Homestay homestay) {

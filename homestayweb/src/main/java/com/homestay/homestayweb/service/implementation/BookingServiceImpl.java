@@ -65,7 +65,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponse pendingBooking(Long id) {
         Booking book = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: " + id));
-        book.setBookingStatus("ACCPEPTED");
+        book.setBookingStatus("ACCEPTED");
         bookingRepository.save(book);
         return mapToResponse(book);
     }
@@ -88,8 +88,22 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingResponse> getBookingsByUserId(Long userId) {
-        return bookingRepository.findByUser_Id(userId).stream()
+    public List<BookingResponse> getAcceptedBookingsByUserId(Long userId) {
+        return bookingRepository.findByUser_IdAndBookingStatus(userId,"ACCEPTED").stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookingResponse> getRejectedBookingsByUserId(Long userId) {
+        return bookingRepository.findByUser_IdAndBookingStatus(userId,"REJECTED").stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookingResponse> getPendingBookingsByUserId(Long userId) {
+        return bookingRepository.findByUser_IdAndBookingStatus(userId,"PENDING").stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }

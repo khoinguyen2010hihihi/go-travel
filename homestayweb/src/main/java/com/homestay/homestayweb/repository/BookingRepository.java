@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    List<Booking> findByUser_Id(Long userId);
+    List<Booking> findByUser_IdAndBookingStatus(Long userId, String status);
     List<Booking> findByRoom_RoomId(Long roomId);
     @Query("SELECT b FROM Booking b WHERE b.room.homestay.host.id = :hostId AND b.bookingStatus = 'PENDING'")
     List<Booking> findPendingByHostId(@Param("hostId") Long hostId);

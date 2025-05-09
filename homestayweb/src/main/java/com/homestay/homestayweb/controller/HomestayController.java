@@ -89,6 +89,12 @@ public class HomestayController {
         return ResponseEntity.ok(homestayService.pendingHomestay(id));
     }
 
+    @PutMapping("/admin/reject/{id}")
+    @PreAuthorize("hasAuthority('ADMIN_ACCESS')")
+    public ResponseEntity<HomestayResponse> reject(@PathVariable Long id) {
+        return ResponseEntity.ok(homestayService.rejectHomestay(id));
+    }
+
     @GetMapping("/slide/{district}")
     public ResponseEntity<List<HomestayResponse>> getAllByDistrict(@PathVariable String district, String status) {
         return ResponseEntity.ok(homestayService.getAllByDistrict(district,status));

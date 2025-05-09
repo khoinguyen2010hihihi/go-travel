@@ -27,9 +27,19 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.getBookingById(id));
     }
 
-    @GetMapping("/customer/{id}")
-    public ResponseEntity<List<BookingResponse>> getByCustomer(@PathVariable Long id){
-        return ResponseEntity.ok(bookingService.getBookingsByUserId(id));
+    @GetMapping("/pending/customer/{id}")
+    public ResponseEntity<List<BookingResponse>> getPendingBookingByCustomer(@PathVariable Long id){
+        return ResponseEntity.ok(bookingService.getPendingBookingsByUserId(id));
+    }
+
+    @GetMapping("/accepted/customer/{id}")
+    public ResponseEntity<List<BookingResponse>> getAcceptedBookingByCustomer(@PathVariable Long id){
+        return ResponseEntity.ok(bookingService.getAcceptedBookingsByUserId(id));
+    }
+
+    @GetMapping("/rejected/customer/{id}")
+    public ResponseEntity<List<BookingResponse>> getRejectedBookingByCustomer(@PathVariable Long id){
+        return ResponseEntity.ok(bookingService.getRejectedBookingsByUserId(id));
     }
 
     @PostMapping

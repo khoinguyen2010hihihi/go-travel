@@ -15,7 +15,9 @@ public interface BookingService {
     BookingResponse rejectBooking(Long id);
 
     void deleteBooking(Long id);
-    List<BookingResponse> getBookingsByUserId(Long userId);
+    List<BookingResponse> getPendingBookingsByUserId(Long userId);
+    List<BookingResponse> getAcceptedBookingsByUserId(Long userId);
+    List<BookingResponse> getRejectedBookingsByUserId(Long userId);
     List<BookingResponse> getBookingsByRoomId(Long roomId);
     List<BookingResponse> getBookingsForHost(Long hostId);
 }

@@ -11,10 +11,12 @@ import java.util.Optional;
 public interface HomestayRepository extends JpaRepository<Homestay, Long> {
     List<Homestay> findByApproveStatus(String approveStatus);
 //    boolean ex(String contactInfo);
-    List<Homestay> findByHost_Id(Long istsByContactInfohostId);
+    List<Homestay> findByHost_Id(Long id);
     boolean existsByStreetAndWardAndDistrict(String street, String ward, String district);
 
     List<Homestay> findByDistrictAndApproveStatus(String district,String status);
 
     boolean existsByContactInfo(String contactInfo);
+
+    List<Homestay> findByHost_IdAndApproveStatus(Long id, String status);
 }
