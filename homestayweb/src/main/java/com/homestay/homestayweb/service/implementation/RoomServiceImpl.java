@@ -38,7 +38,7 @@ public class RoomServiceImpl implements RoomService {
                 .price(request.getPrice())
                 .availability(true)
                 .features(request.getFeatures())
-                .roomStatus("PENDING")
+                .roomStatus("ACCEPTED")
                 .build();
 
         roomRepository.save(room);
