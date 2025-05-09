@@ -64,6 +64,8 @@ public class SecurityConfiguration {
 
                         .requestMatchers(HttpMethod.POST,"/api/bookings/**").hasAuthority("USER_ACCESS")
 
+                        .requestMatchers(HttpMethod.GET,"/api/payment/**").hasAuthority("USER_ACCESS")
+
                         // All other endpoints require authentication
                         .anyRequest().authenticated()
                 )
