@@ -124,13 +124,11 @@ function setupValidation() {
       }
 
       if (isValid) {
-        // Lấy giá trị input
         const username = registerName.value.trim();
         const email = registerEmail.value.trim();
         const password = registerPassword.value;
 
-        const pageRole = document.body.dataset.role; // "user" hoặc "host"
-        const roles = pageRole === "host" ? ["ROLE_HOST"] : ["ROLE_USER"];
+        const roles = ["host"];
 
         registerUser(username, email, password, roles)
           .then((message) => {

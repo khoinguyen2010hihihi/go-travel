@@ -299,16 +299,16 @@ function handleApprove(event) {
     }
   )
     .then((response) => {
-      if (!response.ok) throw new Error("Lỗi khi approve booking");
+      if (!response.ok) throw new Error("Lỗi khi duyệt booking");
       return response.json();
     })
     .then((data) => {
-      alert("Đã approve booking thành công!");
-      loadPendingBookings(); // Refresh danh sách
+      alert("Đã duyệt thành công!");
+      loadPendingBookings();
     })
     .catch((error) => {
       console.error("Lỗi:", error);
-      alert("Có lỗi xảy ra khi approve booking");
+      alert("Có lỗi xảy ra khi duyệt");
     });
 }
 

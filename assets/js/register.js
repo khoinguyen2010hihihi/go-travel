@@ -121,7 +121,7 @@ function setupValidation() {
         const email = registerEmail.value.trim();
         const password = registerPassword.value;
 
-        const pageRole = document.body.dataset.role; // "user" hoặc "host"
+        const pageRole = document.body.dataset.role;
         const roles = pageRole === "host" ? ["ROLE_HOST"] : ["ROLE_USER"];
 
         registerUser(username, email, password, roles)
@@ -156,7 +156,7 @@ function registerUser(username, email, password, roles) {
         }
       });
     }
-    return res.text(); 
+    return res.text();
   });
 }
 
