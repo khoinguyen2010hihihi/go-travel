@@ -54,59 +54,20 @@
         >
           <img src="/assets/img/icon/user.svg" alt="user-icon" id="user-icon" />
           <div id="user-menu" class="dropdown-menu">
-            <a href="profile.html" class="dropdown-item">Hồ sơ</a>
-            <a href="my-booking.html" id="homestayLink" class="dropdown-item"
-              >Homestay</a
-            >
+            <a href="#" id="profileLink" class="dropdown-item">Hồ sơ</a>
             <button id="logoutBtn" class="dropdown-item">Đăng xuất</button>
           </div>
-        </div>
-
-        <button
-          class="mobile-menu-toggle"
-          aria-label="Toggle menu"
-          aria-expanded="false"
-        >
-          <i class="ti-menu"></i>
-        </button>
-
-        <div class="mobile-menu">
-          <a href="#" class="mobile-menu-link mobile-nav-link">TRANG CHỦ</a>
-          <a href="homestay.html" class="mobile-menu-link mobile-nav-link"
-            >HOMESTAYS</a
-          >
-          <a href="about.html" class="mobile-menu-link mobile-nav-link"
-            >VỀ CHÚNG TÔI</a
-          >
-          <a href="contact.html" class="mobile-menu-link mobile-nav-link"
-            >LIÊN HỆ</a
-          >
-          <hr class="mobile-menu-divider" />
-          <a href="partnership.html" class="mobile-menu-link"
-            >Hợp tác với chúng tôi</a
-          >
-          <button
-            class="mobile-menu-btn"
-            onclick="openPopup('register'); closeMobileMenu();"
-          >
-            Đăng ký
-          </button>
-          <button
-            class="mobile-menu-btn"
-            onclick="openPopup('login'); closeMobileMenu();"
-          >
-            Đăng nhập
-          </button>
         </div>
       </div>
     </header>
 
-    <!-- Sidebar Menu -->
-    <aside class="sidebar">
-      <nav class="nav">
+    <div class="container">
+      <!-- Sidebar Menu -->
+
+      <div class="sidebar">
+        <h2>Tài khoản của tôi</h2>
         <ul>
-          <!-- <li><a href="#">Đơn đặt chỗ của tôi</a></li> -->
-          <h3>Đơn đặt chỗ của tôi</h3>
+          <li><a href="#">Đơn đặt chỗ của tôi</a></li>
           <li><a href="#">Khách Sạn</a></li>
           <li><a href="#">Hoạt động</a></li>
           <li><a href="#">Tin nhắn từ chỗ nghỉ</a></li>
@@ -114,13 +75,10 @@
           <li><a href="#">Tiền GoTravel</a></li>
           <li><a href="#">Hồ sơ</a></li>
         </ul>
-      </nav>
-    </aside>
+      </div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <div class="container">
-        <!-- Tabs for Upcoming, Completed, and Canceled -->
+      <!-- Main Content -->
+      <div class="main-content">
         <div class="tabs">
           <button class="tab-btn active" onclick="openTab('upcoming')">
             Sắp tới
@@ -171,7 +129,7 @@
           </p>
         </div>
       </div>
-    </main>
+    </div>
     <script>
       function openTab(tabId) {
         // Ẩn tất cả nội dung tab
@@ -355,5 +313,6 @@
       });
     </script>
     <script type="module" src="assets/js/main.js"></script>
+    <script type="module" src="assets/js/role-redirect.js"></script>
   </body>
 </html>

@@ -2,364 +2,10 @@
 <html lang="vi">
     <head>
         <meta charset="UTF-8" />
-        <title>Quản lý Homestay</title>
+        <title>Bảng điều khiển</title>
         <link rel="stylesheet" href="assets/css/header.css" />
         <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css" />
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                align-items: stretch;
-            }
-
-            .user-icon-container {
-                position: relative;
-                display: inline-block;
-            }
-
-            .user-icon img {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                cursor: pointer;
-            }
-
-            .user-dropdown {
-                display: none;
-                position: absolute;
-                right: 0;
-                top: 46px;
-                background-color: white;
-                border: 1px solid #ddd;
-                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                width: 160px;
-                z-index: 1000;
-            }
-
-            .user-dropdown li {
-                border-bottom: 1px solid #eee;
-            }
-
-            .user-dropdown li a {
-                display: block;
-                padding: 10px 15px;
-                text-decoration: none;
-                color: #333;
-                transition: background 0.3s;
-            }
-
-            .user-dropdown li a:hover {
-                background-color: #f0f0f0;
-            }
-
-            .sidebar {
-                width: 250px;
-                background-color: #2c3e50;
-                color: #ecf0f1;
-                height: 100vh;
-                overflow-y: auto;
-                padding: 20px;
-                margin-top: 60px;
-                padding-bottom: 35px;
-            }
-
-            .sidebar h2 {
-                margin-top: 0;
-                font-size: 22px;
-                text-align: center;
-            }
-
-            .sidebar ul {
-                list-style: none;
-                padding: 0;
-            }
-
-            .sidebar ul li {
-                margin: 8px 0;
-            }
-
-            .sidebar ul li a {
-                color: #ecf0f1;
-                text-decoration: none;
-                padding: 10px;
-                border-radius: 6px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .sidebar ul li a:hover {
-                background-color: #3b4d61;
-                color: #1abc9c;
-            }
-
-            .sidebar ul li a::before {
-                content: "🏠";
-            }
-
-            .sidebar ul li ul {
-                display: none;
-                padding-left: 20px;
-            }
-
-            .sidebar ul li ul li a::before {
-                content: "🛏️";
-            }
-
-            .main-content {
-                flex: 1;
-                padding: 30px;
-                margin-top: 60px;
-            }
-
-            .arrow-icon {
-                margin-left: auto;
-                transition: transform 0.3s ease;
-                font-size: 14px;
-            }
-
-            /* Khi mở ra */
-            .parent-toggle.open .arrow-icon {
-                transform: rotate(180deg); /* Xoay lên */
-            }
-
-            .room-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-
-            .room-table th,
-            .room-table td {
-                border: 1px solid #ccc;
-                padding: 10px;
-                text-align: center;
-            }
-
-            .room-table th {
-                background-color: #f5f5f5;
-            }
-
-            .btn {
-                padding: 5px 10px;
-                margin: 2px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 0.9rem;
-            }
-
-            .btn-view {
-                background-color: #007bff;
-                color: white;
-            }
-
-            .btn-edit {
-                background-color: #ffc107;
-                color: white;
-            }
-
-            .btn-delete {
-                background-color: #dc3545;
-                color: white;
-            }
-
-            .btn:hover {
-                opacity: 0.9;
-            }
-
-            .form-group {
-                margin-bottom: 15px;
-            }
-
-            .form-group input[type="text"],
-            .form-group input[type="number"],
-            .form-group input[type="file"] {
-                width: 90%;
-                padding: 8px;
-                margin-top: 5px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            }
-
-            .btn-add {
-                background-color: #28a745;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-
-            .btn-add:hover {
-                background-color: #218838;
-            }
-
-            .tab-content {
-                display: none;
-                animation: fadeIn 0.3s ease-in-out;
-            }
-
-            .tab-content.active {
-                display: block !important;
-            }
-
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
-            }
-
-            #default-content {
-                text-align: center;
-            }
-
-            #default-content img {
-                width: 120px;
-                margin-bottom: 20px;
-            }
-
-            .card-box {
-                position: relative;
-                background-color: #ffffff;
-                border-radius: 8px;
-                padding: 25px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                margin-bottom: 30px;
-                animation: fadeIn 0.3s ease-in-out;
-            }
-
-            .close-btn {
-                position: absolute;
-                top: 12px;
-                right: 15px;
-                background: transparent;
-                color: #888;
-                border: none;
-                font-size: 30px;
-                cursor: pointer;
-                transition: color 0.2s ease;
-            }
-
-            .close-btn:hover {
-                color: #1abc9c; /* Màu xanh mint nhẹ – đồng bộ với highlight */
-            }
-
-            .tab-link.active-tab {
-                color: #1abc9c;
-                font-weight: bold;
-            }
-
-            .homestay-toggle.active-homestay {
-                color: #1abc9c;
-                font-weight: bold;
-            }
-
-            /* =================== GIAO DIỆN THÊM PHÒNG =================== */
-            .card-box h2 {
-                margin-bottom: 20px;
-                font-size: 22px;
-                color: #333;
-            }
-
-            .form-layout {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 25px;
-            }
-
-            .form-section {
-                background-color: #f9f9f9;
-                padding: 20px;
-                border-radius: 8px;
-                border: 1px solid #ddd;
-            }
-
-            .form-section h4 {
-                margin-bottom: 15px;
-                color: #444;
-                font-size: 18px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .form-group label {
-                display: block;
-                margin-bottom: 6px;
-                font-weight: 500;
-                color: #444;
-            }
-
-            .form-group input[type="radio"],
-            .form-group input[type="checkbox"] {
-                margin-right: 8px;
-            }
-
-            .form-group input[type="number"],
-            .form-group input[type="file"] {
-                width: 50%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 6px;
-                transition: border-color 0.3s;
-            }
-
-            .form-group input[type="file"] {
-                border: none;
-            }
-
-            .form-group input:focus {
-                border-color: #1abc9c;
-                outline: none;
-            }
-
-            .checkbox-group label,
-            .radio-group label {
-                display: block;
-                margin-bottom: 6px;
-                cursor: pointer;
-            }
-
-            .btn-add {
-                margin-top: 20px;
-                width: fit-content;
-                padding: 12px 24px;
-                font-size: 16px;
-                background-color: #1abc9c;
-                color: white;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-            }
-
-            .btn-add:hover {
-                background-color: #17a88a;
-            }
-
-            #preview-container {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                margin-top: 10px;
-            }
-
-            #preview-container img {
-                width: 100px;
-                height: 100px;
-                object-fit: cover;
-                border: 1px solid #ccc;
-                border-radius: 6px;
-            }
-        </style>
+        <link rel="stylesheet" href="assets/css/host-dashboard.css" />
     </head>
     <body>
         <header>
@@ -381,125 +27,142 @@
                         </nav>
                     </div>
                 </div>
-                <div class="btns desktop-btns">
-                    <div class="user-icon-container">
-                        <div class="user-icon" onclick="toggleUserMenu()">
-                            <img src="assets/img/avt.jpg" alt="User" />
-                        </div>
-                        <ul class="user-dropdown" id="userDropdown">
-                            <li><a href="#">Trang cá nhân</a></li>
-                            <li><a href="#">Đăng xuất</a></li>
-                        </ul>
-                    </div>
+
+                <div class="btns desktop-btns" id="auth-buttons">
+                    <button class="cooperate-btn" onclick="location.href='partnership.html'">Hợp tác với chúng tôi</button>
+                    <button class="dang-ky-btn signup" id="registerBtn">Đăng ký</button>
+                    <button class="dang-nhap-btn login" id="loginBtn">Đăng nhập</button>
                 </div>
 
-                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
-                    <i class="ti-menu"></i>
-                </button>
-
-                <div class="mobile-menu">
-                    <a href="trang-chu.html" class="mobile-menu-link">TRANG CHỦ</a>
-                    <a href="homestay.html" class="mobile-menu-link">HOMESTAYS</a>
-                    <a href="about.html" class="mobile-menu-link">VỀ CHÚNG TÔI</a>
-                    <a href="contact.html" class="mobile-menu-link">LIÊN HỆ</a>
-                    <hr class="mobile-menu-divider" />
-                    <a href="partnership.html" class="mobile-menu-link">Hợp tác với chúng tôi</a>
-                    <a href="#">Trang cá nhân</a>
-                    <a href="#">Đăng xuất</a>
+                <div id="user-info" class="user-dropdown" style="display: none; position: relative">
+                    <img src="/assets/img/icon/user.svg" alt="user-icon" id="user-icon" />
+                    <div id="user-menu" class="dropdown-menu">
+                        <a href="#" id="profileLink" class="dropdown-item">Hồ sơ</a>
+                        <button id="logoutBtn" class="dropdown-item">Đăng xuất</button>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <div class="sidebar">
-            <h2>Dashboard</h2>
-            <ul>
-                <li>
-                    <a href="#" class="parent-toggle">
-                        Quản lý Homestay
-                        <span class="arrow-icon">▼</span>
-                    </a>
-                    <ul class="homestay-list" style="display: none"></ul>
-                </li>
-            </ul>
-        </div>
-
-        <div class="main-content">
-            <div id="default-content" class="tab-content active">
-                <img src="https://cdn-icons-png.flaticon.com/512/706/706797.png" alt="Welcome" />
-                <h2>Chào mừng bạn đến với Trung tâm quản lý Homestay!</h2>
-                <p>Hãy chọn homestay để quản lý.</p>
+        <div class="container">
+            <!-- Sidebar Menu -->
+            <div class="sidebar">
+                <h2>Bảng điều khiển Host</h2>
+                <ul>
+                    <li>
+                        <a href="#" class="parent-toggle">Quản lý Homestay<span class="arrow-icon">▼</span> </a>
+                        <ul class="homestay-list" style="display: none"></ul>
+                    </li>
+                    <li>
+                        <a href="#" class="tab-link" data-tab="manage-bookings">Quản lý đơn đặt phòng</a>
+                    </li>
+                </ul>
             </div>
-            <div>
-                <div id="view-all-room" class="tab-content">
-                    <div class="card-box">
-                        <button class="close-btn" onclick="returnToDefault()">×</button>
-                        <h2>Danh sách tất cả phòng</h2>
-                        <table class="room-table">
-                            <thead>
-                                <tr>
-                                    <th>Mã phòng</th>
-                                    <th>Loại phòng</th>
-                                    <th>Giá</th>
-                                    <th>Trạng thái</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-                <div id="view-all-pending-room" class="tab-content">
-                    <div class="card-box">
-                        <button class="close-btn" onclick="returnToDefault()">×</button>
-                        <h2>Danh sách tất cả phòng</h2>
-                        <table class="room-table">
-                            <thead>
-                                <tr>
-                                    <th>Mã phòng</th>
-                                    <th>Loại phòng</th>
-                                    <th>Giá</th>
-                                    <th>Trạng thái</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-                <div id="add-room" class="tab-content" style="display: none">
-                    <div class="card-box">
-                        <button class="close-btn" onclick="returnToDefault()">×</button>
-                        <h2>Thêm phòng mới</h2>
-                        <div class="form-group">
-                            <label><strong>Loại phòng:</strong></label
-                            ><br />
-                            <label><input type="radio" name="RoomType" value="Single" /> Single Room</label><br />
-                            <label><input type="radio" name="RoomType" value="Superior" /> Superior Room</label><br />
-                            <label><input type="radio" name="RoomType" value="Deluxe" /> Deluxe Room</label><br />
-                            <label><input type="radio" name="RoomType" value="Suite" /> Suite Room</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="Price"><strong>Giá phòng (VNĐ):</strong></label>
-                            <input type="number" name="Price" id="Price" required placeholder="Nhập giá..." />
-                        </div>
-                        <div class="form-group">
-                            <label><strong>Tiện nghi:</strong></label
-                            ><br />
-                            <label><input type="checkbox" name="Facilities" value="Wifi" /> Wifi</label><br />
-                            <label><input type="checkbox" name="Facilities" value="Máy lạnh" /> Máy lạnh</label><br />
-                            <label><input type="checkbox" name="Facilities" value="TV" /> TV</label><br />
-                            <label><input type="checkbox" name="Facilities" value="Ban công" /> Ban công</label><br />
-                            <label><input type="checkbox" name="Facilities" value="Tủ lạnh" /> Tủ lạnh</label>
-                        </div>
 
-                        <!-- Anh (chua co) -->
-                        <div class="form-group">
-                            <label for="Image"><strong>Ảnh phòng:</strong></label>
-                            <input type="file" name="Image" id="Image" accept="image/*" multiple />
-                            <div id="preview-container"></div>
+            <!-- Main Content -->
+            <div class="main-content">
+                <div id="default-content" class="tab-content active">
+                    <img src="https://cdn-icons-png.flaticon.com/512/706/706797.png" alt="Welcome" />
+                    <h1>Chào mừng bạn đến với GoTravel</h1>
+                    <h3>Host Dashboard</h3>
+                </div>
+
+                <div>
+                    <div id="view-all-room" class="tab-content">
+                        <div class="card-box">
+                            <button class="close-btn" onclick="returnToDefault()">×</button>
+                            <h2>Danh sách tất cả phòng</h2>
+                            <table class="room-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã phòng</th>
+                                        <th>Loại phòng</th>
+                                        <th>Giá</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
-                        <input type="hidden" name="homestayId" id="HomestayId" />
-                        <button type="button" class="btn btn-add" id="submit-room">Thêm phòng</button>
+                    </div>
+                    <div id="view-all-pending-room" class="tab-content">
+                        <div class="card-box">
+                            <button class="close-btn" onclick="returnToDefault()">×</button>
+                            <h2>Danh sách tất cả phòng</h2>
+                            <table class="room-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã phòng</th>
+                                        <th>Loại phòng</th>
+                                        <th>Giá</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="add-room" class="tab-content" style="display: none">
+                        <div class="card-box">
+                            <button class="close-btn" onclick="returnToDefault()">×</button>
+                            <h2>Thêm phòng mới</h2>
+                            <div class="form-group">
+                                <label><strong>Loại phòng:</strong></label
+                                ><br />
+                                <label><input type="radio" name="RoomType" value="Single" /> Single Room</label><br />
+                                <label><input type="radio" name="RoomType" value="Superior" /> Superior Room</label><br />
+                                <label><input type="radio" name="RoomType" value="Deluxe" /> Deluxe Room</label><br />
+                                <label><input type="radio" name="RoomType" value="Suite" /> Suite Room</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="Price"><strong>Giá phòng (VNĐ):</strong></label>
+                                <input type="number" name="Price" id="Price" required placeholder="Nhập giá..." />
+                            </div>
+                            <div class="form-group">
+                                <label><strong>Tiện nghi:</strong></label
+                                ><br />
+                                <label><input type="checkbox" name="Facilities" value="Wifi" /> Wifi</label><br />
+                                <label><input type="checkbox" name="Facilities" value="Máy lạnh" /> Máy lạnh</label><br />
+                                <label><input type="checkbox" name="Facilities" value="TV" /> TV</label><br />
+                                <label><input type="checkbox" name="Facilities" value="Ban công" /> Ban công</label><br />
+                                <label><input type="checkbox" name="Facilities" value="Tủ lạnh" /> Tủ lạnh</label>
+                            </div>
+
+                            <!-- Anh (chua co) -->
+                            <div class="form-group">
+                                <label for="Image"><strong>Ảnh phòng:</strong></label>
+                                <input type="file" name="Image" id="Image" accept="image/*" multiple />
+                                <div id="preview-container"></div>
+                            </div>
+                            <input type="hidden" name="homestayId" id="HomestayId" />
+                            <button type="button" class="btn btn-add" id="submit-room">Thêm phòng</button>
+                        </div>
+                    </div>
+
+                    <div id="manage-bookings" class="tab-content" style="display: none">
+                        <div class="card-box">
+                            <button class="close-btn" onclick="returnToDefault()">×</button>
+                            <h2>Quản lý đơn đặt phòng</h2>
+                            <table class="room-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tên Homestay</th>
+                                        <th>Mã phòng</th>
+                                        <th>Email</th>
+                                        <th>Ngày Check-in</th>
+                                        <th>Ngày Check-out</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Ngày đặt</th>
+                                        <th>Phê duyệt / Từ chối</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dữ liệu đơn đặt phòng sẽ được render ở đây -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -548,28 +211,35 @@
                 });
             });
 
-            // Hiển thị tab khi click
             tabLinks.forEach((link) => {
                 link.addEventListener("click", function (e) {
                     e.preventDefault();
                     const tabId = this.getAttribute("data-tab");
 
-                    // Ẩn tất cả nội dung
-                    tabContents.forEach((tab) => tab.classList.remove("active"));
+                    // Ẩn tất cả nội dung tab
+                    tabContents.forEach((tab) => {
+                        tab.classList.remove("active");
+                        tab.style.display = "none";
+                    });
+
+                    // Bỏ active mặc định
                     defaultContent.classList.remove("active");
+                    defaultContent.style.display = "none";
 
                     // Hiện tab được chọn
-                    document.getElementById(tabId).classList.add("active");
+                    const selectedTab = document.getElementById(tabId);
+                    if (selectedTab) {
+                        selectedTab.classList.add("active");
+                        selectedTab.style.display = "block";
+                    }
 
-                    // Highlight tab con
+                    // Gán lại highlight
                     tabLinks.forEach((l) => l.classList.remove("active-tab"));
                     this.classList.add("active-tab");
 
-                    // Highlight homestay cha
                     homestayToggles.forEach((toggle) => toggle.classList.remove("active-homestay"));
-
-                    const parentHomestay = this.closest("ul.sub-menu").previousElementSibling;
-                    if (parentHomestay && parentHomestay.classList.contains("homestay-toggle")) {
+                    const parentHomestay = this.closest("ul.sub-menu")?.previousElementSibling;
+                    if (parentHomestay?.classList.contains("homestay-toggle")) {
                         parentHomestay.classList.add("active-homestay");
                     }
                 });
@@ -611,6 +281,39 @@
                     }
                 });
             });
+
+            // dữ liệu giả cho danh sách booking
+            const bookings = [
+                {
+                    homestayName: "Biển Xanh Villa",
+                    room_id: "RM101",
+                    email: "khach1@gmail.com",
+                    check_in_date: "2025-05-12",
+                    check_out_date: "2025-05-15",
+                    total_price: 2500000,
+                    created_at: "2025-05-01",
+                },
+                {
+                    homestayName: "Đà Lạt Cozy House",
+                    room_id: "RM202",
+                    email: "nguyen.an@gmail.com",
+                    check_in_date: "2025-06-01",
+                    check_out_date: "2025-06-03",
+                    total_price: 1800000,
+                    created_at: "2025-05-03",
+                },
+                {
+                    homestayName: "Sunset Garden",
+                    room_id: "RM303",
+                    email: "minhhoa@yahoo.com",
+                    check_in_date: "2025-05-20",
+                    check_out_date: "2025-05-22",
+                    total_price: 2200000,
+                    created_at: "2025-05-05",
+                },
+            ];
         </script>
+        <script type="module" src="assets/js/main.js"></script>
+        <script type="module" src="assets/js/role-redirect.js"></script>
     </body>
 </html>
