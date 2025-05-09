@@ -38,7 +38,7 @@ public class RoomServiceImpl implements RoomService {
                 .price(request.getPrice())
                 .availability(true)
                 .features(request.getFeatures())
-                .roomStatus("PENDING")
+                .roomStatus("ACCEPTED")
                 .build();
 
         roomRepository.save(room);
@@ -171,5 +171,9 @@ public class RoomServiceImpl implements RoomService {
         return rooms.stream().map(this::mapToResponse).toList();
     }
 
-
+    @Override
+    public Room getRoomEntityById(Long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+    }
 }

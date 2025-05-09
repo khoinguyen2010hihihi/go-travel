@@ -6,4 +6,5 @@ import com.homestay.homestayweb.entity.HomestayImage;
 public interface HomestayImageService {
     HomestayImage getPrimaryImage(Homestay homestay);
     void saveHomestayImage(HomestayImage homestayImage);
+    void uploadImageForHomestay(Long homestayId, String imageURL);
 }
