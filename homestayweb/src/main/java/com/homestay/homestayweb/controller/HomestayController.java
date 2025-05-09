@@ -1,6 +1,7 @@
 package com.homestay.homestayweb.controller;
 
 import com.homestay.homestayweb.dto.request.HomestayRequest;
+import com.homestay.homestayweb.dto.response.HomestayImageResponse;
 import com.homestay.homestayweb.dto.response.HomestayResponse;
 import com.homestay.homestayweb.entity.Homestay;
 import com.homestay.homestayweb.entity.HomestayImage;
@@ -125,5 +126,11 @@ public class HomestayController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Upload thất bại: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/{homestayId}/images")
+    public ResponseEntity<List<HomestayImageResponse>> getHomestayImagesByHomestayId(@PathVariable Long homestayId) {
+        List<HomestayImageResponse> homestayImages = homestayImageService.getHomestayImageByHomestayId(homestayId);
+        return ResponseEntity.ok(homestayImages);
     }
 }
