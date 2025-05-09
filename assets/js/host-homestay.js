@@ -222,9 +222,11 @@ window.onload = function () {
       })
       .then((data) => {
         console.log("Phòng được thêm thành công:", data);
+        alert("Phòng đã được thêm thành công!");
       })
       .catch((error) => {
         console.error("Lỗi:", error);
+        alert("Đã xảy ra lỗi khi thêm phòng!");
       });
   });
 };
