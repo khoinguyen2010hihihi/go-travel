@@ -21,10 +21,10 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     WHERE r.homestay_id = :homestayId
       AND r.room_status = 'ACCEPTED'
       AND r.room_id NOT IN (
-        SELECT b.room_id FROM booking b
+      SELECT b.room_id FROM booking b
         WHERE b.check_in_date < :checkOutDate
-          AND b.check_out_date > :checkInDate
-          AND b.booking_status = 'ACCEPTED'
+        AND b.check_out_date > :checkInDate
+        AND b.booking_status = 'ACCEPTED'
       )
     """, nativeQuery = true)
     List<Room> findAvailableRooms(
