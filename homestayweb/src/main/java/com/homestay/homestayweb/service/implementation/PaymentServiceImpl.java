@@ -50,17 +50,16 @@ public class PaymentServiceImpl implements PaymentService {
         vnp_Params.put("vnp_OrderInfo", orderInfo); // Đã được xử lý giá trị mặc định
         vnp_Params.put("vnp_OrderType", orderType); // Đã được xử lý giá trị mặc định
         vnp_Params.put("vnp_ReturnUrl", vnpayConfig.getVnp_ReturnUrl());
-        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+        vnp_Params.put("vnp_IpAddr", "14.160.92.123");
         vnp_Params.put("vnp_Locale", (language == null || language.isEmpty()) ? "vn" : language);
 
-        // Xử lý thời gian
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         formatter.setTimeZone(TimeZone.getTimeZone("Etc/GMT+7"));
         Calendar calendar = Calendar.getInstance();
 
         vnp_Params.put("vnp_CreateDate", formatter.format(calendar.getTime()));
-        calendar.add(Calendar.MINUTE, 30);
-        vnp_Params.put("vnp_ExpireDate", formatter.format(calendar.getTime()));
+        calendar.add(Calendar.MINUTE, 45);
+//        vnp_Params.put("vnp_ExpireDate", formatter.format(calendar.getTime()));
 
         // Thêm bankCode nếu có
         if (bankCode != null && !bankCode.isEmpty()) {

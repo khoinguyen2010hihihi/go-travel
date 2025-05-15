@@ -31,8 +31,8 @@ payment:
   vnPay:
     url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
     returnUrl: "http://127.0.0.1:5500/homestay.html"
-    tmnCode: "J1XSB7FS"
-    secretKey: "TXQIMTJM56AKEQOT4HFFBESP4JPJ0EJN"
+    tmnCode: "LQXA5GI7"
+    secretKey: "A28G1KEYXT6M841R8H55SXR0QEMU8T0D"
     version: "2.1.0"
     command: "pay"
     orderType: "other"
