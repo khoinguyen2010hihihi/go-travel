@@ -150,6 +150,18 @@ public class HomestayServiceImpl implements HomestayService {
                 .collect(Collectors.toList());
     }
 
+    public List<HomestayResponse> getMyHomestays() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof UserDetailsImpl userDetails)) {
+            throw new ForbiddenException("Bạn chưa đăng nhập hoặc token không hợp lệ");
+        }
+
+        List<Homestay> homestays = homestayRepository.findByHost_Id(userDetails.getId());
+        return homestays.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public List<HomestayResponse> getAllPendingHomestays() {
         List<Homestay> homestays = homestayRepository.findByApproveStatus("PENDING");

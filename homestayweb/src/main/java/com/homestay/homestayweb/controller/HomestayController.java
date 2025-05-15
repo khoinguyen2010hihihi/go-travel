@@ -74,9 +74,7 @@ public class HomestayController {
 
     @GetMapping("/my")
     public ResponseEntity<List<HomestayResponse>> getMyHomestays() {
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<HomestayResponse> homestays = homestayService.getHomestaysByHostId(userDetails.getId());
-        return ResponseEntity.ok(homestays);
+        return ResponseEntity.ok(homestayService.getMyHomestays());
     }
 
     @GetMapping("/host/{host_id}")
