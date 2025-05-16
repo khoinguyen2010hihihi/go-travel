@@ -444,15 +444,14 @@ if (!homestayId) {
           if (!res.ok) throw new Error("Đặt phòng thất bại");
           return res.json();
         })
-        .then((data) => {
+        .then((bookingData) => {
           alert("Đặt phòng thành công!");
           window.timer = null;
-
-          // Lấy giá từ biến `r.price` hoặc truyền từ nơi gọi
-          const roomPrice = data.price || 1000000; // hoặc lấy từ object `r` nếu có
           
-          fetch("http://localhost:8080/homestay/api/payment/vnpay?amount=1000000&bankCode=NCB",{
-            method: "GET",
+          const bookingId = bookingData.bookingId;
+
+          fetch(`http://localhost:8080/homestay/api/payment/vnpay/create-url/${bookingId}`,{
+            method: "POST",
           headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -463,7 +462,7 @@ if (!homestayId) {
               return res.json();
             })
             .then((paymentData) => {
-              const paymentUrl = paymentData.data.paymentUrl;
+              const paymentUrl = paymentData.url;
               if (paymentUrl) {
                 window.location.href = paymentUrl;
               } else {
