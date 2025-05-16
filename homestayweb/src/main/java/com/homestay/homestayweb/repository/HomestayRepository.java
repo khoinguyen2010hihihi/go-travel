@@ -25,9 +25,11 @@ public interface HomestayRepository extends JpaRepository<Homestay, Long> {
 
     @Query(value = """
     SELECT DISTINCT h.* FROM homestay h
-    WHERE h.homestay_id IN (
+    WHERE h.approve_status = 'ACCEPTED'
+    AND h.homestay_id IN (
         SELECT r.homestay_id FROM room r
-        WHERE (:roomType IS NULL OR r.room_type LIKE CONCAT('%', :roomType, '%'))
+        WHERE r.room_status = 'ACCEPTED'
+        AND (:roomType IS NULL OR r.room_type LIKE CONCAT('%', :roomType, '%'))
           AND (:priceFrom IS NULL OR r.price >= :priceFrom)
           AND (:priceTo IS NULL OR r.price <= :priceTo)
           AND (:features IS NULL OR r.features LIKE CONCAT('%', :features, '%'))
@@ -38,7 +40,7 @@ public interface HomestayRepository extends JpaRepository<Homestay, Long> {
                   SELECT b.room_id FROM booking b
                   WHERE b.check_in_date < :checkOutDate
                     AND b.check_out_date > :checkInDate
-                    AND b.booking_status != 'CANCELLED' -- Nếu có trường status
+                    AND b.booking_status = 'ACCEPTED' -- Nếu có trường status
               )
           )
     )

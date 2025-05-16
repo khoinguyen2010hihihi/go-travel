@@ -54,12 +54,12 @@ public class PaymentServiceImpl implements PaymentService {
         vnp_Params.put("vnp_Locale", (language == null || language.isEmpty()) ? "vn" : language);
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        formatter.setTimeZone(TimeZone.getTimeZone("Etc/GMT+7"));
+        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         Calendar calendar = Calendar.getInstance();
 
         vnp_Params.put("vnp_CreateDate", formatter.format(calendar.getTime()));
         calendar.add(Calendar.MINUTE, 45);
-//        vnp_Params.put("vnp_ExpireDate", formatter.format(calendar.getTime()));
+        vnp_Params.put("vnp_ExpireDate", formatter.format(calendar.getTime()));
 
         // Thêm bankCode nếu có
         if (bankCode != null && !bankCode.isEmpty()) {

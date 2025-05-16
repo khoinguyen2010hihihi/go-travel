@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -224,11 +226,11 @@ public class HomestayServiceImpl implements HomestayService {
             String features, LocalDate checkInDate, LocalDate checkOutDate,
             Double surfRating, String location) {
 
-        // Gọi repository lấy danh sách HomestayEntity
+//        List<String> featureList = parseFeatures(features);
+
         List<Homestay> homestays = homestayRepository.searchHomestays(
                 roomType, priceFrom, priceTo, features, checkInDate, checkOutDate, surfRating, location);
 
-        // Chuyển thành DTO HomestayResponse
         List<HomestayResponse> results = new ArrayList<>();
         for (Homestay h : homestays) {
             HomestayResponse dto = HomestayResponse.builder()
@@ -241,9 +243,18 @@ public class HomestayServiceImpl implements HomestayService {
                     .contactInfo(h.getContactInfo())
                     .approveStatus(h.getApproveStatus())
                     .build();
-
             results.add(dto);
         }
         return results;
+    }
+
+    private List<String> parseFeatures(String features) {
+        if (features == null || features.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        return Arrays.stream(features.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toList());
     }
 }
