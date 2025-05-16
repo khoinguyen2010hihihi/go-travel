@@ -24,72 +24,73 @@ public class PaymentServiceImpl implements PaymentService {
         Map<String, String> vnp_Params = new HashMap<>();
 
         int amount = Integer.parseInt(request.getParameter("amount")) * 100;
-        String bankCode = request.getParameter("bankcode");
-        String orderType = request.getParameter("ordertype");
-        String orderInfo = request.getParameter("orderInfo");
-        String language = request.getParameter("language");
+        String bankCode = request.getParameter("bankCode");
+        String orderType = Optional.ofNullable(request.getParameter("ordertype")).orElse("other");
+        String orderInfo = Optional.ofNullable(request.getParameter("orderInfo")).orElse("Thanh toan dich vu");
+        String language = Optional.ofNullable(request.getParameter("language")).orElse("vn");
         String vnp_TxnRef = String.valueOf(new Random().nextInt(99999999));
         String vnp_IpAddr = VNPayUtil.getIpAddress(request);
 
-        // Thêm giá trị mặc định nếu orderType hoặc orderInfo null/trống
-        if (orderType == null || orderType.isEmpty()) {
-            orderType = "other"; // Giá trị mặc định
-        }
+        // Format thời gian theo Asia/Ho_Chi_Minh
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        Calendar calendar = Calendar.getInstance();
 
-        if (orderInfo == null || orderInfo.isEmpty()) {
-            orderInfo = "Thanh toan dich vu"; // Giá trị mặc định
-        }
+        String createDate = formatter.format(calendar.getTime());
+        calendar.add(Calendar.MINUTE, 15); // Hết hạn sau 15 phút
+        String expireDate = formatter.format(calendar.getTime());
 
-        // Các tham số bắt buộc
+        // Gán các tham số vnp_*
         vnp_Params.put("vnp_Version", "2.1.0");
         vnp_Params.put("vnp_Command", "pay");
         vnp_Params.put("vnp_TmnCode", vnpayConfig.getVnp_TmnCode());
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", orderInfo); // Đã được xử lý giá trị mặc định
-        vnp_Params.put("vnp_OrderType", orderType); // Đã được xử lý giá trị mặc định
+        vnp_Params.put("vnp_OrderInfo", orderInfo);
+        vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_ReturnUrl", vnpayConfig.getVnp_ReturnUrl());
-        vnp_Params.put("vnp_IpAddr", "14.160.92.123");
-        vnp_Params.put("vnp_Locale", (language == null || language.isEmpty()) ? "vn" : language);
+        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+        vnp_Params.put("vnp_Locale", language);
+        vnp_Params.put("vnp_CreateDate", createDate);
+        vnp_Params.put("vnp_ExpireDate", expireDate);
+        vnp_Params.put("vnp_SecureHashType", "SHA512"); // ✅ BẮT BUỘC có dòng này
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        formatter.setTimeZone(TimeZone.getTimeZone("Etc/GMT+7"));
-        Calendar calendar = Calendar.getInstance();
-
-        vnp_Params.put("vnp_CreateDate", formatter.format(calendar.getTime()));
-        calendar.add(Calendar.MINUTE, 45);
-//        vnp_Params.put("vnp_ExpireDate", formatter.format(calendar.getTime()));
-
-        // Thêm bankCode nếu có
         if (bankCode != null && !bankCode.isEmpty()) {
             vnp_Params.put("vnp_BankCode", bankCode);
         }
 
-        // Sắp xếp params và tạo chuỗi hash
+        // Sắp xếp và tạo chuỗi hashData (KHÔNG encode)
         SortedMap<String, String> sortedParams = new TreeMap<>(vnp_Params);
         StringBuilder hashData = new StringBuilder();
-        StringBuilder query = new StringBuilder();
-
         for (Map.Entry<String, String> entry : sortedParams.entrySet()) {
-            String value = entry.getValue();
-            if (value != null && !value.isEmpty()) {
-                String encodedKey = URLEncoder.encode(entry.getKey(), StandardCharsets.US_ASCII);
-                String encodedValue = URLEncoder.encode(value, StandardCharsets.US_ASCII);
-
-                if (hashData.length() > 0) {
-                    hashData.append("&");
-                    query.append("&");
-                }
-
-                hashData.append(entry.getKey()).append("=").append(value);
-                query.append(encodedKey).append("=").append(encodedValue);
+            if (hashData.length() > 0) {
+                hashData.append("&");
             }
+            hashData.append(entry.getKey()).append("=").append(entry.getValue());
         }
 
-        // Tạo chữ ký
+        // Tạo chữ ký SHA512
         String secureHash = VNPayUtil.hmacSHA512(vnpayConfig.getSecretKey(), hashData.toString());
+
+        // Tạo query có encode
+        StringBuilder query = new StringBuilder();
+        for (Map.Entry<String, String> entry : sortedParams.entrySet()) {
+            if (query.length() > 0) {
+                query.append("&");
+            }
+            query.append(URLEncoder.encode(entry.getKey(), StandardCharsets.US_ASCII));
+            query.append("=").append(URLEncoder.encode(entry.getValue(), StandardCharsets.US_ASCII));
+        }
+
+        // Thêm secure hash
         query.append("&vnp_SecureHash=").append(secureHash);
+
+        // In log để debug nếu cần
+        System.out.println("====[VNPay HASH DATA]====");
+        System.out.println(hashData.toString());
+        System.out.println("====[VNPay QUERY URL]====");
+        System.out.println(query.toString());
 
         String paymentUrl = vnpayConfig.getVnp_PayUrl() + "?" + query;
 
