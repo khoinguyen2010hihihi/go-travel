@@ -26,4 +26,4 @@ vnpay:
   tmnCode: Q8CSPVFP
   hashSecret: ZCI8YJYBU5DW2IYHHIA6XDMFJS5WJMB2
   payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
-  returnUrl: http://localhost:8080/api/payment/vnpay-return
+  returnUrl: http://localhost:8080/homestay/api/payment/vnpay-return

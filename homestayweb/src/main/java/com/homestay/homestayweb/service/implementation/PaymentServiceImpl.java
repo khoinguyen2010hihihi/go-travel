@@ -82,16 +82,11 @@ public class PaymentServiceImpl implements PaymentService {
             Booking booking = bookingRepository.findById(bookingId)
                     .orElseThrow(() -> new RuntimeException("Booking not found"));
 
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (!(principal instanceof UserDetailsImpl userDetails)) {
-                throw new RuntimeException("Invalid user session");
-            }
-            User user = userRepository.findById(userDetails.getId())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+            User user = booking.getUser();
 
             Payment payment = Payment.builder()
                     .booking(booking)
-                    .user(user)
+                    .user(booking.getUser())
                     .amount(Double.parseDouble(vnpParams.get("vnp_Amount")) / 100)
                     .paymentMethod("VNPay")
                     .paymentStatus("Completed")
