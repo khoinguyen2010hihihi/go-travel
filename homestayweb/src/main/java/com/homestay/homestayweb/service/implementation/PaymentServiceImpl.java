@@ -1,102 +1,106 @@
 package com.homestay.homestayweb.service.implementation;
 
-import com.homestay.homestayweb.config.VNPAYConfig;
-import com.homestay.homestayweb.dto.response.PaymentResponse;
+import com.homestay.homestayweb.entity.Booking;
+import com.homestay.homestayweb.entity.Payment;
+import com.homestay.homestayweb.entity.User;
+import com.homestay.homestayweb.repository.BookingRepository;
+import com.homestay.homestayweb.repository.PaymentRepository;
+import com.homestay.homestayweb.repository.UserRepository;
+import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.PaymentService;
-import com.homestay.homestayweb.utils.VNPayUtil;
-import jakarta.servlet.http.HttpServletRequest;
+import com.homestay.homestayweb.utils.VnPayUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
+import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
 
-    private final VNPAYConfig vnpayConfig;
+    private final BookingRepository bookingRepository;
+    private final PaymentRepository paymentRepository;
+    private final UserRepository userRepository;
+
+    @Value("${vnpay.tmnCode}")
+    private String vnp_TmnCode;
+
+    @Value("${vnpay.hashSecret}")
+    private String vnp_HashSecret;
+
+    @Value("${vnpay.payUrl}")
+    private String vnp_Url;
+
+    @Value("${vnpay.returnUrl}")
+    private String vnp_ReturnUrl;
 
     @Override
-    public PaymentResponse.VNPayResponse createVnPayPayment(HttpServletRequest request) {
+    public String createVNPayPaymentUrl(Long bookingId, HttpServletRequest request) throws Exception {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        String vnp_TxnRef = String.valueOf(System.currentTimeMillis());
+        String vnp_OrderInfo = "Thanh toan don dat phong #" + bookingId;
+        String orderType = "other";
+        String amount = String.valueOf((long) (booking.getTotalPrice() * 100));
+
+        String vnp_IpAddr = request.getRemoteAddr();
+        String vnp_CreateDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
         Map<String, String> vnp_Params = new HashMap<>();
-
-        int amount = Integer.parseInt(request.getParameter("amount")) * 100;
-        String bankCode = request.getParameter("bankcode");
-        String orderType = request.getParameter("ordertype");
-        String orderInfo = request.getParameter("orderInfo");
-        String language = request.getParameter("language");
-        String vnp_TxnRef = String.valueOf(new Random().nextInt(99999999));
-        String vnp_IpAddr = VNPayUtil.getIpAddress(request);
-
-        // Thêm giá trị mặc định nếu orderType hoặc orderInfo null/trống
-        if (orderType == null || orderType.isEmpty()) {
-            orderType = "other"; // Giá trị mặc định
-        }
-
-        if (orderInfo == null || orderInfo.isEmpty()) {
-            orderInfo = "Thanh toan dich vu"; // Giá trị mặc định
-        }
-
-        // Các tham số bắt buộc
         vnp_Params.put("vnp_Version", "2.1.0");
         vnp_Params.put("vnp_Command", "pay");
-        vnp_Params.put("vnp_TmnCode", vnpayConfig.getVnp_TmnCode());
-        vnp_Params.put("vnp_Amount", String.valueOf(amount));
+        vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
+        vnp_Params.put("vnp_Amount", amount);
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", orderInfo); // Đã được xử lý giá trị mặc định
-        vnp_Params.put("vnp_OrderType", orderType); // Đã được xử lý giá trị mặc định
-        vnp_Params.put("vnp_ReturnUrl", vnpayConfig.getVnp_ReturnUrl());
-        vnp_Params.put("vnp_IpAddr", "14.160.92.123");
-        vnp_Params.put("vnp_Locale", (language == null || language.isEmpty()) ? "vn" : language);
+        vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
+        vnp_Params.put("vnp_OrderType", orderType);
+        vnp_Params.put("vnp_Locale", "vn");
+        vnp_Params.put("vnp_ReturnUrl", vnp_ReturnUrl);
+        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
-        Calendar calendar = Calendar.getInstance();
+        return VnPayUtil.getPaymentUrl(vnp_Params, vnp_HashSecret, vnp_Url);
+    }
 
-        vnp_Params.put("vnp_CreateDate", formatter.format(calendar.getTime()));
-        calendar.add(Calendar.MINUTE, 45);
-        vnp_Params.put("vnp_ExpireDate", formatter.format(calendar.getTime()));
+    @Override
+    @Transactional
+    public String handleVNPayReturn(Map<String, String> vnpParams) {
+        String responseCode = vnpParams.get("vnp_ResponseCode");
+        String bookingIdRaw = vnpParams.get("vnp_OrderInfo").replaceAll("[^0-9]", "");
 
-        // Thêm bankCode nếu có
-        if (bankCode != null && !bankCode.isEmpty()) {
-            vnp_Params.put("vnp_BankCode", bankCode);
-        }
+        if ("00".equals(responseCode)) {
+            Long bookingId = Long.parseLong(bookingIdRaw);
 
-        // Sắp xếp params và tạo chuỗi hash
-        SortedMap<String, String> sortedParams = new TreeMap<>(vnp_Params);
-        StringBuilder hashData = new StringBuilder();
-        StringBuilder query = new StringBuilder();
+            Booking booking = bookingRepository.findById(bookingId)
+                    .orElseThrow(() -> new RuntimeException("Booking not found"));
 
-        for (Map.Entry<String, String> entry : sortedParams.entrySet()) {
-            String value = entry.getValue();
-            if (value != null && !value.isEmpty()) {
-                String encodedKey = URLEncoder.encode(entry.getKey(), StandardCharsets.US_ASCII);
-                String encodedValue = URLEncoder.encode(value, StandardCharsets.US_ASCII);
-
-                if (hashData.length() > 0) {
-                    hashData.append("&");
-                    query.append("&");
-                }
-
-                hashData.append(entry.getKey()).append("=").append(value);
-                query.append(encodedKey).append("=").append(encodedValue);
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (!(principal instanceof UserDetailsImpl userDetails)) {
+                throw new RuntimeException("Invalid user session");
             }
+            User user = userRepository.findById(userDetails.getId())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            Payment payment = Payment.builder()
+                    .booking(booking)
+                    .user(user)
+                    .amount(Double.parseDouble(vnpParams.get("vnp_Amount")) / 100)
+                    .paymentMethod("VNPay")
+                    .paymentStatus("Completed")
+                    .createdAt(new Date())
+                    .build();
+
+            paymentRepository.save(payment);
+            return "Thanh toán thành công cho đơn #" + bookingId;
         }
-
-        // Tạo chữ ký
-        String secureHash = VNPayUtil.hmacSHA512(vnpayConfig.getSecretKey(), hashData.toString());
-        query.append("&vnp_SecureHash=").append(secureHash);
-
-        String paymentUrl = vnpayConfig.getVnp_PayUrl() + "?" + query;
-
-        return PaymentResponse.VNPayResponse.builder()
-                .code("00")
-                .message("Success")
-                .paymentUrl(paymentUrl)
-                .build();
+        return "Thanh toán thất bại hoặc bị hủy";
     }
 }

@@ -1,44 +1,53 @@
 package com.homestay.homestayweb.controller;
 
 import com.homestay.homestayweb.service.PaymentService;
-import com.homestay.homestayweb.dto.response.ResponseObject;
-import com.homestay.homestayweb.dto.response.PaymentResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/payment")
 @RequiredArgsConstructor
 public class PaymentController {
+
     private final PaymentService paymentService;
 
-    @GetMapping("/vnpay")
-    public ResponseObject<PaymentResponse.VNPayResponse> createVnPay(HttpServletRequest req,
-                                                                     @RequestParam long amount,
-                                                                     @RequestParam(required=false) String bankCode) {
-        // amount: số VNĐ, ví dụ 500000
-        // bankCode: optional
-        // Chuyển amount, bankCode vào HttpServletRequest để service dùng
-        req.setAttribute("amount", String.valueOf(amount));
-        if (bankCode != null) req.setAttribute("bankCode", bankCode);
-        PaymentResponse.VNPayResponse resp = paymentService.createVnPayPayment(req);
-        return new ResponseObject<>(HttpStatus.OK, "Success", resp);
+    // Tạo URL thanh toán VNPay cho một booking
+    @PostMapping("/vnpay/create-url/{bookingId}")
+    public ResponseEntity<?> createPayment(@PathVariable Long bookingId,
+                                           HttpServletRequest request) throws Exception {
+        String paymentUrl = paymentService.createVNPayPaymentUrl(bookingId, request);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Redirect to VNPay");
+        response.put("url", paymentUrl);
+
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/vnpay-callback")
-    public ResponseObject<PaymentResponse.VNPayResponse> callback(HttpServletRequest req) {
-        String code = req.getParameter("vnp_ResponseCode");
-        if ("00".equals(code)) {
-            return new ResponseObject<>(HttpStatus.OK, "Thanh toán thành công",
-                    new PaymentResponse.VNPayResponse("00","Success",""));
-        } else {
-            return new ResponseObject<>(HttpStatus.BAD_REQUEST, "Thanh toán thất bại", null);
-        }
+    // VNPay gọi callback URL sau thanh toán
+    @GetMapping("/vnpay-return")
+    public ResponseEntity<?> vnPayReturn(HttpServletRequest request) {
+        Map<String, String> vnpParams = new HashMap<>();
+
+        // Lấy toàn bộ query param từ request
+        request.getParameterMap().forEach((key, value) -> {
+            if (value != null && value.length > 0) {
+                vnpParams.put(key, value[0]);
+            }
+        });
+
+        String result = paymentService.handleVNPayReturn(vnpParams);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", result);
+
+        return ResponseEntity.ok(response);
     }
 }
-

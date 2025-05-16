@@ -1,8 +1,9 @@
 package com.homestay.homestayweb.service;
 
-import com.homestay.homestayweb.dto.response.PaymentResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 public interface PaymentService {
-    PaymentResponse.VNPayResponse createVnPayPayment(HttpServletRequest request);
+    String createVNPayPaymentUrl(Long bookingId, HttpServletRequest request) throws Exception;
+    String handleVNPayReturn(Map<String, String> vnpParams);
 }
