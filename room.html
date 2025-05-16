@@ -146,8 +146,8 @@
     <div class="hero">
       <div class="search-box">
         <div class="date-picker">
-          <input type="date" class="date1" />
-          <input type="date" class="date2" />
+          <input type="date" id="checkInDate" class="date1" />
+          <input type="date" id="checkOutDate" class="date2" />
         </div>
         <button class="search-button">TÌM KIẾM</button>
       </div>
@@ -264,6 +264,13 @@
   </body>
   <div id="popup-placeholder"></div>
   <script type="module">
+
+    const lastDates = JSON.parse(localStorage.getItem('lastSearchDates'));
+    if (lastDates) {
+    document.getElementById('checkInDate').value = lastDates.checkIn;
+    document.getElementById('checkOutDate').value = lastDates.checkOut;
+}
+
     document.querySelector(".search-button").addEventListener("click", function () {
     const checkInDate = document.querySelector(".date1").value;
     const checkOutDate = document.querySelector(".date2").value;
