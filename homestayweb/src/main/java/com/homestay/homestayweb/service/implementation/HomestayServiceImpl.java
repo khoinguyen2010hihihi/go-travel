@@ -160,7 +160,7 @@ public class HomestayServiceImpl implements HomestayService {
             throw new ForbiddenException("Bạn chưa đăng nhập hoặc token không hợp lệ");
         }
 
-        List<Homestay> homestays = homestayRepository.findByHost_Id(userDetails.getId());
+        List<Homestay> homestays = homestayRepository.findByHost_IdAndApproveStatus(userDetails.getId(),"ACCEPTED");
         return homestays.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
