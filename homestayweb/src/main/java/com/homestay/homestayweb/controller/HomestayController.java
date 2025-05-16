@@ -12,6 +12,7 @@ import com.homestay.homestayweb.service.HomestayImageService;
 import com.homestay.homestayweb.service.HomestayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,5 +138,21 @@ public class HomestayController {
     public ResponseEntity<List<HomestayImageResponse>> getHomestayImagesByHomestayId(@PathVariable Long homestayId) {
         List<HomestayImageResponse> homestayImages = homestayImageService.getHomestayImageByHomestayId(homestayId);
         return ResponseEntity.ok(homestayImages);
+    }
+
+    @GetMapping("/search")
+    public List<HomestayResponse> searchHomestays(
+            @RequestParam(required = false) String roomType,
+            @RequestParam(required = false) Double priceFrom,
+            @RequestParam(required = false) Double priceTo,
+            @RequestParam(required = false) String features,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate,
+            @RequestParam(required = false) Double surfRating,
+            @RequestParam(required = false) String location) {
+
+        return homestayService.searchHomestays(
+                roomType, priceFrom, priceTo, features,
+                checkInDate, checkOutDate, surfRating, location);
     }
 }

@@ -11,8 +11,6 @@ public interface BookingService {
     List<BookingResponse> getAllBookings();
     BookingResponse getBookingById(Long id);
     BookingResponse createBooking(BookingRequest request, UserDetailsImpl currentUser);
-    BookingResponse updateBooking(Long id, BookingRequest request);
-    BookingResponse createBooking(BookingRequest request);
     BookingResponse pendingBooking(Long id);
 
     BookingResponse rejectBooking(Long id);
@@ -22,5 +20,5 @@ public interface BookingService {
     List<BookingResponse> getAcceptedBookingsByUserId(Long userId);
     List<BookingResponse> getRejectedBookingsByUserId(Long userId);
     List<BookingResponse> getBookingsByRoomId(Long roomId);
-//    List<BookingResponse> getBookingsForHost(Long hostId);
+    List<BookingResponse> getBookingsForHost(Long hostId);
 }

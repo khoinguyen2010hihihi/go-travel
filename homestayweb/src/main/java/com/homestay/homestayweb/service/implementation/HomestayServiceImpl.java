@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -215,5 +217,33 @@ public class HomestayServiceImpl implements HomestayService {
         if (homestay.getHost() != null && !homestay.getHost().getId().equals(currentUser.getId())) {
             throw new ForbiddenException("Bạn không có quyền thực hiện hành động này>");
         }
+    }
+
+    public List<HomestayResponse> searchHomestays(
+            String roomType, Double priceFrom, Double priceTo,
+            String features, LocalDate checkInDate, LocalDate checkOutDate,
+            Double surfRating, String location) {
+
+        // Gọi repository lấy danh sách HomestayEntity
+        List<Homestay> homestays = homestayRepository.searchHomestays(
+                roomType, priceFrom, priceTo, features, checkInDate, checkOutDate, surfRating, location);
+
+        // Chuyển thành DTO HomestayResponse
+        List<HomestayResponse> results = new ArrayList<>();
+        for (Homestay h : homestays) {
+            HomestayResponse dto = HomestayResponse.builder()
+                    .id(h.getHomestayId())
+                    .name(h.getName())
+                    .street(h.getStreet())
+                    .ward(h.getWard())
+                    .district(h.getDistrict())
+                    .surfRating(h.getSurfRating())
+                    .contactInfo(h.getContactInfo())
+                    .approveStatus(h.getApproveStatus())
+                    .build();
+
+            results.add(dto);
+        }
+        return results;
     }
 }

@@ -5,6 +5,7 @@ import com.homestay.homestayweb.dto.response.HomestayResponse;
 import com.homestay.homestayweb.entity.Homestay;
 import com.homestay.homestayweb.entity.Homestay;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import java.util.List;
@@ -28,4 +29,5 @@ public interface HomestayService {
     HomestayResponse rejectHomestay(Long id);
     List<HomestayResponse> getMyHomestays();
 
+    List<HomestayResponse> searchHomestays(String roomType, Double priceFrom, Double priceTo, String features, LocalDate checkInDate, LocalDate checkOutDate, Double surfRating, String location);
 }
