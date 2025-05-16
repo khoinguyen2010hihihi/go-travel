@@ -1,17 +1,16 @@
 package com.homestay.homestayweb.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.util.Date;
 
 @Entity
-@Data
+@Table(name = "payment")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "payment")
+@Builder
 public class Payment {
 
     @Id
@@ -19,11 +18,13 @@ public class Payment {
     @Column(name = "payment_id")
     private Long paymentId;
 
-    @Column(name = "booking_id", nullable = false, unique = true)
-    private Long bookingId;
+    @ManyToOne
+    @JoinColumn(name = "booking_id", nullable = false, unique = true)
+    private Booking booking;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false)
     private Double amount;

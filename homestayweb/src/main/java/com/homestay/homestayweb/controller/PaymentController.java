@@ -1,12 +1,11 @@
 package com.homestay.homestayweb.controller;
 
-import com.homestay.homestayweb.dto.response.PaymentResponse;
 import com.homestay.homestayweb.service.PaymentService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,27 +16,38 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @PostMapping("/create-vnpay-url/{bookingId}")
-    public ResponseEntity<?> createPayment(@PathVariable Long bookingId, HttpServletRequest request) {
+    // Tạo URL thanh toán VNPay cho một booking
+    @PostMapping("/vnpay/create-url/{bookingId}")
+    public ResponseEntity<?> createPayment(@PathVariable Long bookingId,
+                                           HttpServletRequest request) throws Exception {
         String paymentUrl = paymentService.createVNPayPaymentUrl(bookingId, request);
-        return ResponseEntity.ok(new PaymentResponse("success", "Redirect to VNPay", paymentUrl));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Redirect to VNPay");
+        response.put("url", paymentUrl);
+
+        return ResponseEntity.ok(response);
     }
 
+    // VNPay gọi callback URL sau thanh toán
     @GetMapping("/vnpay-return")
     public ResponseEntity<?> vnPayReturn(HttpServletRequest request) {
         Map<String, String> vnpParams = new HashMap<>();
-        Map<String, String[]> parameterMap = request.getParameterMap();
 
-        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-            String key = entry.getKey();
-            String[] values = entry.getValue();
-            if (values != null && values.length > 0) {
-                vnpParams.put(key, values[0]);
+        // Lấy toàn bộ query param từ request
+        request.getParameterMap().forEach((key, value) -> {
+            if (value != null && value.length > 0) {
+                vnpParams.put(key, value[0]);
             }
-        }
+        });
 
         String result = paymentService.handleVNPayReturn(vnpParams);
-        return ResponseEntity.ok(new PaymentResponse("success", result, null));
-    }
 
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", result);
+
+        return ResponseEntity.ok(response);
+    }
 }
