@@ -21,7 +21,7 @@ async function fetchPrimaryImageUrl(homestayId) {
     );
     if (!res.ok) throw new Error("No primary image");
     const data = await res.json();
-    return data.primaryImageUrl; // Đường link ảnh chính
+    return data.primaryImageUrl;
   } catch (error) {
     console.error(
       "Không lấy được ảnh chính cho homestay ID:",
