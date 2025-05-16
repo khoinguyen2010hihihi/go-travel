@@ -26,4 +26,6 @@ public interface HomestayService {
     Homestay findEntityById(Long id);
 
     HomestayResponse rejectHomestay(Long id);
+    List<HomestayResponse> getMyHomestays();
+
 }

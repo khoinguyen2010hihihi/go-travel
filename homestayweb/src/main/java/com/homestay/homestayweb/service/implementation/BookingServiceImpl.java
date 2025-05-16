@@ -9,6 +9,7 @@ import com.homestay.homestayweb.exception.ResourceNotFoundException;
 import com.homestay.homestayweb.repository.BookingRepository;
 import com.homestay.homestayweb.repository.RoomRepository;
 import com.homestay.homestayweb.repository.UserRepository;
+import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.BookingService;
 import com.homestay.homestayweb.utils.BookingUtil;
 import lombok.RequiredArgsConstructor;
@@ -41,9 +42,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingResponse createBooking(BookingRequest request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + request.getUserId()));
+    public BookingResponse createBooking(BookingRequest request, UserDetailsImpl currentUser) {
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + currentUser.getId()));
         Room room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new ResourceNotFoundException("Room not found with id: " + request.getRoomId()));
 

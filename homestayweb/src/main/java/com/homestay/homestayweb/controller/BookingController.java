@@ -2,9 +2,11 @@ package com.homestay.homestayweb.controller;
 
 import com.homestay.homestayweb.dto.request.BookingRequest;
 import com.homestay.homestayweb.dto.response.BookingResponse;
+import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,8 +45,10 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<BookingResponse> create(@RequestBody BookingRequest request) {
-        BookingResponse resp = bookingService.createBooking(request);
+    public ResponseEntity<BookingResponse> create(
+            @RequestBody BookingRequest request,
+            @AuthenticationPrincipal UserDetailsImpl currentUser) {
+        BookingResponse resp = bookingService.createBooking(request, currentUser);
         return ResponseEntity.status(201).body(resp);
     }
 

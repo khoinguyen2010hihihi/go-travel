@@ -27,11 +27,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         String method = request.getMethod();
 
-        boolean skip = path.startsWith("/homestay/auth/") ||
-                (method.equals("GET") && path.startsWith("/homestay/api/homestays"));
+        // Chỉ skip filter với các endpoint không cần token (ví dụ /auth/)
+        boolean skip = path.startsWith("/homestay/auth/");
 
         System.out.println("[shouldNotFilter] " + method + " " + path + " => " + (skip ? "SKIP" : "FILTER"));
-
         return skip;
     }
 
