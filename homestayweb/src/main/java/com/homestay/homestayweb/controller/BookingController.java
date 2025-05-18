@@ -5,6 +5,7 @@ import com.homestay.homestayweb.dto.response.BookingResponse;
 import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.BookingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingController {
 
-    private final BookingService bookingService;
+    @Autowired
+    private BookingService bookingService;
 
     @GetMapping
     public ResponseEntity<List<BookingResponse>> getAll() {
