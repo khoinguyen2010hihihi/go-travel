@@ -58,16 +58,19 @@ function collectFilters() {
         break;
 
       case "checkIn":
-        params.checkInDate = val;
+        params.checkInDate = val.split("/").reverse().join("-");
         break;
 
       case "checkOut":
         // Validate checkOut > checkIn
-        if (params.checkInDate && new Date(val) <= new Date(params.checkInDate)) {
+        if (
+          params.checkInDate &&
+          new Date(val) <= new Date(params.checkInDate)
+        ) {
           console.warn("Ngày check-out phải sau check-in");
           return;
         }
-        params.checkOutDate = val;
+        params.checkOutDate = val.split("/").reverse().join("-");
         break;
 
       case "location":
@@ -82,7 +85,9 @@ function collectFilters() {
 
 function toQueryString(params) {
   return Object.entries(params)
-    .map(([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`)
+    .map(
+      ([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`
+    )
     .join("&");
 }
 
@@ -95,12 +100,18 @@ let allHomestays = [];
 
 async function fetchPrimaryImageUrl(homestayId) {
   try {
-    const res = await fetch(`http://localhost:8080/homestay/api/homestays/${homestayId}/images/primary`);
+    const res = await fetch(
+      `http://localhost:8080/homestay/api/homestays/${homestayId}/images/primary`
+    );
     if (!res.ok) throw new Error("No primary image");
     const data = await res.json();
     return data.primaryImageUrl;
   } catch (error) {
-    console.error("Không lấy được ảnh chính cho homestay ID:", homestayId, error);
+    console.error(
+      "Không lấy được ảnh chính cho homestay ID:",
+      homestayId,
+      error
+    );
     return "assets/img/default-thumbnail.webp"; // fallback ảnh mặc định
   }
 }
@@ -125,7 +136,9 @@ async function renderPage(page) {
           <h3>${item.name}</h3>
           <div class="stars">${item.surfRating ?? "?"}/5 ★</div>
           <div class="location">
-            <i class="ti-location-pin"></i> ${item.street ?? ""}, ${item.ward ?? ""}
+            <i class="ti-location-pin"></i> ${item.street ?? ""}, ${
+      item.ward ?? ""
+    }
           </div>
           <div class="amenities">
             ${item.description ?? "Chỗ nghỉ lý tưởng cho bạn."}
@@ -134,7 +147,9 @@ async function renderPage(page) {
       </div>
     `;
     resultsContainer.insertAdjacentHTML("beforeend", cardHTML);
-    const insertedCard = resultsContainer.querySelector(`.result-card[data-id="${item.id}"]`);
+    const insertedCard = resultsContainer.querySelector(
+      `.result-card[data-id="${item.id}"]`
+    );
     insertedCard.addEventListener("click", () => {
       window.location.href = `room.html?id=${item.id}`;
       localStorage.setItem(
@@ -237,7 +252,8 @@ async function loadHomestaysWithFilters() {
     renderPagination();
   } catch (error) {
     console.error(error);
-    resultsContainer.innerHTML = "<p>Lỗi khi tải dữ liệu lọc. Vui lòng thử lại sau.</p>";
+    resultsContainer.innerHTML =
+      "<p>Lỗi khi tải dữ liệu lọc. Vui lòng thử lại sau.</p>";
     paginationContainer.innerHTML = "";
   }
 }
