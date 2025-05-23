@@ -285,6 +285,96 @@ window.loadPendingBookings = function () {
     .catch((err) => console.error("Lỗi khi load booking:", err));
 };
 
+window.addHomestay = function () {
+  const form = document.getElementById("add-homestay-form");
+
+  if (!form) {
+    console.error("Không tìm thấy form thêm homestay.");
+    return;
+  }
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    try {
+      const formData = getHomestayFormData();
+      const token = localStorage.getItem("authToken");
+
+      const res = await postHomestay(formData, token);
+      const newHomestay = await res.json(); // Parse JSON từ response
+
+      const imageFiles = getHomestayImages();
+      if (imageFiles.length > 0) {
+        await uploadHomestayImages(newHomestay.homestayId, imageFiles, token);
+      }
+
+      alert("Thêm homestay thành công!");
+      resetHomestayForm();
+    } catch (error) {
+      console.error("Lỗi khi thêm homestay:", error);
+      alert("Đã xảy ra lỗi khi thêm homestay.");
+    }
+  });
+};
+
+function getHomestayFormData() {
+  const form = document.getElementById("add-homestay-form");
+
+  return {
+    name: form.name.value.trim(),
+    street: form.street.value.trim(),
+    ward: form.ward.value.trim(),
+    district: form.district.value.trim(),
+    description: form.description.value.trim(),
+    contactInfo: form.contactInfo.value.trim(),
+  };
+}
+
+// Lấy danh sách file ảnh từ input
+function getHomestayImages() {
+  const input = document.getElementById("homestay-images");
+  return input.files;
+}
+
+async function postHomestay(homestayData, token) {
+  const res = await fetch("http://localhost:8080/homestay/api/homestays", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(homestayData),
+  });
+  if (!res.ok) throw new Error("Không thể thêm homestay");
+  return res; // Trả về response object
+}
+
+// Upload ảnh sau khi có homestayId
+async function uploadHomestayImages(homestayId, images, token) {
+  const formData = new FormData();
+  for (const file of images) {
+    formData.append("images", file);
+  }
+
+  const res = await fetch(
+    `http://localhost:8080/homestay/api/homestays/${homestayId}/images`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    }
+  );
+
+  if (!res.ok) throw new Error("Lỗi khi upload ảnh");
+}
+
+function resetHomestayForm() {
+  document.getElementById("add-homestay-form").reset();
+  document.getElementById("homestay-preview-container").innerHTML = "";
+}
+
 // Hàm xử lý Approve
 function handleApprove(event) {
   const bookingId = event.target.getAttribute("data-id");
@@ -342,3 +432,7 @@ function handleReject(event) {
       alert("Có lỗi xảy ra khi reject booking");
     });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  window.addHomestay();
+});

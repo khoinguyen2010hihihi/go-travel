@@ -72,6 +72,11 @@
               >Quản lý đơn đặt phòng</a
             >
           </li>
+          <li>
+            <a href="#" class="tab-link" data-tab="add-homestay"
+              >Kinh doanh Homestay mới</a
+            >
+          </li>
         </ul>
       </div>
 
@@ -222,6 +227,92 @@
                   <!-- Dữ liệu đơn đặt phòng sẽ được render ở đây -->
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          <div id="add-homestay" class="tab-content" style="display: none">
+            <div class="card-box">
+              <button class="close-btn" onclick="returnToDefault()">×</button>
+              <h2>Kinh doanh Homestay mới</h2>
+              <form id="add-homestay-form">
+                <div class="form-group">
+                  <label for="name"><strong>Tên Homestay:</strong></label>
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    required
+                    placeholder="Nhập tên homestay..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="street"
+                    ><strong>Địa chỉ (Số nhà, đường):</strong></label
+                  >
+                  <input
+                    type="text"
+                    name="street"
+                    id="street"
+                    required
+                    placeholder="Nhập địa chỉ..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="ward"><strong>Phường/Xã:</strong></label>
+                  <input
+                    type="text"
+                    name="ward"
+                    id="ward"
+                    required
+                    placeholder="Nhập phường/xã..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="district"><strong>Quận/Huyện:</strong></label>
+                  <input
+                    type="text"
+                    name="district"
+                    id="district"
+                    required
+                    placeholder="Nhập quận/huyện..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="description"><strong>Mô tả:</strong></label>
+                  <textarea
+                    name="description"
+                    id="description"
+                    required
+                    placeholder="Nhập mô tả homestay..."
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="homestay-images"
+                    ><strong>Thêm ảnh Homestay:</strong></label
+                  >
+                  <input
+                    type="file"
+                    name="homestay-images"
+                    id="homestay-images"
+                    accept="image/*"
+                    multiple
+                  />
+                  <div id="homestay-preview-container"></div>
+                </div>
+                <div class="form-group">
+                  <label for="contactInfo"
+                    ><strong>Thông tin liên hệ:</strong></label
+                  >
+                  <input
+                    type="text"
+                    name="contactInfo"
+                    id="contactInfo"
+                    required
+                    placeholder="Nhập thông tin liên hệ..."
+                  />
+                </div>
+                <button type="submit" class="btn btn-add">Thêm Homestay</button>
+              </form>
             </div>
           </div>
         </div>

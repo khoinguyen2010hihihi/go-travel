@@ -7,8 +7,14 @@
     <link rel="stylesheet" href="" />
     <link rel="stylesheet" href="assets/css/trang-chu.css" />
     <link rel="stylesheet" href="assets/css/header.css" />
-    <link rel="stylesheet" href="./assets/fonts/themify-icons/themify-icons.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <link
+      rel="stylesheet"
+      href="./assets/fonts/themify-icons/themify-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
   </head>
   <body>
     <!-- Header -->
@@ -18,7 +24,11 @@
           <div class="header-content">
             <div class="logo">
               <a href="trang-chu.html">
-                <img class="logo-image" src="assets/img/gotravel_logo_air.png" alt="" />
+                <img
+                  class="logo-image"
+                  src="assets/img/gotravel_logo_air.png"
+                  alt=""
+                />
               </a>
             </div>
             <nav class="nav">
@@ -33,12 +43,21 @@
         </div>
 
         <div class="btns desktop-btns" id="auth-buttons">
-          <button class="cooperate-btn" onclick="location.href='partnership.html'">Hợp tác với chúng tôi</button>
+          <button
+            class="cooperate-btn"
+            onclick="location.href='partnership.html'"
+          >
+            Hợp tác với chúng tôi
+          </button>
           <button class="dang-ky-btn signup" id="registerBtn">Đăng ký</button>
           <button class="dang-nhap-btn login" id="loginBtn">Đăng nhập</button>
         </div>
 
-        <div id="user-info" class="user-dropdown" style="display: none; position: relative">
+        <div
+          id="user-info"
+          class="user-dropdown"
+          style="display: none; position: relative"
+        >
           <img src="/assets/img/icon/user.svg" alt="user-icon" id="user-icon" />
           <div id="user-menu" class="dropdown-menu">
             <a href="#" id="profileLink" class="dropdown-item">Hồ sơ</a>
@@ -46,19 +65,41 @@
           </div>
         </div>
 
-        <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <button
+          class="mobile-menu-toggle"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
           <i class="ti-menu"></i>
         </button>
 
         <div class="mobile-menu">
           <a href="#" class="mobile-menu-link mobile-nav-link">TRANG CHỦ</a>
-          <a href="homestay.html" class="mobile-menu-link mobile-nav-link">HOMESTAYS</a>
-          <a href="about.html" class="mobile-menu-link mobile-nav-link">VỀ CHÚNG TÔI</a>
-          <a href="contact.html" class="mobile-menu-link mobile-nav-link">LIÊN HỆ</a>
+          <a href="homestay.html" class="mobile-menu-link mobile-nav-link"
+            >HOMESTAYS</a
+          >
+          <a href="about.html" class="mobile-menu-link mobile-nav-link"
+            >VỀ CHÚNG TÔI</a
+          >
+          <a href="contact.html" class="mobile-menu-link mobile-nav-link"
+            >LIÊN HỆ</a
+          >
           <hr class="mobile-menu-divider" />
-          <a href="partnership.html" class="mobile-menu-link">Hợp tác với chúng tôi</a>
-          <button class="mobile-menu-btn" onclick="openPopup('register'); closeMobileMenu();">Đăng ký</button>
-          <button class="mobile-menu-btn" onclick="openPopup('login'); closeMobileMenu();">Đăng nhập</button>
+          <a href="partnership.html" class="mobile-menu-link"
+            >Hợp tác với chúng tôi</a
+          >
+          <button
+            class="mobile-menu-btn"
+            onclick="openPopup('register'); closeMobileMenu();"
+          >
+            Đăng ký
+          </button>
+          <button
+            class="mobile-menu-btn"
+            onclick="openPopup('login'); closeMobileMenu();"
+          >
+            Đăng nhập
+          </button>
         </div>
       </div>
     </header>
@@ -68,30 +109,63 @@
         <h1>Trải nghiệm sự thoải mái và ấm cúng giữa lòng Đà Nẵng</h1>
         <div class="search-box">
           <div class="search-wrapper">
-            <img src="assets/img/icon/search.svg" alt="search-icon" class="search-icon" />
-            <input type="text" autocomplete="off" placeholder="Nhập địa điểm..." class="search-field" />
+            <img
+              src="assets/img/icon/search.svg"
+              alt="search-icon"
+              class="search-icon"
+            />
+            <input
+              type="text"
+              autocomplete="off"
+              placeholder="Nhập địa điểm..."
+              class="search-field"
+            />
           </div>
 
           <div class="date-picker">
             <div class="date1">
-              <img src="assets/img/icon/calendar.svg" alt="date-icon" class="date-icon" />
-              <input type="date" class="date-start" placeholder="Ngày nhận phòng" />
+              <img
+                src="assets/img/icon/calendar.svg"
+                alt="date-icon"
+                class="date-icon"
+              />
+              <input
+                type="date"
+                class="date-start"
+                placeholder="Ngày nhận phòng"
+              />
             </div>
             <div class="date2">
-              <img src="assets/img/icon/calendar.svg" alt="date-icon" class="date-icon" />
-              <input type="date" class="date-end" placeholder="Ngày trả phòng" />
+              <img
+                src="assets/img/icon/calendar.svg"
+                alt="date-icon"
+                class="date-icon"
+              />
+              <input
+                type="date"
+                class="date-end"
+                placeholder="Ngày trả phòng"
+              />
             </div>
           </div>
 
           <div class="room-type-selector">
-            <img src="assets/img/icon/bed-alt.svg" alt="room-icon" class="room-icon" />
+            <img
+              src="assets/img/icon/bed-alt.svg"
+              alt="room-icon"
+              class="room-icon"
+            />
             <select class="room-type-select">
               <option>Single</option>
               <option>Superior</option>
               <option>Deluxe</option>
               <option>Suite</option>
             </select>
-            <img src="assets/img/icon/angle-small-down.svg" alt="arrow-icon" class="arrow-icon" />
+            <img
+              src="assets/img/icon/angle-small-down.svg"
+              alt="arrow-icon"
+              class="arrow-icon"
+            />
           </div>
 
           <button class="search-button">TÌM KIẾM</button>
@@ -197,7 +271,10 @@
             </div>
           </div>
           <div class="slide">
-            <img src="assets/img/lang-da-my-nghe-non-nuoc.jpg" alt="Điêu Khắc Đá Mỹ Nghệ" />
+            <img
+              src="assets/img/lang-da-my-nghe-non-nuoc.jpg"
+              alt="Điêu Khắc Đá Mỹ Nghệ"
+            />
             <div class="slide-info">
               <h3>Điêu Khắc Đá Mỹ Nghệ</h3>
             </div>
@@ -214,7 +291,9 @@
 
       <div class="location-tabs-container">
         <div class="location-tabs hide-scrollbar">
-          <button class="tab active" data-location="ngu-hanh-son">Ngũ Hành Sơn</button>
+          <button class="tab active" data-location="ngu-hanh-son">
+            Ngũ Hành Sơn
+          </button>
           <button class="tab" data-location="son-tra">Sơn Trà</button>
           <button class="tab" data-location="hai-chau">Hải Châu</button>
           <button class="tab" data-location="thanh-khe">Thanh Khê</button>
@@ -224,16 +303,36 @@
 
       <div id="property-container">
         <div class="property-grid" data-location="ngu-hanh-son"></div>
-        <div class="property-grid" data-location="son-tra" style="display: none"></div>
-        <div class="property-grid" data-location="hai-chau" style="display: none"></div>
-        <div class="property-grid" data-location="thanh-khe" style="display: none"></div>
-        <div class="property-grid" data-location="lien-chieu" style="display: none"></div>
+        <div
+          class="property-grid"
+          data-location="son-tra"
+          style="display: none"
+        ></div>
+        <div
+          class="property-grid"
+          data-location="hai-chau"
+          style="display: none"
+        ></div>
+        <div
+          class="property-grid"
+          data-location="thanh-khe"
+          style="display: none"
+        ></div>
+        <div
+          class="property-grid"
+          data-location="lien-chieu"
+          style="display: none"
+        ></div>
       </div>
       <div class="view-more-container">
-        <a href="#" class="view-more">Xem thêm các chỗ nghỉ (<span id="view-more-text">Ngũ Hành Sơn</span>)</a>
+        <a href="#" class="view-more"
+          >Xem thêm các chỗ nghỉ (<span id="view-more-text">Ngũ Hành Sơn</span
+          >)</a
+        >
       </div>
     </section>
     <div id="popup-placeholder"></div>
+    <script type="module" src="assets/js/main.js"></script>
     <script type="module">
       const dateStart = flatpickr(".date-start", {
         dateFormat: "d/m/Y",
@@ -270,7 +369,6 @@
     </script>
 
     <script type="module" src="assets/js/role-redirect.js"></script>
-    <script type="module" src="assets/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   </body>
 </html>
