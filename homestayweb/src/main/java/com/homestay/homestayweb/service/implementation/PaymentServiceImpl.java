@@ -115,9 +115,9 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<DailyRevenueResponse> getDailyRevenue() {
-        User currentUser = getCurrentUser();
-        List<Object[]> results = paymentRepository.getDailyRevenue(currentUser.getId());
+    public List<DailyRevenueResponse> getDailyRevenueByHost() {
+        User currentUser = getCurrentUser(); // User hiện tại đăng nhập (host)
+        List<Object[]> results = paymentRepository.getDailyRevenueByHost(currentUser.getId());
 
         List<DailyRevenueResponse> responseList = new ArrayList<>();
         for (Object[] row : results) {
@@ -138,11 +138,10 @@ public class PaymentServiceImpl implements PaymentService {
         return responseList;
     }
 
-
     @Override
-    public List<HomestayRevenueResponse> getHomestayRevenue() {
+    public List<HomestayRevenueResponse> getRevenueByHomestayByHost() {
         User currentUser = getCurrentUser();
-        List<Object[]> results = paymentRepository.getRevenueByHomestay(currentUser.getId());
+        List<Object[]> results = paymentRepository.getRevenueByHomestayByHost(currentUser.getId());
 
         List<HomestayRevenueResponse> responseList = new ArrayList<>();
         for (Object[] row : results) {
@@ -162,5 +161,4 @@ public class PaymentServiceImpl implements PaymentService {
         }
         return responseList;
     }
-
 }

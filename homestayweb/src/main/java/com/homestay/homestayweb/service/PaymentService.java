@@ -10,6 +10,6 @@ import java.util.Map;
 public interface PaymentService {
     String createVNPayPaymentUrl(Long bookingId, HttpServletRequest request) throws Exception;
     String handleVNPayReturn(Map<String, String> vnpParams);
-    List<DailyRevenueResponse> getDailyRevenue();
-    List<HomestayRevenueResponse> getHomestayRevenue();
+    List<DailyRevenueResponse> getDailyRevenueByHost();
+    List<HomestayRevenueResponse> getRevenueByHomestayByHost();
 }

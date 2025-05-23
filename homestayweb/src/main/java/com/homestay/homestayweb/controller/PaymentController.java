@@ -55,14 +55,15 @@ public class PaymentController {
     }
 
     @GetMapping("/stats/daily")
-    public ResponseEntity<List<DailyRevenueResponse>> getDailyRevenue() {
-        List<DailyRevenueResponse> result = paymentService.getDailyRevenue();
+    public ResponseEntity<List<DailyRevenueResponse>> getDailyRevenueByHost() {
+        List<DailyRevenueResponse> result = paymentService.getDailyRevenueByHost();
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/stats/homestay")
-    public ResponseEntity<List<HomestayRevenueResponse>> getHomestayRevenue() {
-        List<HomestayRevenueResponse> result = paymentService.getHomestayRevenue();
+    public ResponseEntity<List<HomestayRevenueResponse>> getRevenueByHomestayByHost() {
+        List<HomestayRevenueResponse> result = paymentService.getRevenueByHomestayByHost();
         return ResponseEntity.ok(result);
     }
+
 }
