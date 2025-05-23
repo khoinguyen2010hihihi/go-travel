@@ -235,30 +235,25 @@
     </section>
     <div id="popup-placeholder"></div>
     <script type="module">
-      // Khởi tạo flatpickr cho "Ngày nhận phòng"
       const dateStart = flatpickr(".date-start", {
         dateFormat: "d/m/Y",
-        locale: "vi", // Đặt ngôn ngữ tiếng Việt
-        minDate: "today", // Không cho phép chọn các ngày trước ngày hôm nay
+        locale: "vi",
+        minDate: "today",
         onChange: function (selectedDates, dateStr, instance) {
-          // Cập nhật minDate cho "Ngày trả phòng" khi người dùng chọn "Ngày nhận phòng"
-          const dateStartValue = selectedDates[0]; // Ngày nhận phòng đã chọn
+          const dateStartValue = selectedDates[0];
           if (dateStartValue) {
-            // Cập nhật minDate cho "Ngày trả phòng"
             dateEnd.set("minDate", dateStartValue);
           }
         },
       });
 
-      // Khởi tạo flatpickr cho "Ngày trả phòng"
       const dateEnd = flatpickr(".date-end", {
         dateFormat: "d/m/Y",
-        locale: "vi", // Đặt ngôn ngữ tiếng Việt
-        minDate: "today", // Ban đầu cho phép chọn ngày từ ngày hôm nay
+        locale: "vi",
+        minDate: "today",
         onChange: function (selectedDates, dateStr, instance) {
-          const dateEndValue = selectedDates[0]; // Ngày trả phòng đã chọn
+          const dateEndValue = selectedDates[0];
           if (dateEndValue) {
-            // Cập nhật minDate cho "Ngày nhận phòng" để không chọn ngày trước ngày trả phòng
             dateStart.set("maxDate", dateEndValue);
           }
         },
