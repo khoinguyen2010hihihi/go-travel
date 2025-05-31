@@ -22,13 +22,16 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Object[]> getDailyRevenueByHost(@Param("hostId") Long hostId);
 
     // Thống kê doanh thu theo homestay cho host hiện tại
-    @Query(value = "SELECT h.name as homestayName, SUM(p.amount) as totalRevenue " +
-            "FROM payment p " +
-            "JOIN booking b ON p.booking_id = b.booking_id " +
-            "JOIN room r ON b.room_id = r.room_id " +
-            "JOIN homestay h ON r.homestay_id = h.homestay_id " +
-            "WHERE h.host_id = :hostId AND p.payment_status = 'Completed' " +
-            "GROUP BY h.name " +
-            "ORDER BY totalRevenue DESC", nativeQuery = true)
+    @Query(value = """
+    SELECT h.name AS homestayName, 
+           COALESCE(SUM(p.amount), 0) AS totalRevenue
+    FROM homestay h
+    LEFT JOIN room r ON h.homestay_id = r.homestay_id
+    LEFT JOIN booking b ON r.room_id = b.room_id
+    LEFT JOIN payment p ON b.booking_id = p.booking_id AND p.payment_status = 'Completed'
+    WHERE h.host_id = :hostId
+    GROUP BY h.name
+    ORDER BY totalRevenue DESC
+    """, nativeQuery = true)
     List<Object[]> getRevenueByHomestayByHost(@Param("hostId") Long hostId);
 }
