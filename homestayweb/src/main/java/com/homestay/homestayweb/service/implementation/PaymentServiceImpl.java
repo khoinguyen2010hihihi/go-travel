@@ -1,5 +1,7 @@
 package com.homestay.homestayweb.service.implementation;
 
+import com.homestay.homestayweb.dto.response.DailyRevenueResponse;
+import com.homestay.homestayweb.dto.response.HomestayRevenueResponse;
 import com.homestay.homestayweb.entity.Booking;
 import com.homestay.homestayweb.entity.Payment;
 import com.homestay.homestayweb.entity.User;
@@ -13,9 +15,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -97,5 +102,63 @@ public class PaymentServiceImpl implements PaymentService {
             return "Thanh toán thành công cho đơn #" + bookingId;
         }
         return "Thanh toán thất bại hoặc bị hủy";
+    }
+
+    private User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            return userRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        }
+        throw new RuntimeException("User not authenticated");
+    }
+
+    @Override
+    public List<DailyRevenueResponse> getDailyRevenueByHost() {
+        User currentUser = getCurrentUser(); // User hiện tại đăng nhập (host)
+        List<Object[]> results = paymentRepository.getDailyRevenueByHost(currentUser.getId());
+
+        List<DailyRevenueResponse> responseList = new ArrayList<>();
+        for (Object[] row : results) {
+            String day = row[0].toString();
+            Object value = row[1];
+            BigDecimal totalRevenue;
+            if (value instanceof BigDecimal) {
+                totalRevenue = (BigDecimal) value;
+            } else if (value instanceof Double) {
+                totalRevenue = BigDecimal.valueOf((Double) value);
+            } else if (value instanceof Number) {
+                totalRevenue = BigDecimal.valueOf(((Number) value).doubleValue());
+            } else {
+                totalRevenue = BigDecimal.ZERO;
+            }
+            responseList.add(new DailyRevenueResponse(day, totalRevenue));
+        }
+        return responseList;
+    }
+
+    @Override
+    public List<HomestayRevenueResponse> getRevenueByHomestayByHost() {
+        User currentUser = getCurrentUser();
+        List<Object[]> results = paymentRepository.getRevenueByHomestayByHost(currentUser.getId());
+
+        List<HomestayRevenueResponse> responseList = new ArrayList<>();
+        for (Object[] row : results) {
+            String homestayName = (String) row[0];
+            Object value = row[1];
+            BigDecimal totalRevenue;
+            if (value instanceof BigDecimal) {
+                totalRevenue = (BigDecimal) value;
+            } else if (value instanceof Double) {
+                totalRevenue = BigDecimal.valueOf((Double) value);
+            } else if (value instanceof Number) {
+                totalRevenue = BigDecimal.valueOf(((Number) value).doubleValue());
+            } else {
+                totalRevenue = BigDecimal.ZERO;
+            }
+            responseList.add(new HomestayRevenueResponse(homestayName, totalRevenue));
+        }
+        return responseList;
     }
 }

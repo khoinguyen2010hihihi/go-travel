@@ -1,5 +1,7 @@
 package com.homestay.homestayweb.controller;
 
+import com.homestay.homestayweb.dto.response.DailyRevenueResponse;
+import com.homestay.homestayweb.dto.response.HomestayRevenueResponse;
 import com.homestay.homestayweb.service.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -50,4 +53,17 @@ public class PaymentController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/stats/daily")
+    public ResponseEntity<List<DailyRevenueResponse>> getDailyRevenueByHost() {
+        List<DailyRevenueResponse> result = paymentService.getDailyRevenueByHost();
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/stats/homestay")
+    public ResponseEntity<List<HomestayRevenueResponse>> getRevenueByHomestayByHost() {
+        List<HomestayRevenueResponse> result = paymentService.getRevenueByHomestayByHost();
+        return ResponseEntity.ok(result);
+    }
+
 }
