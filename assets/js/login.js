@@ -16,6 +16,7 @@ function decodeJWT(token) {
 function login() {
   const loginBtn = document.querySelector(".submit-login-btn");
 
+  
   if (loginBtn) {
     loginBtn.addEventListener("click", function () {
       const email = document.getElementById("loginEmail").value;
@@ -44,8 +45,6 @@ function login() {
                 roles: roles,
               })
             );
-
-            alert("Đăng nhập thành công!");
             checkLoginStatus();
             closePopup();
           } else {

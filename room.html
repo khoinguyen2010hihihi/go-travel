@@ -10,6 +10,10 @@
       rel="stylesheet"
       href="./assets/fonts/themify-icons/themify-icons.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
   </head>
   <body>
     <!-- Header -->
@@ -102,8 +106,34 @@
     <div class="hero">
       <div class="search-box">
         <div class="date-picker">
-          <input type="date" id="checkInDate" class="date1" />
-          <input type="date" id="checkOutDate" class="date2" />
+          <div class="date1">
+            <img
+              src="assets/img/icon/calendar.svg"
+              alt="date-icon"
+              class="date-icon"
+            />
+            <input
+              type="date"
+              id="checkInDate"
+              data-filter="checkIn"
+              class="date-start"
+              placeholder="Ngày nhận phòng"
+            />
+          </div>
+          <div class="date2">
+            <img
+              src="assets/img/icon/calendar.svg"
+              alt="date-icon"
+              class="date-icon"
+            />
+            <input
+              type="date"
+              id="checkOutDate"
+              data-filter="checkOut"
+              class="date-end"
+              placeholder="Ngày trả phòng"
+            />
+          </div>
         </div>
         <button class="search-button">TÌM KIẾM</button>
       </div>
@@ -224,15 +254,21 @@
   <script type="module">
     const lastDates = JSON.parse(localStorage.getItem("lastSearchDates"));
     if (lastDates) {
-      document.getElementById("checkInDate").value = lastDates.checkIn;
-      document.getElementById("checkOutDate").value = lastDates.checkOut;
+      document.getElementById("checkInDate").value = lastDates.checkIn
+        .split("/")
+        .reverse()
+        .join("-");
+      document.getElementById("checkOutDate").value = lastDates.checkOut
+        .split("/")
+        .reverse()
+        .join("-");
     }
 
     document
       .querySelector(".search-button")
       .addEventListener("click", function () {
-        const checkInDate = document.querySelector(".date1").value;
-        const checkOutDate = document.querySelector(".date2").value;
+        const checkInDate = document.querySelector(".date-start").value;
+        const checkOutDate = document.querySelector(".date-end").value;
         const today = new Date().toISOString().split("T")[0];
 
         if (!checkInDate || !checkOutDate) {
@@ -285,8 +321,8 @@
 
     function initRoomSearch() {
       const searchBtn = document.querySelector(".search-button");
-      const checkInInput = document.querySelector(".date1");
-      const checkOutInput = document.querySelector(".date2");
+      const checkInInput = document.querySelector(".date-start");
+      const checkOutInput = document.querySelector(".date-end");
       const roomListSection = document.getElementById("room-list");
       const roomContainer = document.createElement("div");
       roomContainer.classList.add("room-items");
@@ -300,11 +336,6 @@
 
         if (!homestayId) {
           alert("Không tìm thấy ID của homestay.");
-          return;
-        }
-
-        if (!checkInDate || !checkOutDate) {
-          alert("Vui lòng chọn ngày nhận và trả phòng.");
           return;
         }
 
@@ -479,7 +510,39 @@
       }
     }
   </script>
+  <script type="module">
+    const dateStart = flatpickr(".date-start", {
+      dateFormat: "d/m/Y",
+      locale: "vi",
+      minDate: "today",
+      onChange: function (selectedDates, dateStr, instance) {
+        const dateStartValue = selectedDates[0];
+        if (dateStartValue) {
+          dateEnd.set("minDate", dateStartValue);
+        }
+      },
+    });
+    const dateEnd = flatpickr(".date-end", {
+      dateFormat: "d/m/Y",
+      locale: "vi",
+      minDate: "today",
+      onChange: function (selectedDates, dateStr, instance) {
+        const dateEndValue = selectedDates[0];
+        if (dateEndValue) {
+          dateStart.set("maxDate", dateEndValue);
+        }
+      },
+    });
+    import { setupPopupEventListeners } from "./assets/js/popup-login.js";
+    fetch("popup.html")
+      .then((response) => response.text())
+      .then((data) => {
+        document.getElementById("popup-placeholder").innerHTML = data;
+        setupPopupEventListeners();
+      });
+  </script>
   <script type="module" src="assets/js/review-and-info.js"></script>
   <script type="module" src="assets/js/main.js"></script>
   <script type="module" src="assets/js/role-redirect.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </html>

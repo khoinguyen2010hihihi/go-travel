@@ -4,7 +4,7 @@ function openPopup(tab) {
   document.getElementById("popup").style.display = "flex";
   switchTab(tab);
   if (tab === "login") {
-    login(); // Gắn lại sự kiện cho nút submit login
+    login();
   }
 }
 

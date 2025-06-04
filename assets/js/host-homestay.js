@@ -305,7 +305,7 @@ window.addHomestay = function () {
 
       const imageFiles = getHomestayImages();
       if (imageFiles.length > 0) {
-        await uploadHomestayImages(newHomestay.homestayId, imageFiles, token);
+        await uploadHomestayImages(newHomestay.id, imageFiles, token);
       }
 
       alert("Thêm homestay thành công!");
@@ -352,8 +352,9 @@ async function postHomestay(homestayData, token) {
 // Upload ảnh sau khi có homestayId
 async function uploadHomestayImages(homestayId, images, token) {
   const formData = new FormData();
+  formData.append("isPrimary", "");
   for (const file of images) {
-    formData.append("images", file);
+    formData.append("file", file);
   }
 
   const res = await fetch(

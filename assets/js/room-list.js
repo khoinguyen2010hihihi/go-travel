@@ -63,13 +63,13 @@ function collectFilters() {
 
       case "checkOut":
         // Validate checkOut > checkIn
-        if (
-          params.checkInDate &&
-          new Date(val) <= new Date(params.checkInDate)
-        ) {
-          console.warn("Ngày check-out phải sau check-in");
-          return;
-        }
+        // if (
+        //   params.checkInDate &&
+        //   new Date(val) <= new Date(params.checkInDate)
+        // ) {
+        //   console.warn("Ngày check-out phải sau check-in");
+        //   return;
+        // }
         params.checkOutDate = val.split("/").reverse().join("-");
         break;
 
