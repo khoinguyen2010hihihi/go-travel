@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,6 +93,7 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingResponse> getAcceptedBookingsByUserId(Long userId) {
         return bookingRepository.findByUser_IdAndBookingStatus(userId,"ACCEPTED").stream()
                 .map(this::mapToResponse)
+                .sorted(Comparator.comparing(BookingResponse::getBookingId).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -99,6 +101,7 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingResponse> getRejectedBookingsByUserId(Long userId) {
         return bookingRepository.findByUser_IdAndBookingStatus(userId,"REJECTED").stream()
                 .map(this::mapToResponse)
+                .sorted(Comparator.comparing(BookingResponse::getBookingId).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -106,6 +109,7 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingResponse> getPendingBookingsByUserId(Long userId) {
         return bookingRepository.findByUser_IdAndBookingStatus(userId,"PENDING").stream()
                 .map(this::mapToResponse)
+                .sorted(Comparator.comparing(BookingResponse::getBookingId).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -131,6 +135,7 @@ public class BookingServiceImpl implements BookingService {
                 .userId(booking.getUser().getId())
                 .userEmail(booking.getUser().getEmail())
                 .roomId(booking.getRoom().getRoomId())
+                .homestayId(booking.getRoom().getHomestay().getHomestayId())
                 .homestayName(booking.getRoom().getHomestay().getName())
                 .createdAt(booking.getCreatedAt())
                 .build();

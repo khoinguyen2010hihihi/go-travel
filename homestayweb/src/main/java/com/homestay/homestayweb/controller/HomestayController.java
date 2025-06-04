@@ -5,8 +5,6 @@ import com.homestay.homestayweb.dto.response.HomestayImageResponse;
 import com.homestay.homestayweb.dto.response.HomestayResponse;
 import com.homestay.homestayweb.entity.Homestay;
 import com.homestay.homestayweb.entity.HomestayImage;
-import com.homestay.homestayweb.repository.HomestayImageRepository;
-import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.CloudinaryService;
 import com.homestay.homestayweb.service.HomestayImageService;
 import com.homestay.homestayweb.service.HomestayService;
@@ -16,11 +14,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,19 +116,26 @@ public class HomestayController {
 
     @PostMapping("/{homestayId}/images")
     @PreAuthorize("hasAuthority('CREATE_HOMESTAY')")
-    public ResponseEntity<String> uploadImageToHomestay(
+    public ResponseEntity<?> uploadImagesToHomestay(
             @PathVariable Long homestayId,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile[] files) {
+        if (files == null || files.length == 0) {
+            return ResponseEntity.badRequest().body("Không có file nào được gửi lên.");
+        }
+
+        List<String> uploadedUrls = new ArrayList<>();
         try {
-            // Upload ảnh lên Cloudinary
-            String imageUrl = cloudinaryService.uploadFile(file);
-
-            // Lưu ảnh cho Homestay
-            homestayImageService.uploadImageForHomestay(homestayId, imageUrl);
-
-            return ResponseEntity.ok(imageUrl); // Trả về URL ảnh đã upload
+            for (MultipartFile file : files) {
+                if (file.isEmpty()) continue;
+                String imageUrl = cloudinaryService.uploadFile(file);
+                homestayImageService.uploadImageForHomestay(homestayId, imageUrl);
+                uploadedUrls.add(imageUrl);
+            }
+            return ResponseEntity.ok(uploadedUrls);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Upload thất bại: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Upload thất bại: " + e.getMessage());
         }
     }
 
@@ -155,4 +160,5 @@ public class HomestayController {
                 roomType, priceFrom, priceTo, features,
                 checkInDate, checkOutDate, surfRating, location);
     }
+
 }

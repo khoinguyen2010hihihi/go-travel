@@ -21,5 +21,6 @@ public class BookingResponse {
     private LocalDate createdAt;
 
     private String userEmail;
+    private Long homestayId;
     private String homestayName;
 }
