@@ -45,7 +45,6 @@ function login() {
               })
             );
 
-            alert("Đăng nhập thành công!");
             checkLoginStatus();
             closePopup();
           } else {
@@ -86,7 +85,6 @@ function checkLoginStatus() {
       logoutBtn.onclick = () => {
         localStorage.removeItem("authToken");
         localStorage.removeItem("user");
-        alert("Đăng xuất thành công!");
         checkLoginStatus();
         window.location.href = "trang-chu.html";
       };

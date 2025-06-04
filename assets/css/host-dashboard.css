@@ -189,16 +189,6 @@ body {
   color: white;
 }
 
-.btn-approve {
-  background-color: #28a745;
-  color: white;
-}
-
-.btn-reject {
-  background-color: #dc3545;
-  color: white;
-}
-
 /* Tab "Thêm phòng mới" */
 #add-room .form-group {
   margin-bottom: 20px;

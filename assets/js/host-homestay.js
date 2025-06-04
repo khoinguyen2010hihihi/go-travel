@@ -150,34 +150,6 @@ window.onload = function () {
     hidden.value = homestayId;
   }
 
-  function renderBookingTable(data) {
-    const tbody = document.querySelector("#manage-bookings tbody");
-    tbody.innerHTML = "";
-
-    if (data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8">Không có đơn đặt phòng nào.</td></tr>';
-      return;
-    }
-
-    data.forEach((b) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-            <td>${b.homestayName}</td>
-            <td>${b.room_id}</td>
-            <td>${b.email}</td>
-            <td>${b.check_in_date}</td>
-            <td>${b.check_out_date}</td>
-            <td>${Number(b.total_price).toLocaleString("vi-VN")}đ</td>
-            <td>${b.created_at}</td>
-            <td>
-                <button class="btn btn-view">Phê duyệt</button>
-                <button class="btn btn-delete">Từ chối</button>
-            </td>
-        `;
-      tbody.appendChild(tr);
-    });
-  }
-
   window.returnToDefault = function () {
     document.querySelectorAll(".tab-content").forEach((tc) => (tc.style.display = "none"));
     document.getElementById("default-content").style.display = "block";
@@ -251,6 +223,11 @@ window.loadPendingBookings = function () {
       const tableBody = document.getElementById("booking-table-body");
       tableBody.innerHTML = "";
 
+      if (bookings.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="8">Không có đơn đặt phòng nào.</td></tr>';
+        return;
+      }
+
       bookings.forEach((booking) => {
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -262,8 +239,8 @@ window.loadPendingBookings = function () {
           <td>${booking.totalPrice.toLocaleString()}₫</td>
           <td>${booking.createdAt}</td>
           <td>
-            <button class="approve-btn" data-id="${booking.bookingId}">✔️</button>
-            <button class="reject-btn" data-id="${booking.bookingId}">❌</button>
+            <button class="approve-btn" data-id="${booking.bookingId}" style="padding: 5px; background: lightblue">✔️</button>
+            <button class="reject-btn" data-id="${booking.bookingId}" style="padding: 5px; background: yellow">❌</button>
           </td>
         `;
         tableBody.appendChild(row);
