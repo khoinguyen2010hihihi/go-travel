@@ -44,8 +44,8 @@ import { setupValidation } from "./register.js";
 
 window.addEventListener("load", () => {
   setupPopupEventListeners();
-  login();
   checkLoginStatus();
+  login();
   initializeCarousel();
   setupTabsLocation();
   initializeSlide();

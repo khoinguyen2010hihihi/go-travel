@@ -34,18 +34,13 @@ window.onload = function () {
             </li>
           </ul>
         `;
-        li.querySelector(".homestay-toggle").addEventListener("click", (e) => {
-          e.preventDefault();
-          const sm = li.querySelector(".sub-menu");
-          sm.style.display = sm.style.display === "block" ? "none" : "block";
-        });
         homestayList.appendChild(li);
       });
       homestayList.style.display = "block";
     })
     .catch((err) => console.error("Lỗi khi load homestay:", err));
 
-  document.addEventListener("click", function (e) {
+  document.addEventListener("click", async function (e) {
     if (!e.target.classList.contains("tab-link")) return;
     e.preventDefault();
 
@@ -58,15 +53,15 @@ window.onload = function () {
 
     if (tabId === "view-all-room") {
       showRoomList(homestayId);
-    } else if (tabId == "add-room") {
+    } else if (tabId === "add-room") {
       showAddForm(homestayId);
-    } else if (tabId == "view-all-pending-room") {
+    } else if (tabId === "view-all-pending-room") {
       showPendingRoomList(homestayId);
     } else {
       const tab = document.getElementById(tabId);
       if (tab) {
         tab.style.display = "block";
-        renderBookingTable(bookings);
+        // Skip renderBookingTable for other tabs
       }
     }
   });
@@ -140,42 +135,12 @@ window.onload = function () {
     hidden.value = homestayId;
   }
 
-  function renderBookingTable(data) {
-    const tbody = document.querySelector("#manage-bookings tbody");
-    tbody.innerHTML = "";
-
-    if (data.length === 0) {
-      tbody.innerHTML =
-        '<tr><td colspan="8">Không có đơn đặt phòng nào.</td></tr>';
-      return;
-    }
-
-    data.forEach((b) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-            <td>${b.homestayName}</td>
-            <td>${b.room_id}</td>
-            <td>${b.email}</td>
-            <td>${b.check_in_date}</td>
-            <td>${b.check_out_date}</td>
-            <td>${Number(b.total_price).toLocaleString("vi-VN")}đ</td>
-            <td>${b.created_at}</td>
-            <td>
-                <button class="btn btn-view">Phê duyệt</button>
-                <button class="btn btn-delete">Từ chối</button>
-            </td>
-        `;
-      tbody.appendChild(tr);
-    });
-  }
-
   window.returnToDefault = function () {
     document
       .querySelectorAll(".tab-content")
       .forEach((tc) => (tc.style.display = "none"));
     document.getElementById("default-content").style.display = "block";
   };
-  //Them
 
   document.getElementById("submit-room").addEventListener("click", function () {
     const roomType = document.querySelector(
@@ -433,6 +398,10 @@ function handleReject(event) {
       alert("Có lỗi xảy ra khi reject booking");
     });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  window.addHomestay();
+});
 
 document.addEventListener("DOMContentLoaded", function () {
   window.addHomestay();

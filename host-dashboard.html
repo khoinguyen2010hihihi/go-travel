@@ -2,6 +2,7 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bảng điều khiển</title>
     <link rel="stylesheet" href="assets/css/header.css" />
     <link
@@ -77,11 +78,23 @@
               >Kinh doanh Homestay mới</a
             >
           </li>
+          <li>
+            <a href="#" class="tab-link" data-tab="revenue-stats"
+              >Thống kê doanh thu</a
+            >
+          </li>
+          <li>
+            <a href="#" class="tab-link" data-tab="add-homestay"
+              >Kinh doanh Homestay mới</a
+            >
+          </li>
         </ul>
       </div>
 
       <!-- Main Content -->
       <div class="main-content">
+        <div id="loading" style="display: none">Đang tải...</div>
+
         <div id="default-content" class="tab-content active">
           <img
             src="https://cdn-icons-png.flaticon.com/512/706/706797.png"
@@ -187,7 +200,6 @@
                 >
               </div>
 
-              <!-- Anh (chua co) -->
               <div class="form-group">
                 <label for="Image"><strong>Ảnh phòng:</strong></label>
                 <input
@@ -223,9 +235,7 @@
                     <th>Phê duyệt / Từ chối</th>
                   </tr>
                 </thead>
-                <tbody id="booking-table-body">
-                  <!-- Dữ liệu đơn đặt phòng sẽ được render ở đây -->
-                </tbody>
+                <tbody id="booking-table-body"></tbody>
               </table>
             </div>
           </div>
@@ -315,9 +325,18 @@
               </form>
             </div>
           </div>
+
+          <div id="revenue-stats" class="tab-content" style="display: none">
+            <div class="card-box">
+              <button class="close-btn" onclick="returnToDefault()">×</button>
+              <h2>Thống kê doanh thu theo Homestay</h2>
+              <canvas id="revenueChart" width="800" height="400"></canvas>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
     <script type="module" src="assets/js/host-homestay.js"></script>
 
@@ -329,7 +348,6 @@
       const tabContents = document.querySelectorAll(".tab-content");
       const defaultContent = document.getElementById("default-content");
 
-      // Toggle danh sách các homestay khi click "Quản lý Homestay"
       parentToggle.addEventListener("click", function (e) {
         e.preventDefault();
         const isShown = homestayList.style.display === "block";
@@ -346,41 +364,64 @@
         this.classList.toggle("open", !isShown);
       });
 
-      // Toggle submenu homestay và tự mở tab đầu tiên
-      homestayToggles.forEach((toggle) => {
-        toggle.addEventListener("click", function (e) {
+      // Xử lý sự kiện click cho homestay-toggle bằng event delegation
+      document
+        .querySelector(".homestay-list")
+        .addEventListener("click", function (e) {
+          const toggle = e.target.closest(".homestay-toggle");
+          if (!toggle) return; // Nếu không nhấp vào homestay-toggle, thoát
+
           e.preventDefault();
-          const submenu = this.nextElementSibling;
-          const isShown = submenu.style.display === "block";
+          const submenu = toggle.nextElementSibling;
+          const isShown =
+            submenu &&
+            submenu.classList.contains("sub-menu") &&
+            submenu.style.display === "block";
 
-          document
-            .querySelectorAll(".sub-menu")
-            .forEach((menu) => (menu.style.display = "none"));
-          submenu.style.display = isShown ? "none" : "block";
+          // Ẩn tất cả submenu của các homestay khác và xóa class active-homestay
+          document.querySelectorAll(".sub-menu").forEach((menu) => {
+            menu.style.display = "none";
+          });
+          document.querySelectorAll(".homestay-toggle").forEach((t) => {
+            t.classList.remove("active-homestay");
+          });
 
-          if (!isShown) {
-            const firstTab = submenu.querySelector(".tab-link");
-            if (firstTab) firstTab.click();
+          // Toggle submenu của homestay hiện tại
+          if (submenu && submenu.classList.contains("sub-menu")) {
+            submenu.style.display = isShown ? "none" : "block";
+            // Thêm class active-homestay nếu submenu được mở
+            if (!isShown) {
+              toggle.classList.add("active-homestay");
+              // const firstTab = submenu.querySelector(".tab-link");
+              // if (firstTab) firstTab.click();
+            }
           }
         });
-      });
 
-      tabLinks.forEach((link) => {
-        link.addEventListener("click", function (e) {
+      document
+        .querySelector(".sidebar")
+        .addEventListener("click", function (e) {
+          const link = e.target.closest(".tab-link");
+          if (!link) return; // Nếu không nhấp vào tab-link, thoát
+
           e.preventDefault();
-          const tabId = this.getAttribute("data-tab");
+          const tabId = link.getAttribute("data-tab");
 
+          // Gọi hàm tương ứng với tab
           if (tabId === "manage-bookings") {
             loadPendingBookings();
+          } else if (tabId === "revenue-stats") {
+            loadRevenueStats();
           }
 
           // Ẩn tất cả nội dung tab
-          tabContents.forEach((tab) => {
+          document.querySelectorAll(".tab-content").forEach((tab) => {
             tab.classList.remove("active");
             tab.style.display = "none";
           });
 
           // Bỏ active mặc định
+          const defaultContent = document.getElementById("default-content");
           defaultContent.classList.remove("active");
           defaultContent.style.display = "none";
 
@@ -391,19 +432,22 @@
             selectedTab.style.display = "block";
           }
 
-          tabLinks.forEach((l) => l.classList.remove("active-tab"));
-          this.classList.add("active-tab");
+          // Cập nhật trạng thái active cho tab-link
+          document
+            .querySelectorAll(".tab-link")
+            .forEach((l) => l.classList.remove("active-tab"));
+          link.classList.add("active-tab");
 
-          homestayToggles.forEach((toggle) =>
-            toggle.classList.remove("active-homestay")
-          );
+          // Cập nhật trạng thái active cho homestay-toggle
+          document
+            .querySelectorAll(".homestay-toggle")
+            .forEach((toggle) => toggle.classList.remove("active-homestay"));
           const parentHomestay =
-            this.closest("ul.sub-menu")?.previousElementSibling;
+            link.closest("ul.sub-menu")?.previousElementSibling;
           if (parentHomestay?.classList.contains("homestay-toggle")) {
             parentHomestay.classList.add("active-homestay");
           }
         });
-      });
 
       function returnToDefault() {
         // 1. Ẩn tất cả nội dung tab
@@ -445,8 +489,98 @@
           }
         });
       });
+
+      let chartInstance = null;
+      async function loadRevenueStats() {
+        const loadingElement = document.getElementById("loading");
+        loadingElement.style.display = "block";
+
+        try {
+          const token =
+            localStorage.getItem("authToken") ||
+            sessionStorage.getItem("authToken");
+          if (!token) {
+            alert("Bạn chưa đăng nhập.");
+            loadingElement.style.display = "none";
+            return;
+          }
+          // Tạo promise cho thời gian chờ tối thiểu (500ms)
+          const minLoadingTime = new Promise((resolve) =>
+            setTimeout(resolve, 500)
+          );
+
+          const response = await fetch(
+            "http://localhost:8080/homestay/api/payment/stats/homestay",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          // Đợi cả API và thời gian chờ tối thiểu hoàn tất
+          await Promise.all([minLoadingTime, response]);
+
+          if (!response.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
+          const data = await response.json();
+
+          const labels = data.map((item) => item.homestayName);
+          const revenues = data.map((item) => item.totalRevenue);
+          const ctx = document.getElementById("revenueChart").getContext("2d");
+
+          if (chartInstance) {
+            chartInstance.destroy();
+          }
+
+          chartInstance = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: "Doanh thu (VND)",
+                  data: revenues,
+                  backgroundColor: "rgba(75, 192, 192, 0.6)",
+                  borderColor: "rgba(75, 192, 192, 1)",
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: (value) => value.toLocaleString("vi-VN") + "₫",
+                  },
+                },
+              },
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: (ctx) =>
+                      `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString(
+                        "vi-VN"
+                      )}₫`,
+                  },
+                },
+              },
+            },
+          });
+        } catch (err) {
+          console.error("Lỗi khi tải thống kê doanh thu:", err);
+          alert("Không thể tải dữ liệu thống kê. Vui lòng thử lại sau.");
+        } finally {
+          loadingElement.style.display = "none";
+        }
+      }
     </script>
     <script type="module" src="assets/js/main.js"></script>
     <script type="module" src="assets/js/role-redirect.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </body>
 </html>
