@@ -234,6 +234,40 @@ body {
   background-color: #4cae4c;
 }
 
+/* Tab "Thêm phòng mới" */
+#edit-room .form-group {
+  margin-bottom: 20px;
+}
+
+#edit-room .form-group label {
+  font-size: 16px;
+  color: #000;
+  display: block;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+#edit-room .form-group input[type="radio"],
+#edit-room .form-group input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+#edit-room .btn-add {
+  background-color: #5cb85c;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+#edit-room .btn-add:hover {
+  background-color: #4cae4c;
+}
+
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group input[type="file"] {
