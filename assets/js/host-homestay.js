@@ -89,7 +89,7 @@ window.onload = function () {
             <td>${Number(r.price).toLocaleString("vi-VN")}đ</td>
             <td>${r.availability ? "Còn trống" : "Đang được sử dụng"}</td>
             <td>
-              <button class="btn btn-view"  data-id="${r.roomIdd}">Xem</button>
+              
               <button class="btn btn-edit"  data-id="${r.roomId}">Sửa</button>
               <button class="btn btn-delete" data-id="${r.roomId}">Xóa</button>
             </td>
@@ -227,23 +227,19 @@ window.loadPendingBookings = function () {
           <td>${booking.totalPrice.toLocaleString()}₫</td>
           <td>${booking.createdAt}</td>
           <td>
-            <button class="approve-btn" data-id="${
-              booking.bookingId
-            }">✔️</button>
-            <button class="reject-btn" data-id="${
-              booking.bookingId
-            }">❌</button>
+            <button class="btn btn-approve" data-id="${booking.bookingId}">Chấp nhận</button>
+            <button class="btn btn-reject" data-id="${booking.bookingId}">Từ chối</button>
           </td>
         `;
         tableBody.appendChild(row);
       });
 
       // Thêm event listeners cho các nút approve/reject
-      document.querySelectorAll(".approve-btn").forEach((btn) => {
+      document.querySelectorAll(".btn-approve").forEach((btn) => {
         btn.addEventListener("click", handleApprove);
       });
 
-      document.querySelectorAll(".reject-btn").forEach((btn) => {
+      document.querySelectorAll(".btn-reject").forEach((btn) => {
         btn.addEventListener("click", handleReject);
       });
     })
