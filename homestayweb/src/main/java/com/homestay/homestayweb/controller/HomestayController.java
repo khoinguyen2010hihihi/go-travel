@@ -62,7 +62,7 @@ public class HomestayController {
     }
 
     @GetMapping("/pending")
-//    @PreAuthorize("hasAuthority('ADMIN_ACCESS')")
+    @PreAuthorize("hasAuthority('ADMIN_ACCESS')")
     public ResponseEntity<List<HomestayResponse>> getAllP() {
         return ResponseEntity.ok(homestayService.getAllPendingHomestays());
     }
@@ -75,6 +75,11 @@ public class HomestayController {
     @GetMapping("/my")
     public ResponseEntity<List<HomestayResponse>> getMyHomestays() {
         return ResponseEntity.ok(homestayService.getMyHomestays());
+    }
+
+    @GetMapping("/my_pending")
+    public ResponseEntity<List<HomestayResponse>> getMyPendingHomestays() {
+        return ResponseEntity.ok(homestayService.getMyPendingHomestays());
     }
 
     @GetMapping("/host/{host_id}")
@@ -114,30 +119,46 @@ public class HomestayController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/{homestayId}/images")
+    @PostMapping("/{id}/images")
     @PreAuthorize("hasAuthority('CREATE_HOMESTAY')")
     public ResponseEntity<?> uploadImagesToHomestay(
-            @PathVariable Long homestayId,
-            @RequestParam("file") MultipartFile[] files) {
+            @PathVariable("id") Long homestayId,
+            @RequestParam("file") MultipartFile[] files,
+            @RequestParam(name = "isPrimary", required = false) String isPrimaryFlag
+    ) {
         if (files == null || files.length == 0) {
-            return ResponseEntity.badRequest().body("Không có file nào được gửi lên.");
+            return ResponseEntity.badRequest().body("Không có ảnh nào được gửi lên.");
         }
 
-        List<String> uploadedUrls = new ArrayList<>();
         try {
-            for (MultipartFile file : files) {
+            Homestay homestay = homestayService.findEntityById(homestayId);
+            boolean hasPrimary = isPrimaryFlag != null;
+
+            List<String> uploadedUrls = new ArrayList<>();
+
+            for (int i = 0; i < files.length; i++) {
+                MultipartFile file = files[i];
                 if (file.isEmpty()) continue;
+
                 String imageUrl = cloudinaryService.uploadFile(file);
-                homestayImageService.uploadImageForHomestay(homestayId, imageUrl);
+
+                HomestayImage image = new HomestayImage();
+                image.setImageUrl(imageUrl);
+                image.setIsPrimary(hasPrimary && i == 0); // Ảnh đầu tiên là chính nếu có isPrimary
+                image.setHomestay(homestay);
+
+                homestayImageService.saveHomestayImage(image);
                 uploadedUrls.add(imageUrl);
             }
+
             return ResponseEntity.ok(uploadedUrls);
+
         } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Upload thất bại: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Upload thất bại: " + e.getMessage());
         }
     }
+
+
 
     @GetMapping("/{homestayId}/images")
     public ResponseEntity<List<HomestayImageResponse>> getHomestayImagesByHomestayId(@PathVariable Long homestayId) {

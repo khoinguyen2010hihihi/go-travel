@@ -30,6 +30,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     LEFT JOIN booking b ON r.room_id = b.room_id
     LEFT JOIN payment p ON b.booking_id = p.booking_id AND p.payment_status = 'Completed'
     WHERE h.host_id = :hostId
+    AND h.approve_status = 'ACCEPTED'
     GROUP BY h.name
     ORDER BY totalRevenue DESC
     """, nativeQuery = true)

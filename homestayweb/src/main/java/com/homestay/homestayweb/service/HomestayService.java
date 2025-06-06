@@ -27,5 +27,7 @@ public interface HomestayService {
     HomestayResponse rejectHomestay(Long id);
     List<HomestayResponse> getMyHomestays();
 
+    List<HomestayResponse> getMyPendingHomestays();
+
     List<HomestayResponse> searchHomestays(String roomType, Double priceFrom, Double priceTo, String features, LocalDate checkInDate, LocalDate checkOutDate, Double surfRating, String location);
 }

@@ -1,6 +1,7 @@
 package com.homestay.homestayweb.service.implementation;
 
 import com.homestay.homestayweb.dto.request.HomestayRequest;
+import com.homestay.homestayweb.dto.response.BookingResponse;
 import com.homestay.homestayweb.dto.response.HomestayResponse;
 import com.homestay.homestayweb.entity.Homestay;
 import com.homestay.homestayweb.entity.User;
@@ -17,10 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -163,6 +161,19 @@ public class HomestayServiceImpl implements HomestayService {
         List<Homestay> homestays = homestayRepository.findByHost_IdAndApproveStatus(userDetails.getId(),"ACCEPTED");
         return homestays.stream()
                 .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<HomestayResponse> getMyPendingHomestays() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof UserDetailsImpl userDetails)) {
+            throw new ForbiddenException("Bạn chưa đăng nhập hoặc token không hợp lệ");
+        }
+
+        List<Homestay> homestays = homestayRepository.findByHost_IdAndApproveStatus(userDetails.getId(),"PENDING");
+        return homestays.stream()
+                .map(this::mapToResponse)
+                .sorted(Comparator.comparing(HomestayResponse::getId).reversed())
                 .collect(Collectors.toList());
     }
 
