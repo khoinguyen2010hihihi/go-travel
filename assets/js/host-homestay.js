@@ -94,56 +94,74 @@ window.onload = function () {
             </td>
           `;
           // sửa phòng
-          tr.querySelector(".btn-edit").addEventListener("click", async function () {
-            const roomId = this.getAttribute("data-id");
-            const token = localStorage.getItem("authToken");
+          tr.querySelector(".btn-edit").addEventListener(
+            "click",
+            async function () {
+              const roomId = this.getAttribute("data-id");
+              const token = localStorage.getItem("authToken");
 
-            const res = await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            });
-            const room = await res.json();
+              const res = await fetch(
+                `http://localhost:8080/homestay/api/rooms/${roomId}`,
+                {
+                  headers: { Authorization: `Bearer ${token}` },
+                }
+              );
+              const room = await res.json();
 
-            document.getElementById("editRoomId").value = room.roomId;
-            document.getElementById("editPrice").value = room.price;
-            
-            document.querySelectorAll("input[name='editRoomType']").forEach((radio) => {
-              radio.checked = radio.value === room.roomType;
-            });
+              document.getElementById("editRoomId").value = room.roomId;
+              document.getElementById("editPrice").value = room.price;
 
-            const selected = (room.features || "").split(", ");
-            document.querySelectorAll("input[name='editFacilities']").forEach((cb) => {
-              cb.checked = selected.includes(cb.value);
-            });
-
-            document.getElementById("edit-preview-container").innerHTML = "";
-            document.querySelectorAll(".tab-content").forEach((tab) => tab.style.display = "none");
-            document.getElementById("edit-room").style.display = "block";
-          });
-
-          // xóa phòng
-          tr.querySelector(".btn-delete").addEventListener("click", async function () {
-            const roomId = this.getAttribute("data-id");
-            const token = localStorage.getItem("authToken");
-
-            if (confirm("Bạn có chắc chắn muốn xóa phòng này?")) {
-              try {
-                await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}`, {
-                  method: "DELETE",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                  },
+              document
+                .querySelectorAll("input[name='editRoomType']")
+                .forEach((radio) => {
+                  radio.checked = radio.value === room.roomType;
                 });
 
-                alert("Phòng đã được xóa thành công!");
-                
-                showRoomList(homestayId);
-              } catch (error) {
-                console.error("Lỗi khi xóa phòng:", error);
-                alert("Không thể xóa phòng. Vui lòng thử lại sau.");
+              const selected = (room.features || "").split(", ");
+              document
+                .querySelectorAll("input[name='editFacilities']")
+                .forEach((cb) => {
+                  cb.checked = selected.includes(cb.value);
+                });
+
+              document.getElementById("edit-preview-container").innerHTML = "";
+              document
+                .querySelectorAll(".tab-content")
+                .forEach((tab) => (tab.style.display = "none"));
+              document.getElementById("edit-room").style.display = "block";
+            }
+          );
+
+          // xóa phòng
+          tr.querySelector(".btn-delete").addEventListener(
+            "click",
+            async function () {
+              const roomId = this.getAttribute("data-id");
+              const token = localStorage.getItem("authToken");
+
+              if (confirm("Bạn có chắc chắn muốn xóa phòng này?")) {
+                try {
+                  await fetch(
+                    `http://localhost:8080/homestay/api/rooms/${roomId}`,
+                    {
+                      method: "DELETE",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                      },
+                    }
+                  );
+
+                  alert("Phòng đã được xóa thành công!");
+
+                  showRoomList(homestayId);
+                } catch (error) {
+                  console.error("Lỗi khi xóa phòng:", error);
+                  alert("Không thể xóa phòng. Vui lòng thử lại sau.");
+                }
               }
             }
-          });
+          );
           tbody.appendChild(tr);
         });
       })
@@ -277,8 +295,12 @@ window.loadPendingBookings = function () {
           <td>${booking.totalPrice.toLocaleString()}₫</td>
           <td>${booking.createdAt}</td>
           <td>
-            <button class="btn btn-approve" data-id="${booking.bookingId}">Chấp nhận</button>
-            <button class="btn btn-reject" data-id="${booking.bookingId}">Từ chối</button>
+            <button class="btn btn-approve" data-id="${
+              booking.bookingId
+            }">Chấp nhận</button>
+            <button class="btn btn-reject" data-id="${
+              booking.bookingId
+            }">Từ chối</button>
           </td>
         `;
         tableBody.appendChild(row);
@@ -311,7 +333,7 @@ window.addHomestay = function () {
       const token = localStorage.getItem("authToken");
 
       const res = await postHomestay(formData, token);
-      const newHomestay = await res.json(); 
+      const newHomestay = await res.json();
 
       const imageFiles = getHomestayImages();
       if (imageFiles.length > 0) {
@@ -436,7 +458,7 @@ function handleReject(event) {
     })
     .then((data) => {
       alert("Đã reject booking thành công!");
-      loadPendingBookings(); 
+      loadPendingBookings();
     })
     .catch((error) => {
       console.error("Lỗi:", error);
@@ -453,9 +475,12 @@ document.querySelectorAll(".btn-edit").forEach((btn) => {
     const roomId = this.dataset.id;
     const token = localStorage.getItem("authToken");
 
-    const res = await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await fetch(
+      `http://localhost:8080/homestay/api/rooms/${roomId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     const data = await res.json();
 
     document.getElementById("editRoomId").value = data.roomId;
@@ -470,48 +495,59 @@ document.querySelectorAll(".btn-edit").forEach((btn) => {
     });
 
     document.getElementById("edit-preview-container").innerHTML = "";
-    document.querySelectorAll(".tab-content").forEach((t) => t.style.display = "none");
+    document
+      .querySelectorAll(".tab-content")
+      .forEach((t) => (t.style.display = "none"));
     document.getElementById("edit-room").style.display = "block";
   });
 });
 
-document.getElementById("save-room-changes").addEventListener("click", async function () {
-  const roomId = document.getElementById("editRoomId").value;
-  const price = document.getElementById("editPrice").value;
-  const roomType = document.querySelector("input[name='editRoomType']:checked")?.value;
-  const features = Array.from(document.querySelectorAll("input[name='editFacilities']:checked"))
-    .map(el => el.value).join(", ");
-  const imageFile = document.getElementById("editImage").files[0];
+document
+  .getElementById("save-room-changes")
+  .addEventListener("click", async function () {
+    const roomId = document.getElementById("editRoomId").value;
+    const price = document.getElementById("editPrice").value;
+    const roomType = document.querySelector(
+      "input[name='editRoomType']:checked"
+    )?.value;
+    const features = Array.from(
+      document.querySelectorAll("input[name='editFacilities']:checked")
+    )
+      .map((el) => el.value)
+      .join(", ");
+    const imageFile = document.getElementById("editImage").files[0];
 
-  if (!roomType || !price) {
-    alert("Vui lòng nhập đầy đủ thông tin!");
-    return;
-  }
+    if (!roomType || !price) {
+      alert("Vui lòng nhập đầy đủ thông tin!");
+      return;
+    }
 
-  const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem("authToken");
 
-  await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ roomType, price, features }),
-  });
-
-  if (imageFile) {
-    const formData = new FormData();
-    formData.append("file", imageFile);
-
-    await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}/image`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
+    await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ roomType, price, features }),
     });
-  }
 
-  alert("Cập nhật thành công!");
-  document.querySelectorAll(".tab-content").forEach((tab) => tab.style.display = "none");
-  document.getElementById("view-all-room").style.display = "block";
-  document.getElementById("edit-room").style.display = "none";
-});
+    if (imageFile) {
+      const formData = new FormData();
+      formData.append("file", imageFile);
+
+      await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}/images`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+    }
+
+    alert("Cập nhật thành công!");
+    document
+      .querySelectorAll(".tab-content")
+      .forEach((tab) => (tab.style.display = "none"));
+    document.getElementById("view-all-room").style.display = "block";
+    document.getElementById("edit-room").style.display = "none";
+  });
