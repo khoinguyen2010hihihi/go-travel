@@ -63,25 +63,20 @@
         <h2>Bảng điều khiển Host</h2>
         <ul>
           <li>
-            <a href="#" class="parent-toggle"
-              >Quản lý Homestay<span class="arrow-icon">▼</span>
-            </a>
+            <a href="#" class="parent-toggle">Quản lý Homestay<span class="arrow-icon">▼</span></a>
             <ul class="homestay-list" style="display: none"></ul>
           </li>
           <li>
-            <a href="#" class="tab-link" data-tab="manage-bookings"
-              >Quản lý đơn đặt phòng</a
-            >
+            <a href="#" class="tab-link" data-tab="pending-approval-homestays">Đang chờ phê duyệt</a>
           </li>
           <li>
-            <a href="#" class="tab-link" data-tab="add-homestay"
-              >Kinh doanh Homestay mới</a
-            >
+            <a href="#" class="tab-link" data-tab="manage-bookings">Quản lý đơn đặt phòng</a>
           </li>
           <li>
-            <a href="#" class="tab-link" data-tab="revenue-stats"
-              >Thống kê doanh thu</a
-            >
+            <a href="#" class="tab-link" data-tab="add-homestay">Kinh doanh Homestay mới</a>
+          </li>
+          <li>
+            <a href="#" class="tab-link" data-tab="revenue-stats">Thống kê doanh thu</a>
           </li>
         </ul>
       </div>
@@ -119,21 +114,21 @@
               </table>
             </div>
           </div>
-          <div id="view-all-pending-room" class="tab-content">
+          <div id="pending-approval-homestays" class="tab-content" style="display: none">
             <div class="card-box">
               <button class="close-btn" onclick="returnToDefault()">×</button>
-              <h2>Danh sách tất cả phòng</h2>
+              <h2>Danh sách Homestay đang chờ phê duyệt</h2>
               <table class="room-table">
                 <thead>
                   <tr>
-                    <th>Mã phòng</th>
-                    <th>Loại phòng</th>
-                    <th>Giá</th>
+                    <th>Tên Homestay</th>
+                    <th>Địa chỉ</th>
+                    <th>Ngày tạo</th>
                     <th>Trạng thái</th>
                     <th>Hành động</th>
                   </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody id="pending-homestay-list"></tbody>
               </table>
             </div>
           </div>
@@ -413,8 +408,8 @@
             // Thêm class active-homestay nếu submenu được mở
             if (!isShown) {
               toggle.classList.add("active-homestay");
-              // const firstTab = submenu.querySelector(".tab-link");
-              // if (firstTab) firstTab.click();
+              const firstTab = submenu.querySelector(".tab-link");
+              if (firstTab) firstTab.click();
             }
           }
         });

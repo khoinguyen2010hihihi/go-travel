@@ -36,7 +36,7 @@ window.onload = function () {
         `;
         homestayList.appendChild(li);
       });
-      homestayList.style.display = "block";
+      homestayList.style.display = "none";
     })
     .catch((err) => console.error("Lỗi khi load homestay:", err));
 
@@ -443,10 +443,6 @@ function handleReject(event) {
       alert("Có lỗi xảy ra khi reject booking");
     });
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-  window.addHomestay();
-});
 
 document.addEventListener("DOMContentLoaded", function () {
   window.addHomestay();
