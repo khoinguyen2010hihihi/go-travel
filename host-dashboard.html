@@ -506,6 +506,28 @@
         });
       });
 
+      const homestayImageInput = document.getElementById("homestay-images");
+      const homestayPreviewContainer = document.getElementById("homestay-preview-container");
+
+      homestayImageInput.addEventListener("change", function () {
+          homestayPreviewContainer.innerHTML = "";
+
+          Array.from(this.files).forEach((file) => {
+              if (file.type.startsWith("image/")) {
+                  const reader = new FileReader();
+
+                  reader.onload = function (e) {
+                      const img = document.createElement("img"); 
+                      img.src = e.target.result;
+                      img.classList.add("preview-image"); 
+                      homestayPreviewContainer.appendChild(img);
+                  };
+
+                  reader.readAsDataURL(file); 
+              }
+          });
+      });
+
       let chartInstance = null;
       async function loadRevenueStats() {
         const loadingElement = document.getElementById("loading");

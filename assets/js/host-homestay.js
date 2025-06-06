@@ -503,7 +503,7 @@ document.getElementById("save-room-changes").addEventListener("click", async fun
     const formData = new FormData();
     formData.append("file", imageFile);
 
-    await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}/image`, {
+    await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}/images`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
