@@ -402,7 +402,3 @@ function handleReject(event) {
 document.addEventListener("DOMContentLoaded", function () {
   window.addHomestay();
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-  window.addHomestay();
-});
