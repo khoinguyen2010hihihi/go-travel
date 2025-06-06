@@ -157,6 +157,7 @@ async function renderPage(page) {
         JSON.stringify({
           checkIn: checkInDate,
           checkOut: checkOutDate,
+          autoSearch: true,
         })
       );
     });

@@ -189,20 +189,6 @@ window.onload = function () {
     document.getElementById("default-content").style.display = "block";
   };
 
-  function showAddForm(homestayId) {
-    const addTab = document.getElementById("add-room");
-    addTab.style.display = "block";
-
-    let hidden = addTab.querySelector("input[name='homestayId']");
-    if (!hidden) {
-      hidden = document.createElement("input");
-      hidden.type = "hidden";
-      hidden.name = "homestayId";
-      addTab.querySelector(".card-box").appendChild(hidden);
-    }
-    hidden.value = homestayId;
-  }
-
   window.returnToDefault = function () {
     document
       .querySelectorAll(".tab-content")
@@ -210,58 +196,84 @@ window.onload = function () {
     document.getElementById("default-content").style.display = "block";
   };
 
-  document.getElementById("submit-room").addEventListener("click", function () {
-    const roomType = document.querySelector(
-      "input[name='RoomType']:checked"
-    )?.value;
-    const price = document.getElementById("Price").value;
-    const featuresEls = document.querySelectorAll(
-      "input[name='Facilities']:checked"
-    );
-    const features = Array.from(featuresEls)
-      .map((el) => el.value)
-      .join(", ");
+  document
+    .getElementById("submit-room")
+    .addEventListener("click", async function () {
+      const roomType = document.querySelector(
+        "input[name='RoomType']:checked"
+      )?.value;
+      const price = document.getElementById("Price").value;
+      const featuresEls = document.querySelectorAll(
+        "input[name='Facilities']:checked"
+      );
+      const features = Array.from(featuresEls)
+        .map((el) => el.value)
+        .join(", ");
+      const imageFile = document.getElementById("room-image").files[0];
 
-    if (!roomType || !price || !features) {
-      alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
-      return;
-    }
+      if (!roomType || !price || !features) {
+        alert("Vui lòng điền đầy đủ thông tin bắt buộc!");
+        return;
+      }
 
-    const homestayId = document.querySelector(
-      "#add-room input[name='homestayId']"
-    ).value;
+      const homestayId = document.querySelector(
+        "#add-room input[name='homestayId']"
+      ).value;
+      const token = localStorage.getItem("authToken");
 
-    const roomData = {
-      roomType: roomType,
-      price: price,
-      features: features,
-    };
+      const roomData = {
+        roomType: roomType,
+        price: price,
+        features: features,
+      };
 
-    const token = localStorage.getItem("authToken");
+      try {
+        const res = await fetch(
+          `http://localhost:8080/homestay/api/rooms/homestay/${homestayId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(roomData),
+          }
+        );
 
-    fetch(`http://localhost:8080/homestay/api/rooms/homestay/${homestayId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(roomData),
-    })
-      .then((response) => {
-        if (!response.ok) {
+        if (!res.ok) {
           throw new Error("Lỗi khi thêm phòng");
         }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Phòng được thêm thành công:", data);
+
+        const room = await res.json();
+        const roomId = room.roomId;
+
+        // Gửi ảnh nếu có
+        if (imageFile) {
+          const formData = new FormData();
+          formData.append("file", imageFile);
+
+          const imgRes = await fetch(
+            `http://localhost:8080/homestay/api/rooms/${roomId}/images`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              body: formData,
+            }
+          );
+
+          if (!imgRes.ok) {
+            throw new Error("Lỗi khi upload ảnh phòng");
+          }
+        }
+
         alert("Phòng đã được thêm thành công!");
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Lỗi:", error);
         alert("Đã xảy ra lỗi khi thêm phòng!");
-      });
-  });
+      }
+    });
 };
 
 window.loadPendingBookings = function () {
@@ -316,6 +328,64 @@ window.loadPendingBookings = function () {
     })
     .catch((err) => console.error("Lỗi khi load booking:", err));
 };
+
+function fetchPendingHomestays() {
+  const token = localStorage.getItem("authToken");
+
+  const decodedToken = jwt_decode(token);
+
+  fetch("http://localhost:8080/homestay/api/homestays/my_pending", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      const tbody = document.getElementById("pending-homestay-list");
+      tbody.innerHTML = "";
+
+      data.forEach((homestay) => {
+        const tr = document.createElement("tr");
+
+        const nameTd = document.createElement("td");
+        nameTd.textContent = homestay.name;
+
+        const addressTd = document.createElement("td");
+        addressTd.textContent = `${homestay.street}, ${homestay.ward}, ${homestay.district}`;
+
+        const createdAtTd = document.createElement("td");
+        createdAtTd.textContent = new Date(homestay.createdAt).toLocaleString();
+
+        const actionTd = document.createElement("td");
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Chỉnh sửa";
+        editBtn.className = "edit-btn";
+
+        const cancelBtn = document.createElement("button");
+        cancelBtn.textContent = "Hủy yêu cầu";
+        cancelBtn.className = "cancel-btn";
+
+        actionTd.appendChild(editBtn);
+        actionTd.appendChild(cancelBtn);
+
+        tr.appendChild(nameTd);
+        tr.appendChild(addressTd);
+        tr.appendChild(createdAtTd);
+        tr.appendChild(actionTd);
+
+        tbody.appendChild(tr);
+      });
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error);
+    });
+}
 
 window.addHomestay = function () {
   const form = document.getElementById("add-homestay-form");
@@ -468,6 +538,19 @@ function handleReject(event) {
 
 document.addEventListener("DOMContentLoaded", function () {
   window.addHomestay();
+});
+
+window.addEventListener("DOMContentLoaded", function () {
+  const tabLink = document.querySelector(
+    'a.tab-link[data-tab="pending-approval-homestays"]'
+  );
+
+  if (tabLink) {
+    tabLink.addEventListener("click", function (e) {
+      e.preventDefault();
+      fetchPendingHomestays();
+    });
+  }
 });
 
 document.querySelectorAll(".btn-edit").forEach((btn) => {
