@@ -173,57 +173,6 @@ body {
 
 .result-card {
   background-color: white;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px;
-  display: flex;
-  overflow: hidden;
-}
-
-.result-card:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
-  background-color: rgba(85, 104, 231, 0.1);
-  cursor: pointer;
-}
-
-.result-card img {
-  width: 300px;
-  height: 200px;
-  object-fit: cover;
-}
-
-.result-details {
-  padding: 20px;
-  flex: 1;
-}
-
-.result-details h3 {
-  margin-top: 0;
-  margin-bottom: 5px;
-  font-size: 1.3em;
-}
-
-.result-details .stars {
-  color: #ffc107;
-  margin-bottom: 10px;
-  font-weight: 700;
-  font-family: system-ui;
-}
-
-.result-details .location {
-  margin-bottom: 10px;
-  color: #555;
-  font-size: 0.9em;
-}
-
-.result-details .amenities {
-  color: #777;
-  font-size: 0.85em;
-}
-
-.result-card {
-  background-color: white;
   border-radius: 10px;
   display: flex;
   overflow: hidden;
