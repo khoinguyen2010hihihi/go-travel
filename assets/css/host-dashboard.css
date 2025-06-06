@@ -172,6 +172,7 @@ body {
   font-size: 14px;
   cursor: pointer;
   margin: 2px;
+  width: 110px;
 }
 
 .btn-view {
@@ -180,12 +181,22 @@ body {
 }
 
 .btn-edit {
-  background-color: #ffc107;
+  background-color: #007bff;
   color: white;
 }
 
 .btn-delete {
   background-color: #dc3545;
+  color: white;
+}
+
+.btn-reject {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-approve {
+  background-color: #28a745;
   color: white;
 }
 
@@ -216,9 +227,44 @@ body {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+  width: 100%;
 }
 
 #add-room .btn-add:hover {
+  background-color: #4cae4c;
+}
+
+/* Tab "Thêm phòng mới" */
+#edit-room .form-group {
+  margin-bottom: 20px;
+}
+
+#edit-room .form-group label {
+  font-size: 16px;
+  color: #000;
+  display: block;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+#edit-room .form-group input[type="radio"],
+#edit-room .form-group input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+#edit-room .btn-add {
+  background-color: #5cb85c;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+#edit-room .btn-add:hover {
   background-color: #4cae4c;
 }
 
@@ -311,6 +357,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+  width: 100%;
 }
 
 #add-homestay .btn-add:hover {
@@ -362,6 +409,13 @@ body {
     padding: 10px 20px;
     font-size: 14px;
   }
+}
+
+.card-box h2 {
+  font-size: 30px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 #loading {
