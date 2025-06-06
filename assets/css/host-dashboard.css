@@ -200,6 +200,15 @@ body {
   color: white;
 }
 
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
 /* Tab "Thêm phòng mới" */
 #add-room .form-group {
   margin-bottom: 20px;

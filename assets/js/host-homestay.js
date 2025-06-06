@@ -295,7 +295,10 @@ window.loadPendingBookings = function () {
     .then((bookings) => {
       const tableBody = document.getElementById("booking-table-body");
       tableBody.innerHTML = "";
-
+      if (bookings.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="8">Không có booking nào đang chờ duyệt.</td></tr>';
+        return;
+      }
       bookings.forEach((booking) => {
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -349,7 +352,10 @@ function fetchPendingHomestays() {
     .then((data) => {
       const tbody = document.getElementById("pending-homestay-list");
       tbody.innerHTML = "";
-
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4">Không có homestay nào đang chờ duyệt.</td></tr>';
+        return;
+      }
       data.forEach((homestay) => {
         const tr = document.createElement("tr");
 
@@ -365,11 +371,11 @@ function fetchPendingHomestays() {
         const actionTd = document.createElement("td");
         const editBtn = document.createElement("button");
         editBtn.textContent = "Chỉnh sửa";
-        editBtn.className = "edit-btn";
+        editBtn.className = "btn btn-edit";
 
         const cancelBtn = document.createElement("button");
         cancelBtn.textContent = "Hủy yêu cầu";
-        cancelBtn.className = "cancel-btn";
+        cancelBtn.className = "btn btn-cancel";
 
         actionTd.appendChild(editBtn);
         actionTd.appendChild(cancelBtn);
