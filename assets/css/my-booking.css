@@ -251,22 +251,16 @@ body {
 
 .homestay-card {
   background-color: white;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px;
   border-radius: 10px;
   display: flex;
   overflow: hidden;
+  margin-bottom: 20px;
+  height: 200px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .homestay-card:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
-  background-color: rgba(85, 104, 231, 0.1);
-  cursor: pointer;
-
   transform: translateY(-4px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   background-color: rgba(85, 104, 231, 0.05);
@@ -277,8 +271,6 @@ body {
   width: 300px;
   height: 200px;
   object-fit: cover;
-  flex-shrink: 0;
-
 }
 
 .homestay-info {
