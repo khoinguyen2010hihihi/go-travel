@@ -431,8 +431,11 @@
           const payload = decodeJWT(token);
           const userId = payload.host_id || payload.sub || payload.userId;
           const roomId = btn.dataset.roomId;
-          const checkInDate = checkInInput.value;
-          const checkOutDate = checkOutInput.value;
+          const checkInDate = checkInInput.value.split("/").reverse().join("-");
+          const checkOutDate = checkOutInput.value
+            .split("/")
+            .reverse()
+            .join("-");
 
           if (!checkInDate || !checkOutDate) {
             alert("Vui lòng chọn ngày nhận và trả phòng.");
