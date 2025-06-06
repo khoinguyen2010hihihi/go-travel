@@ -79,6 +79,10 @@
             >
           </li>
           <li>
+            <a href="#" class="tab-link" data-tab="approved-bookings"
+              >Đơn đặt phòng đã duyệt</a>
+          </li>
+          <li>
             <a href="#" class="tab-link" data-tab="add-homestay"
               >Kinh doanh Homestay mới</a
             >
@@ -142,6 +146,26 @@
                   </tr>
                 </thead>
                 <tbody id="pending-homestay-list"></tbody>
+              </table>
+            </div>
+          </div>
+          <div id="approved-bookings" class="tab-content" style="display: none">
+            <div class="card-box">
+              <button class="close-btn" onclick="returnToDefault()">×</button>
+              <h2>Danh sách đơn đặt phòng đã duyệt</h2>
+              <table class="room-table">
+                <thead>
+                  <tr>
+                    <th>Tên Homestay</th>
+                    <th>Mã đặt phòng</th>
+                    <th>Mã phòng</th>
+                    <th>Thành tiền</th>
+                    <th>Ngày Check-in</th>
+                    <th>Ngày Check-out</th>
+                    <th>Ngày đặt</th>
+                  </tr>
+                </thead>
+                <tbody id="approved-booking-list"></tbody>
               </table>
             </div>
           </div>
