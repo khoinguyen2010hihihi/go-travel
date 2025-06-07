@@ -296,7 +296,8 @@ window.loadPendingBookings = function () {
       const tableBody = document.getElementById("booking-table-body");
       tableBody.innerHTML = "";
       if (bookings.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="8">Không có booking nào đang chờ duyệt.</td></tr>';
+        tableBody.innerHTML =
+          '<tr><td colspan="8">Không có booking nào đang chờ duyệt.</td></tr>';
         return;
       }
       bookings.forEach((booking) => {
@@ -353,7 +354,8 @@ function fetchPendingHomestays() {
       const tbody = document.getElementById("pending-homestay-list");
       tbody.innerHTML = "";
       if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4">Không có homestay nào đang chờ duyệt.</td></tr>';
+        tbody.innerHTML =
+          '<tr><td colspan="4">Không có homestay nào đang chờ duyệt.</td></tr>';
         return;
       }
       data.forEach((homestay) => {
@@ -391,6 +393,60 @@ function fetchPendingHomestays() {
     .catch((error) => {
       console.error("Fetch error:", error);
     });
+}
+
+async function fetchApprovedBookings() {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    console.error("Không tìm thấy token.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "http://localhost:8080/homestay/api/bookings/filter",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Không thể lấy dữ liệu từ server");
+    }
+
+    const bookings = await response.json();
+    const tbody = document.getElementById("approved-booking-list");
+    tbody.innerHTML = ""; // Xóa dữ liệu cũ
+
+    bookings.forEach((booking) => {
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>${booking.homestayName}</td>
+        <td>${booking.bookingId}</td>
+        <td>${booking.roomId}</td>
+        <td>${booking.userEmail}</td>
+        <td>${booking.totalPrice.toLocaleString()} VND</td>
+        <td>${formatDate(booking.checkInDate)}</td>
+        <td>${formatDate(booking.checkOutDate)}</td>
+        <td>${formatDate(booking.createdAt)}</td>
+      `;
+
+      tbody.appendChild(row);
+    });
+  } catch (error) {
+    console.error("Lỗi khi tải đơn đặt phòng đã duyệt:", error);
+  }
+}
+
+// Format YYYY-MM-DD => DD/MM/YYYY
+function formatDate(dateStr) {
+  const [year, month, day] = dateStr.split("-");
+  return `${day}/${month}/${year}`;
 }
 
 window.addHomestay = function () {
@@ -559,6 +615,18 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+window.addEventListener("DOMContentLoaded", function () {
+  const tabLink = document.querySelector(
+    '.tab-link[data-tab="approved-bookings"]'
+  );
+  if (tabLink) {
+    tabLink.addEventListener("click", function (event) {
+      event.preventDefault();
+      fetchApprovedBookings();
+    });
+  }
+});
+
 document.querySelectorAll(".btn-edit").forEach((btn) => {
   btn.addEventListener("click", async function () {
     const roomId = this.dataset.id;
@@ -626,12 +694,12 @@ document
       const formData = new FormData();
       formData.append("file", imageFile);
 
-    await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}/images`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    });
-  }
+      await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}/images`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+    }
 
     alert("Cập nhật thành công!");
     document
