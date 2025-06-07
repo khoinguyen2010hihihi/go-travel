@@ -10,18 +10,22 @@ body {
 
 /* Sidebar Styles */
 .sidebar {
-    width: 260px;
-    padding: 30px 20px;
-    background-color: #ffffff;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.08);
-    z-index: 10;
-    margin-top: 60px;
-    overflow-y: auto;
-    transition: all 0.3s ease;
+  width: 260px;
+  padding: 20px;
+  background-color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: calc(100vh - 60px);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+  margin-top: 60px;
+  overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar,
+.homestay-list::-webkit-scrollbar {
+  width: 0px;
 }
 
 .sidebar h2 {
@@ -448,11 +452,4 @@ body {
     .sidebar {
         display: none; /* Ẩn sidebar trên mobile, nếu cần hiển thị thì cần thêm toggle */
     }
-}
-
-.loading {
-    text-align: center;
-    font-size: 16px;
-    color: #007bff;
-    margin: 20px 0;
 }
