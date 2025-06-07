@@ -358,47 +358,44 @@
           const card = document.createElement("div");
           card.className = "homestay-card";
           card.innerHTML = `
-      <div class="homestay-image">
-        <img src="${primaryImageUrl}" alt="${b.homestayName}">
-      </div>
-      <div class="homestay-info">
-        <h3>${b.homestayName}</h3>
-        <div class="info-row">
-          <p><span class="label">Ngày Check In:</span> ${formatDate(
-            b.checkInDate
-          )}</p>
-        </div>
-        <div class="info-row">
-          <p><span class="label">Ngày Check Out:</span> ${formatDate(
-            b.checkOutDate
-          )}</p>
-        </div>
-        <div class="info-row">
-          <p><span class="label">Ngày Đặt:</span> ${formatDate(b.createdAt)}</p>
-        </div>
-        <div class="info-row">
-          <p><span class="label">Tổng tiền:</span> ${b.totalPrice.toLocaleString(
-            "vi-VN"
-          )} VND</p>
-        </div>
-        <div class="action-buttons">
-          <button class="detail-btn" onclick="viewDetails(${
-            b.bookingId
-          })">Xem chi tiết</button>
-          
-          ${
-            showCancel
-              ? `<button class="cancel-btn" onclick="cancelBooking(${b.bookingId})">Hủy đặt chỗ</button>`
-              : ""
-          }
-          ${
-            !isPaid
-              ? `<button class="pay-btn" onclick="createPayment('${b.bookingId}','${token}')">Thanh toán</button>`
-              : ""
-          }
-        </div>
-      </div>
-    `;
+            <div class="homestay-image">
+              <img src="${primaryImageUrl}" alt="${b.homestayName}">
+            </div>
+            <div class="homestay-info">
+              <h3>${b.homestayName}</h3>
+              <div class="info-row">
+                <p><span class="label">Ngày Check In:</span> ${formatDate(
+                  b.checkInDate
+                )}</p>
+              </div>
+              <div class="info-row">
+                <p><span class="label">Ngày Check Out:</span> ${formatDate(
+                  b.checkOutDate
+                )}</p>
+              </div>
+              <div class="info-row">
+                <p><span class="label">Ngày Đặt:</span> ${formatDate(b.createdAt)}</p>
+              </div>
+              <div class="info-row">
+                <p><span class="label">Tổng tiền:</span> ${b.totalPrice.toLocaleString(
+                  "vi-VN"
+                )} VND</p>
+              </div>
+              <div class="action-buttons">
+                ${
+                  !isPaid && showCancel
+                    ? `<button class="pay-btn" onclick="createPayment('${b.bookingId}','${token}')">Thanh toán</button>`
+                    : ""
+                }
+                ${
+                  !isPaid && showCancel
+                    ? `<button class="cancel-btn" onclick="cancelBooking(${b.bookingId})">Hủy đặt chỗ</button>`
+                    : ""
+                }
+                <button class="detail-btn" onclick="viewDetails(${b.bookingId})">Xem chi tiết</button>
+              </div>
+            </div>
+          `;
           list.appendChild(card);
         }
       }
@@ -487,12 +484,67 @@
         renderHomestays(rejected, "canceled-list", "no-canceled", false);
       }
 
-      function viewDetails(id) {
-        alert(`Xem chi tiết booking #${id}`);
+      async function viewDetails(bookingId) {
+        try {
+          const token = localStorage.getItem("authToken");
+          if (!token) {
+              alert("Vui lòng đăng nhập để xem chi tiết.");
+              return;
+          }
+
+          const response = await fetch(`http://localhost:8080/homestay/api/bookings/${bookingId}`, {
+              headers: {
+                  "Authorization": `Bearer ${token}`,
+                  "Content-Type": "application/json"
+              }
+          });
+
+          if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(`Không thể lấy thông tin đặt chỗ: ${errorText}`);
+          }
+
+          const booking = await response.json();
+          const homestayId = booking.homestayId;
+
+          if (homestayId) {
+              window.location.href = `room.html?id=${homestayId}`;
+          } else {
+              throw new Error("Không tìm thấy ID homestay.");
+          }
+        } catch (error) {
+            console.error("Lỗi khi xem chi tiết:", error);
+            alert("Có lỗi xảy ra khi xem chi tiết đặt chỗ. Vui lòng thử lại.");
+        }
       }
 
-      function cancelBooking(id) {
-        alert(`Hủy booking #${id}`);
+      async function cancelBooking(bookingId) {
+        try {
+          const token = localStorage.getItem("authToken");
+          if (!token) {
+              alert("Vui lòng đăng nhập để hủy đặt chỗ.");
+              return;
+          }
+
+          const response = await fetch(`http://localhost:8080/homestay/api/bookings/${bookingId}`, {
+              method: "DELETE",
+              headers: {
+                  "Authorization": `Bearer ${token}`,
+                  "Content-Type": "application/json"
+              }
+          });
+
+          if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(`Không thể hủy đặt chỗ: ${errorText}`);
+          }
+
+          alert(`Hủy đơn đặt chỗ thành công!`);
+          await loadCustomerBookings(); 
+        } catch (error) {
+          console.error("Lỗi khi hủy đặt chỗ:", error);
+          alert("Có lỗi xảy ra khi hủy đặt chỗ. Vui lòng thử lại.");
+        }
       }
 
       function editProfile() {

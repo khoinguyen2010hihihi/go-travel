@@ -318,6 +318,7 @@ body {
     margin-top: 10px;
 }
 
+.pay-btn,
 .detail-btn,
 .cancel-btn {
     padding: 8px 16px;
@@ -343,6 +344,15 @@ body {
 
 .cancel-btn:hover {
     background: #b02a37;
+}
+
+.pay-btn {
+    background: #28a745;
+    color: #fff;
+}
+
+.pay-btn:hover {
+    background: #218838;
 }
 
 /* Frofile style */
