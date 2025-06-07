@@ -12,17 +12,21 @@ body {
 /* Sidebar Styles */
 .sidebar {
   width: 260px;
-  padding: 30px 20px;
+  padding: 20px;
   background-color: #ffffff;
   position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
+  height: calc(100vh - 60px);
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.08);
   z-index: 100;
   margin-top: 60px;
   overflow-y: auto;
-  transition: all 0.3s ease;
+}
+
+.sidebar::-webkit-scrollbar,
+.homestay-list::-webkit-scrollbar {
+  width: 0px;
 }
 
 .sidebar h2 {
