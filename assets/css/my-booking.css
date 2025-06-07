@@ -105,6 +105,13 @@ body {
     position: relative;
 }
 
+.card-box h2 {
+    font-size: 30px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
 .close-btn {
     position: absolute;
     top: 12px;
@@ -244,10 +251,6 @@ body {
 }
 
 /* Booking History Styles */
-#tab-my-booking h2 {
-    text-align: center;
-}
-
 .homestay-list {
   flex: 1;
   padding: 20px;
