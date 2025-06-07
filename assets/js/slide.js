@@ -72,7 +72,7 @@ function initializeSlide() {
                   `.result-card[data-id="${item.id}"]`
                 );
                 insertedCard.addEventListener("click", () => {
-                  window.location.href = `room.html?id=${item.id}`;
+                  window.location.href = `homestay.html?id=${item.id}`;
                 });
               });
             })

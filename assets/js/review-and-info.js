@@ -10,7 +10,7 @@ const homestayId = Number(params.get("id"));
 if (!homestayId) {
   console.error("Không có homestayId trong URL");
   alert("Không xác định được homestay để hiển thị đánh giá.");
-} // http://.../room.html?id=5
+}
 
 const apiBase = "http://localhost:8080/homestay/api/reviews";
 
