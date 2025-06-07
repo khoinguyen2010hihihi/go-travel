@@ -1,33 +1,272 @@
 window.onload = function () {
   const token = localStorage.getItem("authToken");
 
-  // 1. Tất cả các tab-link
+  // Dữ liệu giả cho danh sách doanh nghiệp và homestay
+  let mockHosts = [
+    {
+      id: "H001",
+      name: "Công ty Du lịch Biển Xanh",
+      status: "ACTIVE",
+      homestays: [
+        {
+          id: "HS001",
+          name: "Homestay Biển Xanh 1",
+          address: "123 Đường Bãi Dài, Phú Quốc",
+          status: "ACTIVE",
+        },
+        {
+          id: "HS002",
+          name: "Homestay Biển Xanh 2",
+          address: "456 Đường Trần Hưng Đạo, Đà Nẵng",
+          status: "LOCKED",
+        },
+      ],
+    },
+    {
+      id: "H002",
+      name: "Công ty Du lịch Biển Xanh",
+      email: "contact@blueocean.com",
+      status: "ACTIVE",
+      homestays: [
+        {
+          id: "HA001",
+          name: "Homestay Biển Xanh 1",
+          address: "123 Đường Bãi Dài, Phú Quốc",
+          status: "ACTIVE",
+        },
+        {
+          id: "HA002",
+          name: "Homestay Biển Xanh 2",
+          address: "456 Đường Trần Hưng Đạo, Đà Nẵng",
+          status: "LOCKED",
+        },
+      ],
+    },
+    {
+      id: "H003",
+      name: "Công ty Du lịch Biển Xanh",
+      email: "contact@blueocean.com",
+      status: "ACTIVE",
+      homestays: [
+        {
+          id: "HB001",
+          name: "Homestay Biển Xanh 1",
+          address: "123 Đường Bãi Dài, Phú Quốc",
+          status: "ACTIVE",
+        },
+        {
+          id: "HB002",
+          name: "Homestay Biển Xanh 2",
+          address: "456 Đường Trần Hưng Đạo, Đà Nẵng",
+          status: "LOCKED",
+        },
+      ],
+    },
+    {
+      id: "H004",
+      name: "Công ty Lữ hành Núi Rừng",
+      email: "info@mountaintravel.com",
+      status: "LOCKED",
+      homestays: [
+        {
+          id: "HC003",
+          name: "Homestay Núi Rừng 1",
+          address: "789 Đường Trường Sa, Đà Lạt",
+          status: "ACTIVE",
+        },
+      ],
+    },
+    {
+      id: "H005",
+      name: "Công ty Homestay Sông Nước",
+      email: "contact@riverstay.com",
+      status: "ACTIVE",
+      homestays: [],
+    },
+    {
+      id: "H006",
+      name: "Công ty Lữ hành Núi Rừng",
+      email: "info@mountaintravel.com",
+      status: "LOCKED",
+      homestays: [
+        {
+          id: "HD001",
+          name: "Homestay Núi Rừng 1",
+          address: "789 Đường Trường Sa, Đà Lạt",
+          status: "ACTIVE",
+        },
+      ],
+    },
+    {
+      id: "H007",
+      name: "Công ty Lữ hành Núi Rừng",
+      email: "info@mountaintravel.com",
+      status: "LOCKED",
+      homestays: [
+        {
+          id: "HS005",
+          name: "Homestay Núi Rừng 1",
+          address: "789 Đường Trường Sa, Đà Lạt",
+          status: "ACTIVE",
+        },
+      ],
+    },
+  ];
+
+  // Lưu trạng thái toggle của các host
+  let toggleStates = {};
+
   document.querySelectorAll(".tab-link").forEach((link) => {
     link.addEventListener("click", function (e) {
       e.preventDefault();
 
-      // Ẩn tất cả tab-content
       document.querySelectorAll(".tab-content").forEach((tc) => {
         tc.classList.remove("active");
       });
-      // Bỏ highlight tất cả tab
       document.querySelectorAll(".tab-link").forEach((l) => {
         l.classList.remove("active-tab");
       });
 
-      // Hiển thị tab được chọn + highlight link
       const tabId = this.dataset.tab;
       document.getElementById(tabId).classList.add("active");
       this.classList.add("active-tab");
 
-      // Nếu là tab-approve-business thì tải dữ liệu
       if (tabId === "tab-approve-business") {
         loadPendingHomestays();
+      } else if (tabId === "tab-manage-company") {
+        loadHostsAndHomestays();
       }
     });
   });
 
-  // Hàm load dữ liệu homestay pending
+  // Hàm tải danh sách doanh nghiệp và homestay
+  function loadHostsAndHomestays() {
+    const container = document.getElementById("host-container");
+    container.innerHTML = "";
+
+    if (!mockHosts.length) {
+      container.innerHTML = "<tr><td colspan='4'>Không có doanh nghiệp nào.</td></tr>";
+      return;
+    }
+
+    mockHosts.forEach((host) => {
+      const card = document.createElement("div");
+      card.className = "host-card";
+      card.innerHTML = `
+        <div class="host-info">
+          <div class="host-details">
+            <div>ID ${host.id}</div>
+            <div>${host.name}</div>
+          </div>
+          <div class="host-actions">
+            <button class="btn btn-expand" onclick="toggleHomestays('${host.id}')">${toggleStates[host.id] ? "Thu gọn" : "Xem Homestay"}</button>
+            <button class="btn btn-toggle" onclick="toggleHostStatus('${host.id}', '${host.status}')">${host.status === "ACTIVE" ? "Khóa" : "Mở khóa"}</button>
+          </div>
+        </div>
+        <div id="homestays-${host.id}" class="homestay-list ${toggleStates[host.id] ? "active" : ""}">
+          ${
+            host.homestays.length
+              ? host.homestays
+                  .map(
+                    (h) => `
+                    <div class="homestay-item">
+                      <div class="homestay-details">
+                        <div>ID ${h.id}</div>
+                        <div>${h.name}</div>
+                        <div>${h.address}</div>
+                      </div>
+                      <div class="homestay-actions">
+                        <button class="btn btn-view" onclick="toggleHomestayStatus('${h.id}', '${h.status}')" ${
+                          host.status === "LOCKED" ? "disabled" : ""
+                        }>Xem chi tiết</button>
+                        <button class="btn btn-toggle" onclick="toggleHomestayStatus('${h.id}', '${h.status}')" ${
+                          host.status === "LOCKED" ? "disabled" : ""
+                        }>${h.status === "ACTIVE" ? "Khóa" : "Mở khóa"}</button>
+                      </div>
+                    </div>
+                  `
+                  )
+                  .join("")
+              : "<p>Không có homestay nào.</p>"
+          }
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Hàm mở rộng/thu gọn danh sách homestay
+  window.toggleHomestays = function (hostId) {
+    const homestayList = document.getElementById(`homestays-${hostId}`);
+    const expandButton = document.querySelector(
+      `button[onclick="toggleHomestays('${hostId}')"]`
+    );
+    const isExpanded = homestayList.classList.contains("active");
+
+    toggleStates[hostId] = !isExpanded;
+
+    if (!isExpanded) {
+      homestayList.classList.add("active");
+      expandButton.textContent = "Thu gọn";
+    } else {
+      homestayList.classList.remove("active");
+      expandButton.textContent = "Xem Homestay";
+    }
+  };
+
+  // Hàm khóa/mở khóa doanh nghiệp
+  window.toggleHostStatus = function (hostId, currentStatus) {
+    const newStatus = currentStatus === "ACTIVE" ? "LOCKED" : "ACTIVE";
+    mockHosts = mockHosts.map((host) => {
+      if (host.id === hostId) {
+        host.status = newStatus;
+        if (newStatus === "LOCKED") {
+          host.homestays = host.homestays.map((h) => ({
+            ...h,
+            status: "LOCKED",
+          }));
+        }
+      }
+      return host;
+    });
+    const currentState = toggleStates[hostId];
+    loadHostsAndHomestays();
+    if (currentState) {
+      const homestayList = document.getElementById(`homestays-${hostId}`);
+      const expandButton = document.querySelector(
+        `button[onclick="toggleHomestays('${hostId}')"]`
+      );
+      homestayList.classList.add("active");
+      expandButton.textContent = "Thu gọn";
+      toggleStates[hostId] = true;
+    }
+  };
+
+  // Hàm khóa/mở khóa homestay
+  window.toggleHomestayStatus = function (homestayId, currentStatus) {
+    const newStatus = currentStatus === "ACTIVE" ? "LOCKED" : "ACTIVE";
+    mockHosts = mockHosts.map((host) => ({
+      ...host,
+      homestays: host.homestays.map((h) =>
+        h.id === homestayId ? { ...h, status: newStatus } : h
+      ),
+    }));
+    const hostId = mockHosts.find((h) =>
+      h.homestays.some((hs) => hs.id === homestayId)
+    )?.id;
+    const currentState = hostId ? toggleStates[hostId] : false;
+    loadHostsAndHomestays();
+    if (hostId && currentState) {
+      const homestayList = document.getElementById(`homestays-${hostId}`);
+      const expandButton = document.querySelector(
+        `button[onclick="toggleHomestays('${hostId}')"]`
+      );
+      homestayList.classList.add("active");
+      expandButton.textContent = "Thu gọn";
+      toggleStates[hostId] = true;
+    }
+  };
+
   function loadPendingHomestays() {
     const tbody = document.getElementById("homestay-request-body");
     tbody.innerHTML = "";
@@ -81,18 +320,6 @@ window.onload = function () {
       });
   }
 
-  // Hàm đóng về default
-  window.returnToDefault = function () {
-    document
-      .querySelectorAll(".tab-content")
-      .forEach((tc) => tc.classList.remove("active"));
-    document.getElementById("default-content").classList.add("active");
-    document
-      .querySelectorAll(".tab-link")
-      .forEach((l) => l.classList.remove("active-tab"));
-  };
-
-  // Hàm phê duyệt
   window.approveHomestay = function (id) {
     fetch(`http://localhost:8080/homestay/api/homestays/admin/pending/${id}`, {
       method: "PUT",
@@ -117,5 +344,21 @@ window.onload = function () {
         loadPendingHomestays();
       })
       .catch(() => alert("Phê duyệt thất bại"));
+  };
+
+  window.returnToDefault = function () {
+    document
+      .querySelectorAll(".tab-content")
+      .forEach((tc) => tc.classList.remove("active"));
+    document.getElementById("default-content").classList.add("active");
+    document
+      .querySelectorAll(".tab-link")
+      .forEach((l) => l.classList.remove("active-tab"));
+    document.querySelectorAll(".homestay-list").forEach((list) => {
+      list.classList.remove("active");
+    });
+    document.querySelectorAll(".btn-expand").forEach((btn) => {
+      btn.textContent = "Xem Homestay";
+    });
   };
 };
