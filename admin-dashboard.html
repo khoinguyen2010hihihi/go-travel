@@ -80,24 +80,7 @@
                   <th>Hành động</th>
                 </tr>
               </thead>
-              <tbody id="homestay-request-body">
-                <tr>
-                  <td>DN001</td>
-                  <td>Công ty TNHH Du lịch ABC</td>
-                  <td>
-                    <button
-                      class="btn btn-view"
-                      onclick="openCommonPopup('business', { name: 'Homestay ABC', address: '123 Nha Trang', email: 'abc@mail.com', note: 'Ghi chú mẫu' })"
-                    >
-                      Xem chi tiết
-                    </button>
-                  </td>
-                  <td>
-                    <button class="btn btn-approve">Phê duyệt</button>
-                    <button class="btn btn-reject">Từ chối</button>
-                  </td>
-                </tr>
-              </tbody>
+              <tbody id="homestay-request-body"></tbody>
             </table>
           </div>
         </div>
@@ -106,6 +89,19 @@
           <div class="card-box">
             <button class="close-btn" onclick="returnToDefault()">×</button>
             <h2>Quản lý doanh nghiệp</h2>
+            <table class="room-table">
+              <thead>
+                <tr>
+                  <th>ID Host</th>
+                  <th>Tên Host</th>
+                  <th>ID Homestay</th>
+                  <th>Tên Homestay</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody id="host-homestay-list-body">
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
