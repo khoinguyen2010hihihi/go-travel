@@ -2,12 +2,13 @@ package com.homestay.homestayweb.service.implementation;
 
 import com.homestay.homestayweb.dto.request.RoomRequest;
 import com.homestay.homestayweb.dto.response.RoomResponse;
+import com.homestay.homestayweb.entity.Booking;
 import com.homestay.homestayweb.entity.Homestay;
 import com.homestay.homestayweb.entity.Room;
+import com.homestay.homestayweb.entity.RoomImage;
 import com.homestay.homestayweb.exception.ResourceNotFoundException;
 import com.homestay.homestayweb.exception.ForbiddenException;
-import com.homestay.homestayweb.repository.HomestayRepository;
-import com.homestay.homestayweb.repository.RoomRepository;
+import com.homestay.homestayweb.repository.*;
 import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,9 @@ public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
     private final HomestayRepository homestayRepository;
+    private final BookingRepository bookingRepository;
+    private final PaymentRepository paymentRepository;
+    private final RoomImageRepository roomImageRepository;
 
     @Override
     public RoomResponse createRoom(Long homestayId, RoomRequest request) {
@@ -124,6 +128,18 @@ public class RoomServiceImpl implements RoomService {
 
         checkRoomOwnership(room);
 
+        List<Booking> bookings = bookingRepository.findByRoom_RoomId(roomId);
+        for(Booking booking : bookings) {
+            paymentRepository.deleteByBooking_BookingId(booking.getBookingId());
+            bookingRepository.deleteAll(bookings);
+        }
+
+        List<RoomImage> images = roomImageRepository.findByRoom_RoomId(roomId);
+        if (!images.isEmpty()) {
+            roomImageRepository.deleteAll(images);
+        }
+
+        // Sau đó mới xóa room
         roomRepository.delete(room);
     }
 

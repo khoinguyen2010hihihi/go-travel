@@ -78,7 +78,7 @@ public class BookingController {
         return ResponseEntity.ok(bookings);
     }
 
-    @GetMapping("/bookings/filter")
+    @GetMapping("/filter")
     public ResponseEntity<List<BookingResponse>> filterBookingsForHost(
             @RequestParam(required = false) Long bookingId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,

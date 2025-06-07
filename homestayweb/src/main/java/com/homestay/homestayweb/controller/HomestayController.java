@@ -158,8 +158,6 @@ public class HomestayController {
         }
     }
 
-
-
     @GetMapping("/{homestayId}/images")
     public ResponseEntity<List<HomestayImageResponse>> getHomestayImagesByHomestayId(@PathVariable Long homestayId) {
         List<HomestayImageResponse> homestayImages = homestayImageService.getHomestayImageByHomestayId(homestayId);

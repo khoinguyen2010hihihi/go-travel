@@ -4,15 +4,20 @@ import com.homestay.homestayweb.dto.request.HomestayRequest;
 import com.homestay.homestayweb.dto.response.BookingResponse;
 import com.homestay.homestayweb.dto.response.HomestayResponse;
 import com.homestay.homestayweb.entity.Homestay;
+import com.homestay.homestayweb.entity.HomestayImage;
+import com.homestay.homestayweb.entity.Room;
 import com.homestay.homestayweb.entity.User;
 import com.homestay.homestayweb.exception.BadRequestException;
 import com.homestay.homestayweb.exception.DuplicateResourceException;
 import com.homestay.homestayweb.exception.ForbiddenException;
 import com.homestay.homestayweb.exception.ResourceNotFoundException;
+import com.homestay.homestayweb.repository.HomestayImageRepository;
 import com.homestay.homestayweb.repository.HomestayRepository;
+import com.homestay.homestayweb.repository.RoomRepository;
 import com.homestay.homestayweb.repository.UserRepository;
 import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.HomestayService;
+import com.homestay.homestayweb.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,6 +32,9 @@ import java.util.stream.Collectors;
 public class HomestayServiceImpl implements HomestayService {
     private final HomestayRepository homestayRepository;
     private final UserRepository userRepository;
+    private final HomestayImageRepository homestayImageRepository;
+    private final RoomService roomService;
+    private final RoomRepository roomRepository;
 
     @Override
     public HomestayResponse createHomestay(HomestayRequest request) {
@@ -129,8 +137,18 @@ public class HomestayServiceImpl implements HomestayService {
 
         UserDetailsImpl currentUser = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        // Chỉ cho host xóa nếu là chủ homestay
         checkOwnership(homestay);
+
+        List<Room> rooms = roomRepository.findByHomestay_HomestayId(homestay.getHomestayId());
+        for (Room room : rooms) {
+            roomService.deleteRoom(room.getRoomId());
+        }
+
+        List<HomestayImage> images = homestayImageRepository.findByHomestay_HomestayId(id);
+        if (!images.isEmpty()) {
+            homestayImageRepository.deleteAll(images);
+        }
+
 
         homestayRepository.delete(homestay);
     }

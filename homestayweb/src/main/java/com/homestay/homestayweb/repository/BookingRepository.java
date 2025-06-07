@@ -20,7 +20,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("""
         SELECT b FROM Booking b
-        WHERE b.room.homestay.host.id = :hostId
+        WHERE b.bookingStatus = 'ACCEPTED'
+        AND b.room.homestay.host.id = :hostId
         AND (:bookingId IS NULL OR b.bookingId = :bookingId)
         AND (:checkInDate IS NULL OR b.checkInDate = :checkInDate)
         AND (:checkOutDate IS NULL OR b.checkOutDate = :checkOutDate)

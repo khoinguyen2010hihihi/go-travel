@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
     boolean existsByBooking_BookingId(Long bookingId);
+    void deleteByBooking_BookingId(Long id);
 
     // Thống kê doanh thu theo ngày cho host hiện tại
     @Query(value = "SELECT DATE(p.created_at) as day, SUM(p.amount) as totalRevenue " +
