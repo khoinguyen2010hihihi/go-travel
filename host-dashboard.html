@@ -128,11 +128,8 @@
               </table>
             </div>
           </div>
-          <div
-            id="pending-approval-homestays"
-            class="tab-content"
-            style="display: none"
-          >
+          
+          <div id="pending-approval-homestays" class="tab-content" style="display: none">
             <div class="card-box">
               <button class="close-btn" onclick="returnToDefault()">×</button>
               <h2>Danh sách Homestay đang chờ phê duyệt</h2>
@@ -149,6 +146,7 @@
               </table>
             </div>
           </div>
+
           <div id="approved-bookings" class="tab-content" style="display: none">
             <div class="card-box">
               <button class="close-btn" onclick="returnToDefault()">×</button>
@@ -170,6 +168,7 @@
               </table>
             </div>
           </div>
+
           <div id="add-room" class="tab-content" style="display: none">
             <div class="card-box">
               <button class="close-btn" onclick="returnToDefault()">×</button>
@@ -290,6 +289,7 @@
               </button>
             </div>
           </div>
+
           <div id="edit-room" class="tab-content" style="display: none">
             <div class="card-box">
               <button class="close-btn" onclick="returnToDefault()">×</button>
@@ -403,6 +403,7 @@
               </button>
             </div>
           </div>
+
           <div id="manage-bookings" class="tab-content" style="display: none">
             <div class="card-box">
               <button class="close-btn" onclick="returnToDefault()">×</button>
@@ -510,6 +511,92 @@
               </form>
             </div>
           </div>
+
+          <div id="edit-homestay" class="tab-content" style="display: none">
+            <div class="card-box">
+              <button class="close-btn" onclick="returnToDefault()">×</button>
+              <h2>Chỉnh sửa Homestay</h2>
+              <form id="edit-homestay-form">
+                <div class="form-group">
+                  <label for="editName"><strong>Tên Homestay:</strong></label>
+                  <input
+                    type="text"
+                    name="editName"
+                    id="editName"
+                    required
+                    placeholder="Nhập tên homestay..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="editStreet"
+                    ><strong>Địa chỉ (Số nhà, đường):</strong></label
+                  >
+                  <input
+                    type="text"
+                    name="editStreet"
+                    id="editStreet"
+                    required
+                    placeholder="Nhập địa chỉ..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="editWard"><strong>Phường/Xã:</strong></label>
+                  <input
+                    type="text"
+                    name="editWard"
+                    id="editWard"
+                    required
+                    placeholder="Nhập phường/xã..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="editDistrict"><strong>Quận/Huyện:</strong></label>
+                  <input
+                    type="text"
+                    name="editDistrict"
+                    id="editDistrict"
+                    required
+                    placeholder="Nhập quận/huyện..."
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="editDescription"><strong>Mô tả:</strong></label>
+                  <textarea
+                    name="editDescription"
+                    id="editDescription"
+                    required
+                    placeholder="Nhập mô tả homestay..."
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="editHomestayImages"><strong>Thêm ảnh Homestay mới:</strong></label>
+                  <input
+                    type="file"
+                    name="editHomestayImages"
+                    id="editHomestayImages"
+                    accept="image/*"
+                    multiple
+                  />
+                  <div id="edit-homestay-preview-container"></div>
+                </div>
+                <div class="form-group">
+                  <label for="editContactInfo"
+                    ><strong>Thông tin liên hệ:</strong></label
+                  >
+                  <input
+                    type="text"
+                    name="editContactInfo"
+                    id="editContactInfo"
+                    required
+                    placeholder="example@gmail.com"
+                  />
+                </div>
+                <input type="hidden" id="editHomestayId" name="editHomestayId" />
+                <button type="submit" class="btn btn-add">Lưu thay đổi</button>
+              </form>
+            </div>
+          </div>
+
 
           <div id="revenue-stats" class="tab-content" style="display: none">
             <div class="card-box">
@@ -660,7 +747,7 @@
       const previewContainer = document.getElementById("preview-container");
 
       imageInput.addEventListener("change", function () {
-        previewContainer.innerHTML = ""; // Xóa ảnh cũ
+        previewContainer.innerHTML = "";
 
         Array.from(this.files).forEach((file) => {
           if (file.type.startsWith("image/")) {
@@ -669,6 +756,25 @@
               const img = document.createElement("img");
               img.src = e.target.result;
               previewContainer.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      });
+
+      const editImageInput = document.getElementById("editImage");
+      const editPreviewContainer = document.getElementById("edit-preview-container");
+
+      editImageInput.addEventListener("change", function () {
+        editPreviewContainer.innerHTML = "";
+
+        Array.from(this.files).forEach((file) => {
+          if (file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const img = document.createElement("img");
+              img.src = e.target.result;
+              editPreviewContainer.appendChild(img);
             };
             reader.readAsDataURL(file);
           }
@@ -693,6 +799,28 @@
                   };
 
                   reader.readAsDataURL(file); 
+              }
+          });
+      });
+
+      const editHomestayImageInput = document.getElementById("editHomestayImages");
+      const editHomestayPreviewContainer = document.getElementById("edit-homestay-preview-container");
+
+      editHomestayImageInput.addEventListener("change", function () {
+          editHomestayPreviewContainer.innerHTML = "";
+
+          Array.from(this.files).forEach((file) => {
+              if (file.type.startsWith("image/")) {
+                  const reader = new FileReader();
+
+                  reader.onload = function (e) {
+                      const img = document.createElement("img");
+                      img.src = e.target.result;
+                      img.classList.add("preview-image");
+                      editHomestayPreviewContainer.appendChild(img);
+                  };
+
+                  reader.readAsDataURL(file);
               }
           });
       });

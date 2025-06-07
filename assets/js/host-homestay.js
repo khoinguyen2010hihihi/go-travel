@@ -89,7 +89,7 @@ window.onload = function () {
             <td>${r.availability ? "Còn trống" : "Đang được sử dụng"}</td>
             <td>${r.roomStatus ? "Không có" : "Đang sửa chữa"}</td>
             <td>
-              <button class="btn btn-edit"  data-id="${r.roomId}">Sửa</button>
+              <button class="btn btn-edit"  data-id="${r.roomId}">Chỉnh sửa</button>
               <button class="btn btn-delete" data-id="${r.roomId}">Xóa</button>
             </td>
           `;
@@ -374,6 +374,7 @@ function fetchPendingHomestays() {
         const editBtn = document.createElement("button");
         editBtn.textContent = "Chỉnh sửa";
         editBtn.className = "btn btn-edit";
+        editBtn.setAttribute("data-id", homestay.id);
 
         const cancelBtn = document.createElement("button");
         cancelBtn.textContent = "Hủy yêu cầu";
@@ -388,6 +389,70 @@ function fetchPendingHomestays() {
         tr.appendChild(actionTd);
 
         tbody.appendChild(tr);
+
+        // Thêm sự kiện click cho nút chỉnh sửa
+        editBtn.addEventListener("click", async function () {
+          const homestayId = this.getAttribute("data-id");
+          const token = localStorage.getItem("authToken");
+
+          try {
+            const res = await fetch(
+              `http://localhost:8080/homestay/api/homestays/${homestayId}`,
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+            if (!res.ok) throw new Error("Không thể lấy dữ liệu homestay");
+            const homestay = await res.json();
+
+            // Điền dữ liệu vào form chỉnh sửa
+            document.getElementById("editHomestayId").value = homestay.id;
+            document.getElementById("editName").value = homestay.name;
+            document.getElementById("editStreet").value = homestay.street;
+            document.getElementById("editWard").value = homestay.ward;
+            document.getElementById("editDistrict").value = homestay.district;
+            document.getElementById("editDescription").value = homestay.description;
+            document.getElementById("editContactInfo").value = homestay.contactInfo;
+
+            // Xóa các ảnh preview hiện tại
+            // document.getElementById("edit-homestay-preview-container").innerHTML = "";
+
+            // Ẩn tất cả tab content và hiện tab chỉnh sửa
+            document
+              .querySelectorAll(".tab-content")
+              .forEach((tab) => (tab.style.display = "none"));
+            document.getElementById("edit-homestay").style.display = "block";
+          } catch (error) {
+            console.error("Lỗi khi lấy dữ liệu homestay:", error);
+            alert("Không thể tải dữ liệu homestay. Vui lòng thử lại sau.");
+          }
+        });
+
+        // Thêm sự kiện click cho nút hủy
+        cancelBtn.addEventListener("click", async function () {
+          const homestayId = this.getAttribute("data-id");
+          const token = localStorage.getItem("authToken");
+
+          if (confirm("Bạn có chắc chắn muốn hủy yêu cầu homestay này?")) {
+            try {
+              const res = await fetch(
+                `http://localhost:8080/homestay/api/homestays/${homestayId}`,
+                {
+                  method: "DELETE",
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              if (!res.ok) throw new Error("Không thể hủy homestay");
+              alert("Hủy homestay thành công!");
+              fetchPendingHomestays();
+            } catch (error) {
+              console.error("Lỗi khi hủy homestay:", error);
+              alert("Không thể hủy homestay. Vui lòng thử lại sau.");
+            }
+          }
+        });
       });
     })
     .catch((error) => {
