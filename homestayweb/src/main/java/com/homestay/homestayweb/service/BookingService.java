@@ -5,6 +5,7 @@ import com.homestay.homestayweb.dto.response.BookingResponse;
 import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.entity.Booking;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingService {
@@ -21,4 +22,6 @@ public interface BookingService {
     List<BookingResponse> getRejectedBookingsByUserId(Long userId);
     List<BookingResponse> getBookingsByRoomId(Long roomId);
     List<BookingResponse> getBookingsForHost(Long hostId);
+
+    List<BookingResponse> filterBookingsForHost(Long bookingId, LocalDate checkInDate, LocalDate checkOutDate, Long roomId, LocalDate createdAt, String userEmail, String homestayName);
 }

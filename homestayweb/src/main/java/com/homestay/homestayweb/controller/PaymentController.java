@@ -66,4 +66,10 @@ public class PaymentController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/check/{roomId}")
+    public ResponseEntity<Boolean> checkPaymentExists(@PathVariable Long roomId) {
+        boolean exists = paymentService.checkRoomPayment(roomId);
+        return ResponseEntity.ok(exists);
+    }
+
 }

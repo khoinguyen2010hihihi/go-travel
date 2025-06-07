@@ -6,11 +6,13 @@ import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -73,6 +75,22 @@ public class BookingController {
     @GetMapping("/pending/{hostId}")
     public ResponseEntity<List<BookingResponse>> getPendingBookingsByHost(@PathVariable Long hostId) {
         List<BookingResponse> bookings = bookingService.getBookingsForHost(hostId);
+        return ResponseEntity.ok(bookings);
+    }
+
+    @GetMapping("/bookings/filter")
+    public ResponseEntity<List<BookingResponse>> filterBookingsForHost(
+            @RequestParam(required = false) Long bookingId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate,
+            @RequestParam(required = false) Long roomId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate createdAt,
+            @RequestParam(required = false) String userEmail,
+            @RequestParam(required = false) String homestayName
+    ) {
+        List<BookingResponse> bookings = bookingService.filterBookingsForHost(
+                bookingId, checkInDate, checkOutDate, roomId, createdAt, userEmail, homestayName
+        );
         return ResponseEntity.ok(bookings);
     }
 

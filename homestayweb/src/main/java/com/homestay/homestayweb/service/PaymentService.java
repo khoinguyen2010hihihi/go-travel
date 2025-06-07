@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface PaymentService {
+    boolean checkRoomPayment(Long roomId);
     String createVNPayPaymentUrl(Long bookingId, HttpServletRequest request) throws Exception;
     String handleVNPayReturn(Map<String, String> vnpParams);
     List<DailyRevenueResponse> getDailyRevenueByHost();

@@ -46,6 +46,11 @@ public class PaymentServiceImpl implements PaymentService {
     private String vnp_ReturnUrl;
 
     @Override
+    public boolean checkRoomPayment(Long roomId) {
+        return paymentRepository.existsByBooking_BookingId(roomId);
+    }
+
+    @Override
     public String createVNPayPaymentUrl(Long bookingId, HttpServletRequest request) throws Exception {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
