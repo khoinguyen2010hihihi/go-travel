@@ -113,6 +113,31 @@ window.onload = function () {
     },
   ];
 
+  // Dữ liệu giả cho danh sách người dùng
+  let mockUsers = [
+    {
+      id: "U001",
+      name: "Nguyễn Văn A",
+      email: "nguyenvana@gmail.com",
+      status: "ACTIVE",
+      createdAt: "2025-01-01T10:00:00",
+    },
+    {
+      id: "U002",
+      name: "Trần Thị B",
+      email: "tranthib@gmail.com",
+      status: "LOCKED",
+      createdAt: "2025-02-01T12:00:00",
+    },
+    {
+      id: "U003",
+      name: "Lê Văn C",
+      email: "levanc@gmail.com",
+      status: "ACTIVE",
+      createdAt: "2025-03-01T15:00:00",
+    },
+  ];
+
   // Lưu trạng thái toggle của các host
   let toggleStates = {};
 
@@ -135,6 +160,8 @@ window.onload = function () {
         loadPendingHomestays();
       } else if (tabId === "tab-manage-company") {
         loadHostsAndHomestays();
+      } else if (tabId === "tab-manage-users") {
+        loadUsers();
       }
     });
   });
@@ -176,9 +203,7 @@ window.onload = function () {
                         <div>${h.address}</div>
                       </div>
                       <div class="homestay-actions">
-                        <button class="btn btn-view" onclick="toggleHomestayStatus('${h.id}', '${h.status}')" ${
-                          host.status === "LOCKED" ? "disabled" : ""
-                        }>Xem chi tiết</button>
+                        <button class="btn btn-view" onclick="window.location.href='homestay.html?id=${h.id}'" ${host.status === "LOCKED" ? "disabled" : ""}>Xem chi tiết</button>
                         <button class="btn btn-toggle" onclick="toggleHomestayStatus('${h.id}', '${h.status}')" ${
                           host.status === "LOCKED" ? "disabled" : ""
                         }>${h.status === "ACTIVE" ? "Khóa" : "Mở khóa"}</button>
@@ -189,6 +214,41 @@ window.onload = function () {
                   .join("")
               : "<p>Không có homestay nào.</p>"
           }
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Hàm tải danh sách người dùng
+  function loadUsers() {
+    const container = document.getElementById("user-container");
+    container.innerHTML = "";
+
+    if (!mockUsers.length) {
+      container.innerHTML = "<p>Không có người dùng nào.</p>";
+      return;
+    }
+
+    mockUsers.forEach((user) => {
+      const card = document.createElement("div");
+      card.className = "host-card";
+      card.innerHTML = `
+        <div class="host-info">
+          <div class="host-details">
+            <div>ID ${user.id}</div>
+            <div>${user.name}</div>
+          </div>
+          <div class="host-actions">
+            <button class="btn btn-view" onclick='openCommonPopup("user", ${JSON.stringify({
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              status: user.status,
+              createdAt: new Date(user.createdAt).toLocaleString(),
+            })})'>Xem chi tiết</button>
+            <button class="btn btn-toggle" onclick="toggleUserStatus('${user.id}', '${user.status}')">${user.status === "ACTIVE" ? "Khóa" : "Mở khóa"}</button>
+          </div>
         </div>
       `;
       container.appendChild(card);
@@ -267,59 +327,63 @@ window.onload = function () {
     }
   };
 
+  // Hàm khóa/mở khóa người dùng
+  window.toggleUserStatus = function (userId, currentStatus) {
+    const newStatus = currentStatus === "ACTIVE" ? "LOCKED" : "ACTIVE";
+    mockUsers = mockUsers.map((user) =>
+      user.id === userId ? { ...user, status: newStatus } : user
+    );
+    loadUsers();
+  };
+
   function loadPendingHomestays() {
-    const tbody = document.getElementById("homestay-request-body");
-    tbody.innerHTML = "";
+  const container = document.getElementById("homestay-request-container");
+  container.innerHTML = "";
 
-    fetch("http://localhost:8080/homestay/api/homestays/pending", {
-      headers: { Authorization: `Bearer ${token}` },
+  fetch("http://localhost:8080/homestay/api/homestays/pending", {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     })
-      .then((res) => {
-        if (!res.ok) throw new Error(res.status);
-        return res.json();
-      })
-      .then((data) => {
-        if (!Array.isArray(data) || !data.length) {
-          tbody.innerHTML = `<tr><td colspan="4">Không có yêu cầu nào.</td></tr>`;
-          return;
-        }
-        data.forEach((h) => {
-          const address = [h.street, h.ward, h.district]
-            .filter(Boolean)
-            .join(", ");
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${h.id}</td>
-            <td>${h.name}</td>
-            <td>
-              <button class="btn btn-view"
-                onclick='openCommonPopup("business", ${JSON.stringify({
-                  name: h.name,
-                  address,
-                  email: h.contactInfo,
-                  note: new Date(h.createdAt).toLocaleString(),
-                })})'>
-                Xem chi tiết
-              </button>
-            </td>
-            <td>
-              <button class="btn btn-approve" onclick="approveHomestay(${
-                h.id
-              })">Phê duyệt</button>
-              <button class="btn btn-reject" onclick="rejectHomestay(${
-                h.id
-              })">Từ chối</button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
-      })
-      .catch((err) => {
-        console.error("Lỗi khi tải danh sách:", err);
-        tbody.innerHTML = `<tr><td colspan="4">Lỗi khi tải dữ liệu.</td></tr>`;
+    .then((data) => {
+      if (!Array.isArray(data) || !data.length) {
+        container.innerHTML = "<p>Không có yêu cầu nào.</p>";
+        return;
+      }
+      data.forEach((h) => {
+        const address = [h.street, h.ward, h.district]
+          .filter(Boolean)
+          .join(", ");
+        const card = document.createElement("div");
+        card.className = "host-card";
+        card.innerHTML = `
+          <div class="host-info">
+            <div class="host-details">
+              <div>ID ${h.id}</div>
+              <div>${h.name}</div>
+            </div>
+            <div class="host-actions">
+              <button class="btn btn-view" onclick='openCommonPopup("business", ${JSON.stringify({
+                name: h.name,
+                address,
+                email: h.contactInfo,
+                note: new Date(h.createdAt).toLocaleString(),
+              })})'>Xem chi tiết</button>
+              <button class="btn btn-approve" onclick="approveHomestay(${h.id})">Phê duyệt</button>
+              <button class="btn btn-reject" onclick="rejectHomestay(${h.id})">Từ chối</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
       });
-  }
-
+    })
+    .catch((err) => {
+      console.error("Lỗi khi tải danh sách:", err);
+      container.innerHTML = "<p>Lỗi khi tải dữ liệu.</p>";
+    });
+}
   window.approveHomestay = function (id) {
     fetch(`http://localhost:8080/homestay/api/homestays/admin/pending/${id}`, {
       method: "PUT",
