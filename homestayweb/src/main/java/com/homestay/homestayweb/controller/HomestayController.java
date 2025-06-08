@@ -5,6 +5,7 @@ import com.homestay.homestayweb.dto.response.HomestayImageResponse;
 import com.homestay.homestayweb.dto.response.HomestayResponse;
 import com.homestay.homestayweb.entity.Homestay;
 import com.homestay.homestayweb.entity.HomestayImage;
+import com.homestay.homestayweb.repository.HomestayImageRepository;
 import com.homestay.homestayweb.service.CloudinaryService;
 import com.homestay.homestayweb.service.HomestayImageService;
 import com.homestay.homestayweb.service.HomestayService;
@@ -36,6 +37,9 @@ public class HomestayController {
 
     @Autowired
     private HomestayService homestayService;
+
+    @Autowired
+    private HomestayImageRepository homestayImageRepository;
 
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_HOMESTAY')")
@@ -163,6 +167,52 @@ public class HomestayController {
         List<HomestayImageResponse> homestayImages = homestayImageService.getHomestayImageByHomestayId(homestayId);
         return ResponseEntity.ok(homestayImages);
     }
+
+    @PutMapping("/{id}/images")
+    @PreAuthorize("hasAuthority('CREATE_HOMESTAY')")
+    public ResponseEntity<?> updateHomestayImages(
+            @PathVariable("id") Long homestayId,
+            @RequestParam("file") MultipartFile[] files,
+            @RequestParam(name = "isPrimary", required = false) String isPrimaryFlag
+    ) {
+        if (files == null || files.length == 0) {
+            return ResponseEntity.badRequest().body("Không có ảnh nào được gửi lên.");
+        }
+
+        try {
+
+            Homestay homestay = homestayService.findEntityById(homestayId);
+            boolean hasPrimary = isPrimaryFlag != null;
+
+            List<HomestayImage> images = homestayImageRepository.findByHomestay_HomestayId(homestayId);
+            if (!images.isEmpty()) {
+                homestayImageRepository.deleteAll(images);
+            }
+
+            List<String> uploadedUrls = new ArrayList<>();
+
+            for (int i = 0; i < files.length; i++) {
+                MultipartFile file = files[i];
+                if (file.isEmpty()) continue;
+
+                String imageUrl = cloudinaryService.uploadFile(file);
+
+                HomestayImage image = new HomestayImage();
+                image.setImageUrl(imageUrl);
+                image.setIsPrimary(hasPrimary && i == 0); // Ảnh đầu tiên là chính nếu có isPrimary
+                image.setHomestay(homestay);
+
+                homestayImageService.saveHomestayImage(image);
+                uploadedUrls.add(imageUrl);
+            }
+
+            return ResponseEntity.ok(uploadedUrls);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Upload thất bại: " + e.getMessage());
+        }
+    }
+
 
     @GetMapping("/search")
     public List<HomestayResponse> searchHomestays(

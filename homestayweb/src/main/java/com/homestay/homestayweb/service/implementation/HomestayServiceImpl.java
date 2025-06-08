@@ -122,7 +122,6 @@ public class HomestayServiceImpl implements HomestayService {
         homestay.setWard(request.getWard());
         homestay.setDistrict(request.getDistrict());
         homestay.setDescription(request.getDescription());
-        homestay.setApproveStatus(request.getApproveStatus());
         homestay.setApprovedBy(request.getApprovedBy());
         homestay.setContactInfo(request.getContactInfo());
 

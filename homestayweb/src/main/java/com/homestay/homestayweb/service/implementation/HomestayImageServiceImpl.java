@@ -71,4 +71,5 @@ public class HomestayImageServiceImpl implements HomestayImageService {
                 .map(homestayImage -> new HomestayImageResponse(homestayImage.getImageId(), homestayImage.getImageUrl()))
                 .collect(Collectors.toList());
     }
+
 }

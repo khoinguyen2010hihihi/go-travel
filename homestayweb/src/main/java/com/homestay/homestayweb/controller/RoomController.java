@@ -4,9 +4,11 @@ import com.homestay.homestayweb.dto.request.RoomRequest;
 import com.homestay.homestayweb.dto.response.HomestayResponse;
 import com.homestay.homestayweb.dto.response.RoomImageResponse;
 import com.homestay.homestayweb.dto.response.RoomResponse;
+import com.homestay.homestayweb.entity.HomestayImage;
 import com.homestay.homestayweb.entity.Room;
 import com.homestay.homestayweb.entity.RoomImage;
 import com.homestay.homestayweb.exception.BadRequestException;
+import com.homestay.homestayweb.repository.RoomImageRepository;
 import com.homestay.homestayweb.service.CloudinaryService;
 import com.homestay.homestayweb.service.RoomImageService;
 import com.homestay.homestayweb.service.RoomService;
@@ -29,6 +31,7 @@ public class RoomController {
     private final CloudinaryService cloudinaryService;
     private final RoomService roomService;
     private final RoomImageService roomImageService;
+    private final RoomImageRepository roomImageRepository;
 
     @PostMapping("/homestay/{homestayId}")
     @PreAuthorize("hasAuthority('CREATE_ROOM')")
@@ -103,6 +106,32 @@ public class RoomController {
             String imageUrl = cloudinaryService.uploadFile(file);
 
             // Lưu ảnh cho phòng
+            roomImageService.uploadImageForRoom(roomId, imageUrl);
+
+            return ResponseEntity.ok(imageUrl); // Trả về URL ảnh đã upload
+        } catch (BadRequestException e) {
+            // Nếu đã có 2 ảnh, trả về lỗi 400 Bad Request
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            // Nếu có lỗi khác, trả về lỗi 500 Internal Server Error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Upload thất bại: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{roomId}/images")
+    @PreAuthorize("hasAuthority('CREATE_ROOM')")
+    public ResponseEntity<String> editImageToRoom(
+            @PathVariable Long roomId,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            // Upload ảnh lên Cloudinary và lấy URL
+            String imageUrl = cloudinaryService.uploadFile(file);
+
+            List<RoomImage> images = roomImageRepository.findByRoom_RoomId(roomId);
+            if (!images.isEmpty()) {
+                roomImageRepository.deleteAll(images);
+            }
+
             roomImageService.uploadImageForRoom(roomId, imageUrl);
 
             return ResponseEntity.ok(imageUrl); // Trả về URL ảnh đã upload
