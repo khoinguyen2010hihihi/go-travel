@@ -31,6 +31,10 @@ window.onload = function () {
               <a href="#" class="tab-link" data-tab="add-room" data-hid="${homestay.id}">
                 Thêm phòng
               </a>
+              <li>
+              <a href="#" class="tab-link" data-tab="edit-homestay" data-hid="${homestay.id}">
+                Điều chỉnh homestay
+              </a>
             </li>
           </ul>
         `;
@@ -57,6 +61,8 @@ window.onload = function () {
       showAddForm(homestayId);
     } else if (tabId === "view-all-pending-room") {
       showPendingRoomList(homestayId);
+    } else if (tabId === "edit-homestay") {
+      handleEditHomestay(homestayId);
     } else {
       const tab = document.getElementById(tabId);
       if (tab) {
@@ -396,75 +402,7 @@ function fetchPendingHomestays() {
         // Thêm sự kiện click cho nút chỉnh sửa
         editBtn.addEventListener("click", async function () {
           const homestayId = this.getAttribute("data-id");
-          const token = localStorage.getItem("authToken");
-
-          try {
-            const res = await fetch(
-              `http://localhost:8080/homestay/api/homestays/${homestayId}`,
-              {
-                headers: { Authorization: `Bearer ${token}` },
-              }
-            );
-            if (!res.ok) throw new Error("Không thể lấy dữ liệu homestay");
-            const homestay = await res.json();
-
-            // Điền dữ liệu vào form chỉnh sửa
-            document.getElementById("editHomestayId").value = homestay.id;
-            document.getElementById("editName").value = homestay.name;
-            document.getElementById("editStreet").value = homestay.street;
-            document.getElementById("editWard").value = homestay.ward;
-            document.getElementById("editDistrict").value = homestay.district;
-            document.getElementById("editDescription").value =
-              homestay.description;
-            document.getElementById("editContactInfo").value =
-              homestay.contactInfo;
-
-            // Ẩn tất cả tab content và hiện tab chỉnh sửa
-            document
-              .querySelectorAll(".tab-content")
-              .forEach((tab) => (tab.style.display = "none"));
-            document.getElementById("edit-homestay").style.display = "block";
-
-            // Gắn submit handler cho form chỉnh sửa
-            const editForm = document.getElementById("edit-homestay-form");
-            editForm.onsubmit = async function (e) {
-              e.preventDefault();
-
-              const updatedData = {
-                name: document.getElementById("editName").value,
-                street: document.getElementById("editStreet").value,
-                ward: document.getElementById("editWard").value,
-                district: document.getElementById("editDistrict").value,
-                description: document.getElementById("editDescription").value,
-                contactInfo: document.getElementById("editContactInfo").value,
-              };
-
-              try {
-                const putRes = await fetch(
-                  `http://localhost:8080/homestay/api/homestays/${homestayId}`,
-                  {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(updatedData),
-                  }
-                );
-                if (!putRes.ok) throw new Error("Không thể cập nhật homestay");
-
-                alert("Cập nhật homestay thành công!");
-                document.getElementById("edit-homestay").style.display = "none";
-                fetchPendingHomestays();
-              } catch (error) {
-                console.error("Lỗi khi cập nhật homestay:", error);
-                alert("Không thể cập nhật homestay. Vui lòng thử lại.");
-              }
-            };
-          } catch (error) {
-            console.error("Lỗi khi lấy dữ liệu homestay:", error);
-            alert("Không thể tải dữ liệu homestay. Vui lòng thử lại sau.");
-          }
+          handleEditHomestay(homestayId);
         });
 
         // Thêm sự kiện click cho nút hủy
@@ -497,6 +435,83 @@ function fetchPendingHomestays() {
     .catch((error) => {
       console.error("Fetch error:", error);
     });
+}
+
+async function handleEditHomestay(homestayId) {
+  const token = localStorage.getItem("authToken");
+
+  try {
+    const res = await fetch(
+      `http://localhost:8080/homestay/api/homestays/${homestayId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    if (!res.ok) throw new Error("Không thể lấy dữ liệu homestay");
+    const homestay = await res.json();
+
+    // Điền dữ liệu vào form chỉnh sửa
+    document.getElementById("editHomestayId").value = homestay.id;
+    document.getElementById("editName").value = homestay.name;
+    document.getElementById("editStreet").value = homestay.street;
+    document.getElementById("editWard").value = homestay.ward;
+    document.getElementById("editDistrict").value = homestay.district;
+    document.getElementById("editDescription").value = homestay.description;
+    document.getElementById("editContactInfo").value = homestay.contactInfo;
+
+    // Hiển thị tab chỉnh sửa
+    document
+      .querySelectorAll(".tab-content")
+      .forEach((tab) => (tab.style.display = "none"));
+    document.getElementById("edit-homestay").style.display = "block";
+
+    // Gắn submit handler
+    const editForm = document.getElementById("edit-homestay-form");
+    editForm.onsubmit = async function (e) {
+      e.preventDefault();
+
+      const updatedData = {
+        name: document.getElementById("editName").value,
+        street: document.getElementById("editStreet").value,
+        ward: document.getElementById("editWard").value,
+        district: document.getElementById("editDistrict").value,
+        description: document.getElementById("editDescription").value,
+        contactInfo: document.getElementById("editContactInfo").value,
+      };
+
+      try {
+        const putRes = await fetch(
+          `http://localhost:8080/homestay/api/homestays/${homestayId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(updatedData),
+          }
+        );
+
+        if (!putRes.ok) throw new Error("Không thể cập nhật homestay");
+
+        const imageFiles = editedHomestayImages();
+        if (imageFiles.length <= 0) console.log("vl");
+        if (imageFiles.length > 0) {
+          await editHomestayImages(homestayId, imageFiles, token);
+        }
+
+        alert("Cập nhật homestay thành công!");
+        document.getElementById("edit-homestay").style.display = "none";
+        fetchPendingHomestays();
+      } catch (error) {
+        console.error("Lỗi khi cập nhật homestay:", error);
+        alert("Không thể cập nhật homestay. Vui lòng thử lại.");
+      }
+    };
+  } catch (error) {
+    console.error("Lỗi khi lấy dữ liệu homestay:", error);
+    alert("Không thể tải dữ liệu homestay. Vui lòng thử lại sau.");
+  }
 }
 
 async function fetchApprovedBookings() {
@@ -604,6 +619,11 @@ function getHomestayImages() {
   return input.files;
 }
 
+function editedHomestayImages() {
+  const input = document.getElementById("editHomestayImages");
+  return input.files;
+}
+
 async function postHomestay(homestayData, token) {
   const res = await fetch("http://localhost:8080/homestay/api/homestays", {
     method: "POST",
@@ -629,6 +649,27 @@ async function uploadHomestayImages(homestayId, images, token) {
     `http://localhost:8080/homestay/api/homestays/${homestayId}/images`,
     {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    }
+  );
+
+  if (!res.ok) throw new Error("Lỗi khi upload ảnh");
+}
+
+async function editHomestayImages(homestayId, images, token) {
+  const formData = new FormData();
+  formData.append("isPrimary", "");
+  for (const file of images) {
+    formData.append("file", file);
+  }
+
+  const res = await fetch(
+    `http://localhost:8080/homestay/api/homestays/${homestayId}/images`,
+    {
+      method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -799,7 +840,7 @@ document
       formData.append("file", imageFile);
 
       await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}/images`, {
-        method: "POST",
+        method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });

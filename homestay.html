@@ -207,7 +207,9 @@
               required
             ></textarea>
             <div class="button-container">
-              <button type="submit" class="btn-submit-review">Gửi đánh giá</button>
+              <button type="submit" class="btn-submit-review">
+                Gửi đánh giá
+              </button>
             </div>
           </form>
 
@@ -268,6 +270,13 @@
     window.onload = function () {
       initRoomSearch();
 
+      const homestayId = getHomestayIdFromURL();
+      if (homestayId) {
+        loadHomestayImages(homestayId);
+      } else {
+        console.warn("Không tìm thấy homestayId trên URL");
+      }
+
       const lastDates = JSON.parse(localStorage.getItem("lastSearchDates"));
       if (lastDates?.autoSearch) {
         // Xóa để không tự động lần sau
@@ -280,6 +289,52 @@
         }, 200);
       }
     };
+
+    function getHomestayIdFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("id");
+    }
+
+    function loadHomestayImages(homestayId) {
+      const token = localStorage.getItem("authToken");
+
+      fetch(`http://localhost:8080/homestay/api/homestays/${homestayId}/images`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Không thể lấy ảnh homestay");
+          }
+          return response.json();
+        })
+        .then((images) => {
+          const galleryLarge = document.querySelector(".gallery-large img");
+          const gallerySmall = document.querySelector(".gallery-small");
+
+          if (images.length === 0) return;
+
+          // Ảnh đầu tiên làm ảnh lớn
+          galleryLarge.src = images[0].imageUrl;
+          galleryLarge.alt = `Ảnh ${images[0].imageId}`;
+
+          // Xóa ảnh nhỏ cũ (nếu có)
+          gallerySmall.innerHTML = "";
+
+          // Render các ảnh còn lại vào gallery-small
+          images.slice(1).forEach((img) => {
+            const imageEl = document.createElement("img");
+            imageEl.src = img.imageUrl;
+            imageEl.alt = `Ảnh ${img.imageId}`;
+            gallerySmall.appendChild(imageEl);
+          });
+        })
+        .catch((error) => {
+          console.error("Lỗi khi load ảnh homestay:", error);
+        });
+    }
 
     function initRoomSearch() {
       const searchBtn = document.querySelector(".search-button");

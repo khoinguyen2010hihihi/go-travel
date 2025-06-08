@@ -80,7 +80,8 @@
           </li>
           <li>
             <a href="#" class="tab-link" data-tab="approved-bookings"
-              >Đơn đặt phòng đã duyệt</a>
+              >Đơn đặt phòng đã duyệt</a
+            >
           </li>
           <li>
             <a href="#" class="tab-link" data-tab="add-homestay"
@@ -128,8 +129,12 @@
               </table>
             </div>
           </div>
-          
-          <div id="pending-approval-homestays" class="tab-content" style="display: none">
+
+          <div
+            id="pending-approval-homestays"
+            class="tab-content"
+            style="display: none"
+          >
             <div class="card-box">
               <button class="close-btn" onclick="returnToDefault()">×</button>
               <h2>Danh sách Homestay đang chờ phê duyệt</h2>
@@ -569,7 +574,9 @@
                   ></textarea>
                 </div>
                 <div class="form-group">
-                  <label for="editHomestayImages"><strong>Thêm ảnh Homestay mới:</strong></label>
+                  <label for="editHomestayImages"
+                    ><strong>Thêm ảnh Homestay mới:</strong></label
+                  >
                   <input
                     type="file"
                     name="editHomestayImages"
@@ -591,12 +598,15 @@
                     placeholder="example@gmail.com"
                   />
                 </div>
-                <input type="hidden" id="editHomestayId" name="editHomestayId" />
+                <input
+                  type="hidden"
+                  id="editHomestayId"
+                  name="editHomestayId"
+                />
                 <button type="submit" class="btn btn-add">Lưu thay đổi</button>
               </form>
             </div>
           </div>
-
 
           <div id="revenue-stats" class="tab-content" style="display: none">
             <div class="card-box">
@@ -763,7 +773,9 @@
       });
 
       const editImageInput = document.getElementById("editImage");
-      const editPreviewContainer = document.getElementById("edit-preview-container");
+      const editPreviewContainer = document.getElementById(
+        "edit-preview-container"
+      );
 
       editImageInput.addEventListener("change", function () {
         editPreviewContainer.innerHTML = "";
@@ -782,47 +794,52 @@
       });
 
       const homestayImageInput = document.getElementById("homestay-images");
-      const homestayPreviewContainer = document.getElementById("homestay-preview-container");
+      const homestayPreviewContainer = document.getElementById(
+        "homestay-preview-container"
+      );
 
       homestayImageInput.addEventListener("change", function () {
-          homestayPreviewContainer.innerHTML = "";
+        homestayPreviewContainer.innerHTML = "";
 
-          Array.from(this.files).forEach((file) => {
-              if (file.type.startsWith("image/")) {
-                  const reader = new FileReader();
+        Array.from(this.files).forEach((file) => {
+          if (file.type.startsWith("image/")) {
+            const reader = new FileReader();
 
-                  reader.onload = function (e) {
-                      const img = document.createElement("img"); 
-                      img.src = e.target.result;
-                      img.classList.add("preview-image"); 
-                      homestayPreviewContainer.appendChild(img);
-                  };
+            reader.onload = function (e) {
+              const img = document.createElement("img");
+              img.src = e.target.result;
+              img.classList.add("preview-image");
+              homestayPreviewContainer.appendChild(img);
+            };
 
-                  reader.readAsDataURL(file); 
-              }
-          });
+            reader.readAsDataURL(file);
+          }
+        });
       });
 
-      const editHomestayImageInput = document.getElementById("editHomestayImages");
-      const editHomestayPreviewContainer = document.getElementById("edit-homestay-preview-container");
+      const editHomestayImageInput =
+        document.getElementById("editHomestayImages");
+      const editHomestayPreviewContainer = document.getElementById(
+        "edit-homestay-preview-container"
+      );
 
       editHomestayImageInput.addEventListener("change", function () {
-          editHomestayPreviewContainer.innerHTML = "";
+        editHomestayPreviewContainer.innerHTML = "";
 
-          Array.from(this.files).forEach((file) => {
-              if (file.type.startsWith("image/")) {
-                  const reader = new FileReader();
+        Array.from(this.files).forEach((file) => {
+          if (file.type.startsWith("image/")) {
+            const reader = new FileReader();
 
-                  reader.onload = function (e) {
-                      const img = document.createElement("img");
-                      img.src = e.target.result;
-                      img.classList.add("preview-image");
-                      editHomestayPreviewContainer.appendChild(img);
-                  };
+            reader.onload = function (e) {
+              const img = document.createElement("img");
+              img.src = e.target.result;
+              img.classList.add("preview-image");
+              editHomestayPreviewContainer.appendChild(img);
+            };
 
-                  reader.readAsDataURL(file);
-              }
-          });
+            reader.readAsDataURL(file);
+          }
+        });
       });
 
       let chartInstance = null;
