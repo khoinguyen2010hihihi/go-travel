@@ -1,5 +1,6 @@
 package com.homestay.homestayweb.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.homestay.homestayweb.entity.Role;
 import jakarta.persistence.*;
@@ -35,11 +36,14 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Booking> bookings;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Payment> payments;
 }

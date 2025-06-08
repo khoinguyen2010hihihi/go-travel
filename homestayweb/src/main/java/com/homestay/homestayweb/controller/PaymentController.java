@@ -65,5 +65,4 @@ public class PaymentController {
         List<HomestayRevenueResponse> result = paymentService.getRevenueByHomestayByHost();
         return ResponseEntity.ok(result);
     }
-
 }
