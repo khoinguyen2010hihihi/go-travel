@@ -364,6 +364,12 @@
             <div class="homestay-info">
               <h3>${b.homestayName}</h3>
               <div class="info-row">
+                <p><span class="label">Mã Đặt Phòng:</span> ${b.bookingId}</p>
+              </div>
+              <div class="info-row">
+                <p><span class="label">Mã Phòng:</span> ${b.roomId}</p>
+              </div>
+              <div class="info-row">
                 <p><span class="label">Ngày Check In:</span> ${formatDate(
                   b.checkInDate
                 )}</p>
@@ -374,7 +380,9 @@
                 )}</p>
               </div>
               <div class="info-row">
-                <p><span class="label">Ngày Đặt:</span> ${formatDate(b.createdAt)}</p>
+                <p><span class="label">Ngày Đặt:</span> ${formatDate(
+                  b.createdAt
+                )}</p>
               </div>
               <div class="info-row">
                 <p><span class="label">Tổng tiền:</span> ${b.totalPrice.toLocaleString(
@@ -392,7 +400,9 @@
                     ? `<button class="cancel-btn" onclick="cancelBooking(${b.bookingId})">Hủy đặt chỗ</button>`
                     : ""
                 }
-                <button class="detail-btn" onclick="viewDetails(${b.bookingId})">Xem chi tiết</button>
+                <button class="detail-btn" onclick="viewDetails(${
+                  b.bookingId
+                })">Xem chi tiết</button>
               </div>
             </div>
           `;
@@ -488,33 +498,36 @@
         try {
           const token = localStorage.getItem("authToken");
           if (!token) {
-              alert("Vui lòng đăng nhập để xem chi tiết.");
-              return;
+            alert("Vui lòng đăng nhập để xem chi tiết.");
+            return;
           }
 
-          const response = await fetch(`http://localhost:8080/homestay/api/bookings/${bookingId}`, {
+          const response = await fetch(
+            `http://localhost:8080/homestay/api/bookings/${bookingId}`,
+            {
               headers: {
-                  "Authorization": `Bearer ${token}`,
-                  "Content-Type": "application/json"
-              }
-          });
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
           if (!response.ok) {
-              const errorText = await response.text();
-              throw new Error(`Không thể lấy thông tin đặt chỗ: ${errorText}`);
+            const errorText = await response.text();
+            throw new Error(`Không thể lấy thông tin đặt chỗ: ${errorText}`);
           }
 
           const booking = await response.json();
           const homestayId = booking.homestayId;
 
           if (homestayId) {
-              window.location.href = `homestay.html?id=${homestayId}`;
+            window.location.href = `homestay.html?id=${homestayId}`;
           } else {
-              throw new Error("Không tìm thấy ID homestay.");
+            throw new Error("Không tìm thấy ID homestay.");
           }
         } catch (error) {
-            console.error("Lỗi khi xem chi tiết:", error);
-            alert("Có lỗi xảy ra khi xem chi tiết đặt chỗ. Vui lòng thử lại.");
+          console.error("Lỗi khi xem chi tiết:", error);
+          alert("Có lỗi xảy ra khi xem chi tiết đặt chỗ. Vui lòng thử lại.");
         }
       }
 
@@ -522,25 +535,28 @@
         try {
           const token = localStorage.getItem("authToken");
           if (!token) {
-              alert("Vui lòng đăng nhập để hủy đặt chỗ.");
-              return;
+            alert("Vui lòng đăng nhập để hủy đặt chỗ.");
+            return;
           }
 
-          const response = await fetch(`http://localhost:8080/homestay/api/bookings/${bookingId}`, {
+          const response = await fetch(
+            `http://localhost:8080/homestay/api/bookings/${bookingId}`,
+            {
               method: "DELETE",
               headers: {
-                  "Authorization": `Bearer ${token}`,
-                  "Content-Type": "application/json"
-              }
-          });
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
           if (!response.ok) {
-              const errorText = await response.text();
-              throw new Error(`Không thể hủy đặt chỗ: ${errorText}`);
+            const errorText = await response.text();
+            throw new Error(`Không thể hủy đặt chỗ: ${errorText}`);
           }
 
           alert(`Hủy đơn đặt chỗ thành công!`);
-          await loadCustomerBookings(); 
+          await loadCustomerBookings();
         } catch (error) {
           console.error("Lỗi khi hủy đặt chỗ:", error);
           alert("Có lỗi xảy ra khi hủy đặt chỗ. Vui lòng thử lại.");
