@@ -1,10 +1,11 @@
 package com.homestay.homestayweb.controller;
 
-import com.homestay.homestayweb.dto.request.LoginRequest;
-import com.homestay.homestayweb.dto.request.SignupRequest;
+import com.homestay.homestayweb.dto.request.*;
 import com.homestay.homestayweb.dto.response.JwtResponse;
 import com.homestay.homestayweb.service.AuthService;
+import com.homestay.homestayweb.service.PasswordResetService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final PasswordResetService passwordResetService;
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest request) {
         return authService.login(request);
@@ -21,5 +23,24 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@RequestBody SignupRequest request) {
         return authService.register(request);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> sendOtp(@RequestBody EmailRequest req) {
+        passwordResetService.sendOtp(req.getEmail());
+        return ResponseEntity.ok("Đã gửi OTP về email.");
+    }
+
+    @PostMapping("/verify-otp")
+    public ResponseEntity<?> verifyOtp(@RequestBody OtpVerifyRequest req) {
+        boolean valid = passwordResetService.verifyOtp(req.getEmail(), req.getOtp());
+        return valid ? ResponseEntity.ok("OTP hợp lệ") :
+                ResponseEntity.badRequest().body("OTP không đúng hoặc hết hạn");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest req) {
+        passwordResetService.resetPassword(req.getEmail(), req.getNewPassword());
+        return ResponseEntity.ok("Đặt lại mật khẩu thành công.");
     }
 }
