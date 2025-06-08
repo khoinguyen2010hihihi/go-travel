@@ -162,9 +162,7 @@
           <div class="tab-links">
             <a href="#overview">Tổng quan</a>
             <a href="#room-list">Phòng nghỉ</a>
-            <a href="#facilities">Cơ sở vật chất</a>
-            <a href="#hotel-facts">Đánh giá</a>
-            <a href="#location">Vị trí</a>
+            <a href="#homestay-review">Đánh giá</a>
           </div>
           <div class="tab-price-action">
             <span class="label">Từ</span>
@@ -174,7 +172,6 @@
         </div>
       </section>
 
-      <!-- Thông tin mô tả -->
       <section class="info-section">
         <section class="overview" id="overview">
           <h2 class="homestay-name" id="homestay-name"></h2>
@@ -182,71 +179,40 @@
           <p class="desc" id="homestay-description"></p>
         </section>
 
-        <section class="homestay-review" id="homestay-review">
-          <h3>Đánh giá về Homestay của chúng tôi</h3>
-
-          <!-- Danh sách đánh giá -->
-          <div class="review-list" id="review-list"></div>
-
-          <!-- Form đánh giá -->
-          <div class="review-form">
-            <h4>Viết đánh giá của bạn</h4>
-            <form id="submit-review-form">
-              <label for="rating">Số sao:</label>
-              <select id="rating" name="rating" required>
-                <option value="">-- Chọn số sao --</option>
-                <option value="5">★★★★★</option>
-                <option value="4">★★★★</option>
-                <option value="3">★★★</option>
-                <option value="2">★★</option>
-                <option value="1">★</option>
-              </select>
-
-              <label for="comment">Nhận xét:</label>
-              <textarea
-                id="comment"
-                name="comment"
-                rows="4"
-                placeholder="Hãy chia sẻ trải nghiệm của bạn..."
-                required
-              ></textarea>
-
-              <button type="submit">Gửi đánh giá</button>
-            </form>
-          </div>
+        <section class="room-list" id="room-list">
+          <h2>Phòng còn trống tại đây</h2>
         </section>
-      </section>
-      <section class="room-list" id="room-list">
-        <h3>Phòng còn trống tại đây</h3>
-        <!-- <div class="room-item">
-          <div class="room-img">
-            <img src="assets/img/standard-double.webp" alt="Standard Double" />
-          </div>
-          <div class="room-facilities">
-            <h4>Tiện nghi</h4>
-            <div class="facilities-list">
-              <div class="facility-item">
-                <i class="ti-check"></i> Giường cỡ king
-              </div>
-              <div class="facility-item">
-                <i class="ti-check"></i> Gồm bữa sáng
-              </div>
-              <div class="facility-item">
-                <i class="ti-check"></i> Wi-Fi miễn phí
-              </div>
-              <div class="facility-item"><i class="ti-check"></i> Điều hòa</div>
-              <div class="facility-item">
-                <i class="ti-check"></i> Phòng tắm riêng
-              </div>
+
+        <section class="homestay-review" id="homestay-review">
+          <h2>Bình luận và đánh giá</h2>
+
+          <form class="review-form" novalidate>
+            <h4>Đánh giá của bạn</h4>
+            <fieldset class="rating-stars" aria-label="Đánh giá sao">
+              <input type="radio" name="rating" id="star5" value="5" />
+              <label for="star5" class="star-label" title="5 sao">★</label>
+              <input type="radio" name="rating" id="star4" value="4" />
+              <label for="star4" class="star-label" title="4 sao">★</label>
+              <input type="radio" name="rating" id="star3" value="3" />
+              <label for="star3" class="star-label" title="3 sao">★</label>
+              <input type="radio" name="rating" id="star2" value="2" />
+              <label for="star2" class="star-label" title="2 sao">★</label>
+              <input type="radio" name="rating" id="star1" value="1" />
+              <label for="star1" class="star-label" title="1 sao">★</label>
+            </fieldset>
+            <textarea
+              name="comment"
+              placeholder="Hãy để lại bình luận của bạn tại đây!"
+              rows="5"
+              required
+            ></textarea>
+            <div class="button-container">
+              <button type="submit" class="btn-submit-review">Gửi đánh giá</button>
             </div>
-          </div>
-          <div class="room-price">
-            <p class="price">461.837 VND/đêm</p>
-          </div>
-          <div class="room-booking">
-            <button class="btn-book-now">Đặt ngay</button>
-          </div>
-        </div> -->
+          </form>
+
+          <div class="review-list" id="review-list"></div>
+        </section>
       </section>
     </main>
   </body>
@@ -542,10 +508,6 @@
         setupPopupEventListeners();
       });
   </script>
-  <script type="module" src="assets/js/review-and-info.js"></script>
-  <script type="module" src="assets/js/main.js"></script>
-  <script type="module" src="assets/js/role-redirect.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script type="module" src="assets/js/review-and-info.js"></script>
   <script type="module" src="assets/js/main.js"></script>
   <script type="module" src="assets/js/role-redirect.js"></script>
