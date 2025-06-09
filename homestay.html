@@ -233,10 +233,10 @@
         const checkOutDate = document.querySelector(".date-end").value;
         const today = new Date().toISOString().split("T")[0];
 
-        if (!checkInDate || !checkOutDate) {
-          alert("Vui lòng chọn ngày nhận và trả phòng.");
-          return;
-        }
+        // if (!checkInDate || !checkOutDate) {
+        //   alert("Vui lòng chọn ngày nhận và trả phòng.");
+        //   return;
+        // }
       });
   </script>
 
@@ -298,12 +298,15 @@
     function loadHomestayImages(homestayId) {
       const token = localStorage.getItem("authToken");
 
-      fetch(`http://localhost:8080/homestay/api/homestays/${homestayId}/images`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      fetch(
+        `http://localhost:8080/homestay/api/homestays/${homestayId}/images`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error("Không thể lấy ảnh homestay");
@@ -378,9 +381,17 @@
       const checkIn = checkInDate.split("/").reverse().join("-");
       const checkOut = checkOutDate.split("/").reverse().join("-");
       try {
-        const res = await fetch(
-          `http://localhost:8080/homestay/api/rooms/available?homestayId=${homestayId}&checkInDate=${checkIn}&checkOutDate=${checkOut}`
-        );
+        let res;
+        if (checkInDate && checkOutDate) {
+          res = await fetch(
+            `http://localhost:8080/homestay/api/rooms/available?homestayId=${homestayId}&checkInDate=${checkIn}&checkOutDate=${checkOut}`
+          );
+        } else {
+          res = await fetch(
+            `http://localhost:8080/homestay/api/rooms/valid-homestay/${homestayId}`
+          );
+        }
+
         const data = await res.json();
 
         roomContainer.innerHTML = "";
@@ -459,7 +470,7 @@
             .join("-");
 
           if (!checkInDate || !checkOutDate) {
-            alert("Vui lòng chọn ngày nhận và trả phòng.");
+            alert("Vui lòng chọn ngày nhận và trả phòng trước khi đặt phòng.");
             return;
           }
 

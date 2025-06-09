@@ -172,7 +172,8 @@ window.onload = function () {
     container.innerHTML = "";
 
     if (!mockHosts.length) {
-      container.innerHTML = "<tr><td colspan='4'>Không có doanh nghiệp nào.</td></tr>";
+      container.innerHTML =
+        "<tr><td colspan='4'>Không có doanh nghiệp nào.</td></tr>";
       return;
     }
 
@@ -186,11 +187,19 @@ window.onload = function () {
             <div>${host.name}</div>
           </div>
           <div class="host-actions">
-            <button class="btn btn-expand" onclick="toggleHomestays('${host.id}')">${toggleStates[host.id] ? "Thu gọn" : "Xem Homestay"}</button>
-            <button class="btn btn-toggle" onclick="toggleHostStatus('${host.id}', '${host.status}')">${host.status === "ACTIVE" ? "Khóa" : "Mở khóa"}</button>
+            <button class="btn btn-expand" onclick="toggleHomestays('${
+              host.id
+            }')">${toggleStates[host.id] ? "Thu gọn" : "Xem Homestay"}</button>
+            <button class="btn btn-toggle" onclick="toggleHostStatus('${
+              host.id
+            }', '${host.status}')">${
+        host.status === "ACTIVE" ? "Khóa" : "Mở khóa"
+      }</button>
           </div>
         </div>
-        <div id="homestays-${host.id}" class="homestay-list ${toggleStates[host.id] ? "active" : ""}">
+        <div id="homestays-${host.id}" class="homestay-list ${
+        toggleStates[host.id] ? "active" : ""
+      }">
           ${
             host.homestays.length
               ? host.homestays
@@ -203,10 +212,16 @@ window.onload = function () {
                         <div>${h.address}</div>
                       </div>
                       <div class="homestay-actions">
-                        <button class="btn btn-view" onclick="window.location.href='homestay.html?id=${h.id}'" ${host.status === "LOCKED" ? "disabled" : ""}>Xem chi tiết</button>
-                        <button class="btn btn-toggle" onclick="toggleHomestayStatus('${h.id}', '${h.status}')" ${
-                          host.status === "LOCKED" ? "disabled" : ""
-                        }>${h.status === "ACTIVE" ? "Khóa" : "Mở khóa"}</button>
+                        <button class="btn btn-view" onclick="window.location.href='homestay.html?id=${
+                          h.id
+                        }'" ${
+                      host.status === "LOCKED" ? "disabled" : ""
+                    }>Xem chi tiết</button>
+                        <button class="btn btn-toggle" onclick="toggleHomestayStatus('${
+                          h.id
+                        }', '${h.status}')" ${
+                      host.status === "LOCKED" ? "disabled" : ""
+                    }>${h.status === "ACTIVE" ? "Khóa" : "Mở khóa"}</button>
                       </div>
                     </div>
                   `
@@ -225,34 +240,54 @@ window.onload = function () {
     const container = document.getElementById("user-container");
     container.innerHTML = "";
 
-    if (!mockUsers.length) {
-      container.innerHTML = "<p>Không có người dùng nào.</p>";
-      return;
-    }
+    const token = localStorage.getItem("authToken");
 
-    mockUsers.forEach((user) => {
-      const card = document.createElement("div");
-      card.className = "host-card";
-      card.innerHTML = `
-        <div class="host-info">
-          <div class="host-details">
-            <div>ID ${user.id}</div>
-            <div>${user.name}</div>
+    fetch("http://localhost:8080/homestay/api/users", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Không thể tải danh sách người dùng.");
+        }
+        return response.json();
+      })
+      .then((users) => {
+        if (!users.length) {
+          container.innerHTML = "<p>Không có người dùng nào.</p>";
+          return;
+        }
+
+        users.forEach((user) => {
+          const card = document.createElement("div");
+          card.className = "host-card";
+          card.innerHTML = `
+          <div class="host-info">
+            <div class="host-details">
+              <div>ID ${user.id}</div>
+              <div>${user.username}</div>
+            </div>
+            <div class="host-actions">
+              <button class="btn btn-view" onclick='openCommonPopup("user", ${JSON.stringify(
+                {
+                  id: user.id,
+                  name: user.username,
+                  email: user.email,
+                }
+              )})'>Xem chi tiết</button>
+            </div>
           </div>
-          <div class="host-actions">
-            <button class="btn btn-view" onclick='openCommonPopup("user", ${JSON.stringify({
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              status: user.status,
-              createdAt: new Date(user.createdAt).toLocaleString(),
-            })})'>Xem chi tiết</button>
-            <button class="btn btn-toggle" onclick="toggleUserStatus('${user.id}', '${user.status}')">${user.status === "ACTIVE" ? "Khóa" : "Mở khóa"}</button>
-          </div>
-        </div>
-      `;
-      container.appendChild(card);
-    });
+        `;
+          container.appendChild(card);
+        });
+      })
+      .catch((error) => {
+        console.error("Lỗi:", error);
+        container.innerHTML = `<p>${error.message}</p>`;
+      });
   }
 
   // Hàm mở rộng/thu gọn danh sách homestay
@@ -337,53 +372,59 @@ window.onload = function () {
   };
 
   function loadPendingHomestays() {
-  const container = document.getElementById("homestay-request-container");
-  container.innerHTML = "";
+    const container = document.getElementById("homestay-request-container");
+    container.innerHTML = "";
 
-  fetch("http://localhost:8080/homestay/api/homestays/pending", {
-    headers: { Authorization: `Bearer ${token}` },
-  })
-    .then((res) => {
-      if (!res.ok) throw new Error(res.status);
-      return res.json();
+    fetch("http://localhost:8080/homestay/api/homestays/pending", {
+      headers: { Authorization: `Bearer ${token}` },
     })
-    .then((data) => {
-      if (!Array.isArray(data) || !data.length) {
-        container.innerHTML = "<p>Không có yêu cầu nào.</p>";
-        return;
-      }
-      data.forEach((h) => {
-        const address = [h.street, h.ward, h.district]
-          .filter(Boolean)
-          .join(", ");
-        const card = document.createElement("div");
-        card.className = "host-card";
-        card.innerHTML = `
+      .then((res) => {
+        if (!res.ok) throw new Error(res.status);
+        return res.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data) || !data.length) {
+          container.innerHTML = "<p>Không có yêu cầu nào.</p>";
+          return;
+        }
+        data.forEach((h) => {
+          const address = [h.street, h.ward, h.district]
+            .filter(Boolean)
+            .join(", ");
+          const card = document.createElement("div");
+          card.className = "host-card";
+          card.innerHTML = `
           <div class="host-info">
             <div class="host-details">
               <div>ID ${h.id}</div>
               <div>${h.name}</div>
             </div>
             <div class="host-actions">
-              <button class="btn btn-view" onclick='openCommonPopup("business", ${JSON.stringify({
-                name: h.name,
-                address,
-                email: h.contactInfo,
-                note: new Date(h.createdAt).toLocaleString(),
-              })})'>Xem chi tiết</button>
-              <button class="btn btn-approve" onclick="approveHomestay(${h.id})">Phê duyệt</button>
-              <button class="btn btn-reject" onclick="rejectHomestay(${h.id})">Từ chối</button>
+              <button class="btn btn-view" onclick='openCommonPopup("business", ${JSON.stringify(
+                {
+                  name: h.name,
+                  address,
+                  email: h.contactInfo,
+                  note: new Date(h.createdAt).toLocaleString(),
+                }
+              )})'>Xem chi tiết</button>
+              <button class="btn btn-approve" onclick="approveHomestay(${
+                h.id
+              })">Phê duyệt</button>
+              <button class="btn btn-reject" onclick="rejectHomestay(${
+                h.id
+              })">Từ chối</button>
             </div>
           </div>
         `;
-        container.appendChild(card);
+          container.appendChild(card);
+        });
+      })
+      .catch((err) => {
+        console.error("Lỗi khi tải danh sách:", err);
+        container.innerHTML = "<p>Lỗi khi tải dữ liệu.</p>";
       });
-    })
-    .catch((err) => {
-      console.error("Lỗi khi tải danh sách:", err);
-      container.innerHTML = "<p>Lỗi khi tải dữ liệu.</p>";
-    });
-}
+  }
   window.approveHomestay = function (id) {
     fetch(`http://localhost:8080/homestay/api/homestays/admin/pending/${id}`, {
       method: "PUT",
