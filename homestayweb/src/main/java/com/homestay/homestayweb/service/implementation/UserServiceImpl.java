@@ -2,6 +2,7 @@ package com.homestay.homestayweb.service.implementation;
 
 import com.homestay.homestayweb.entity.User;
 import com.homestay.homestayweb.repository.UserRepository;
+import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -66,8 +67,8 @@ public class UserServiceImpl implements UserService {
     public User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
-            String username = ((UserDetails) principal).getUsername();
-            return userRepository.findByUsername(username)
+            String email = ((UserDetailsImpl) principal).getEmail();
+            return userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
         throw new RuntimeException("User not authenticated");

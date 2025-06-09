@@ -7,6 +7,7 @@ import com.homestay.homestayweb.entity.User;
 import com.homestay.homestayweb.repository.HomestayRepository;
 import com.homestay.homestayweb.repository.ReviewRepository;
 import com.homestay.homestayweb.repository.UserRepository;
+import com.homestay.homestayweb.security.UserDetailsImpl;
 import com.homestay.homestayweb.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,12 +33,12 @@ public class ReviewServiceImpl implements ReviewService {
     public Review createReview(ReviewRequest reviewRequest) {
         // Lấy username hiện tại từ Spring Security
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = (principal instanceof UserDetails)
-                ? ((UserDetails) principal).getUsername()
+        String email = (principal instanceof UserDetails)
+                ? ((UserDetailsImpl) principal).getEmail()
                 : principal.toString();
 
         // Tìm User
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Tìm Homestay
