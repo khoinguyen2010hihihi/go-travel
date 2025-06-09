@@ -353,9 +353,90 @@ window.loadPendingBookings = function () {
 
 function fetchPendingHomestays() {
   const token = localStorage.getItem("authToken");
-
   const decodedToken = jwt_decode(token);
 
+  const tbody = document.getElementById("pending-homestay-list");
+  tbody.innerHTML = "";
+
+  function renderHomestays(data, isRejected = false) {
+    if (data.length === 0 && !isRejected) {
+      tbody.innerHTML =
+        '<tr><td colspan="4">Không có homestay nào đang chờ duyệt.</td></tr>';
+      return;
+    }
+
+    data.forEach((homestay) => {
+      const tr = document.createElement("tr");
+
+      const nameTd = document.createElement("td");
+      nameTd.textContent = homestay.name;
+      if (isRejected) {
+        const badge = document.createElement("span");
+        badge.className = "badge-rejected";
+        badge.textContent = " (Đã bị từ chối)";
+        nameTd.appendChild(badge);
+      }
+
+      const addressTd = document.createElement("td");
+      addressTd.textContent = `${homestay.street}, ${homestay.ward}, ${homestay.district}`;
+
+      const createdAtTd = document.createElement("td");
+      createdAtTd.textContent = new Date(homestay.createdAt).toLocaleString();
+
+      const actionTd = document.createElement("td");
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "Chỉnh sửa";
+      editBtn.className = "btn btn-edit";
+      editBtn.setAttribute("data-id", homestay.id);
+
+      const cancelBtn = document.createElement("button");
+      cancelBtn.textContent = "Hủy yêu cầu";
+      cancelBtn.className = "btn btn-cancel";
+      cancelBtn.setAttribute("data-id", homestay.id);
+
+      actionTd.appendChild(editBtn);
+      actionTd.appendChild(cancelBtn);
+
+      tr.appendChild(nameTd);
+      tr.appendChild(addressTd);
+      tr.appendChild(createdAtTd);
+      tr.appendChild(actionTd);
+
+      tbody.appendChild(tr);
+
+      // Sự kiện click chỉnh sửa
+      editBtn.addEventListener("click", async function () {
+        const homestayId = this.getAttribute("data-id");
+        handleEditHomestay(homestayId);
+      });
+
+      // Sự kiện click hủy
+      cancelBtn.addEventListener("click", async function () {
+        const homestayId = this.getAttribute("data-id");
+        if (confirm("Bạn có chắc chắn muốn hủy yêu cầu homestay này?")) {
+          try {
+            const res = await fetch(
+              `http://localhost:8080/homestay/api/homestays/${homestayId}`,
+              {
+                method: "DELETE",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            if (!res.ok) throw new Error("Không thể hủy homestay");
+            alert("Hủy homestay thành công!");
+            fetchPendingHomestays();
+          } catch (error) {
+            console.error("Lỗi khi hủy homestay:", error);
+            alert("Không thể hủy homestay. Vui lòng thử lại sau.");
+          }
+        }
+      });
+    });
+  }
+
+  // Fetch pending homestays
   fetch("http://localhost:8080/homestay/api/homestays/my_pending", {
     method: "GET",
     headers: {
@@ -363,84 +444,26 @@ function fetchPendingHomestays() {
     },
   })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      if (!response.ok) throw new Error("Network response was not ok");
       return response.json();
     })
     .then((data) => {
-      const tbody = document.getElementById("pending-homestay-list");
-      tbody.innerHTML = "";
-      if (data.length === 0) {
-        tbody.innerHTML =
-          '<tr><td colspan="4">Không có homestay nào đang chờ duyệt.</td></tr>';
-        return;
-      }
-      data.forEach((homestay) => {
-        const tr = document.createElement("tr");
+      renderHomestays(data);
 
-        const nameTd = document.createElement("td");
-        nameTd.textContent = homestay.name;
-
-        const addressTd = document.createElement("td");
-        addressTd.textContent = `${homestay.street}, ${homestay.ward}, ${homestay.district}`;
-
-        const createdAtTd = document.createElement("td");
-        createdAtTd.textContent = new Date(homestay.createdAt).toLocaleString();
-
-        const actionTd = document.createElement("td");
-        const editBtn = document.createElement("button");
-        editBtn.textContent = "Chỉnh sửa";
-        editBtn.className = "btn btn-edit";
-        editBtn.setAttribute("data-id", homestay.id);
-
-        const cancelBtn = document.createElement("button");
-        cancelBtn.textContent = "Hủy yêu cầu";
-        cancelBtn.className = "btn btn-cancel";
-        cancelBtn.setAttribute("data-id", homestay.id);
-
-        actionTd.appendChild(editBtn);
-        actionTd.appendChild(cancelBtn);
-
-        tr.appendChild(nameTd);
-        tr.appendChild(addressTd);
-        tr.appendChild(createdAtTd);
-        tr.appendChild(actionTd);
-
-        tbody.appendChild(tr);
-
-        // Thêm sự kiện click cho nút chỉnh sửa
-        editBtn.addEventListener("click", async function () {
-          const homestayId = this.getAttribute("data-id");
-          handleEditHomestay(homestayId);
-        });
-
-        // Thêm sự kiện click cho nút hủy
-        cancelBtn.addEventListener("click", async function () {
-          const homestayId = this.getAttribute("data-id");
-          const token = localStorage.getItem("authToken");
-
-          if (confirm("Bạn có chắc chắn muốn hủy yêu cầu homestay này?")) {
-            try {
-              const res = await fetch(
-                `http://localhost:8080/homestay/api/homestays/${homestayId}`,
-                {
-                  method: "DELETE",
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              );
-              if (!res.ok) throw new Error("Không thể hủy homestay");
-              alert("Hủy homestay thành công!");
-              fetchPendingHomestays();
-            } catch (error) {
-              console.error("Lỗi khi hủy homestay:", error);
-              alert("Không thể hủy homestay. Vui lòng thử lại sau.");
-            }
-          }
-        });
+      // Fetch rejected homestays tiếp theo
+      return fetch("http://localhost:8080/homestay/api/homestays/my_rejected", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+    })
+    .then((response) => {
+      if (!response.ok) throw new Error("Network response was not ok");
+      return response.json();
+    })
+    .then((rejectedData) => {
+      renderHomestays(rejectedData, true);
     })
     .catch((error) => {
       console.error("Fetch error:", error);

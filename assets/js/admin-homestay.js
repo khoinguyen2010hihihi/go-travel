@@ -167,72 +167,97 @@ window.onload = function () {
   });
 
   // Hàm tải danh sách doanh nghiệp và homestay
-  function loadHostsAndHomestays() {
+  async function loadHostsAndHomestays() {
+    const token = localStorage.getItem("authToken");
     const container = document.getElementById("host-container");
     container.innerHTML = "";
 
-    if (!mockHosts.length) {
-      container.innerHTML =
-        "<tr><td colspan='4'>Không có doanh nghiệp nào.</td></tr>";
-      return;
-    }
+    try {
+      const userRes = await fetch(
+        "http://localhost:8080/homestay/api/users/hosts",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-    mockHosts.forEach((host) => {
-      const card = document.createElement("div");
-      card.className = "host-card";
-      card.innerHTML = `
+      if (!userRes.ok) throw new Error("Không thể tải danh sách hosts");
+      const hosts = await userRes.json();
+
+      if (!hosts.length) {
+        container.innerHTML =
+          "<tr><td colspan='4'>Không có doanh nghiệp nào.</td></tr>";
+        return;
+      }
+
+      for (const host of hosts) {
+        const card = document.createElement("div");
+        card.className = "host-card";
+
+        let homestaysHtml = "<p>Đang tải homestay...</p>";
+        card.innerHTML = `
         <div class="host-info">
           <div class="host-details">
             <div>ID ${host.id}</div>
-            <div>${host.name}</div>
+            <div>${host.username}</div>
           </div>
           <div class="host-actions">
-            <button class="btn btn-expand" onclick="toggleHomestays('${
-              host.id
-            }')">${toggleStates[host.id] ? "Thu gọn" : "Xem Homestay"}</button>
-            <button class="btn btn-toggle" onclick="toggleHostStatus('${
-              host.id
-            }', '${host.status}')">${
-        host.status === "ACTIVE" ? "Khóa" : "Mở khóa"
-      }</button>
+            <button class="btn btn-expand" onclick="toggleHomestays('${host.id}')">Xem Homestay</button>
           </div>
         </div>
-        <div id="homestays-${host.id}" class="homestay-list ${
-        toggleStates[host.id] ? "active" : ""
-      }">
-          ${
-            host.homestays.length
-              ? host.homestays
-                  .map(
-                    (h) => `
-                    <div class="homestay-item">
-                      <div class="homestay-details">
-                        <div>ID ${h.id}</div>
-                        <div>${h.name}</div>
-                        <div>${h.address}</div>
-                      </div>
-                      <div class="homestay-actions">
-                        <button class="btn btn-view" onclick="window.location.href='homestay.html?id=${
-                          h.id
-                        }'" ${
-                      host.status === "LOCKED" ? "disabled" : ""
-                    }>Xem chi tiết</button>
-                        <button class="btn btn-toggle" onclick="toggleHomestayStatus('${
-                          h.id
-                        }', '${h.status}')" ${
-                      host.status === "LOCKED" ? "disabled" : ""
-                    }>${h.status === "ACTIVE" ? "Khóa" : "Mở khóa"}</button>
-                      </div>
-                    </div>
-                  `
-                  )
-                  .join("")
-              : "<p>Không có homestay nào.</p>"
-          }
-        </div>
+        <div id="homestays-${host.id}" class="homestay-list">${homestaysHtml}</div>
       `;
-      container.appendChild(card);
-    });
+
+        container.appendChild(card);
+
+        try {
+          const hsRes = await fetch(
+            `http://localhost:8080/homestay/api/homestays/host/${host.id}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          const homestays = await hsRes.json();
+
+          const hsContainer = card.querySelector(`#homestays-${host.id}`);
+          if (!homestays.length) {
+            hsContainer.innerHTML = "<p>Không có homestay nào.</p>";
+          } else {
+            hsContainer.innerHTML = homestays
+              .map(
+                (h) => `
+                <div class="homestay-item">
+                  <div class="homestay-details">
+                    <div>ID ${h.id}</div>
+                    <div>${h.name}</div>
+                    <div>${h.street}, ${h.ward}, ${h.district}</div>
+                  </div>
+                  <div class="homestay-actions">
+                    <button class="btn btn-view" onclick="window.location.href='homestay.html?id=${
+                      h.id
+                    }'" ${
+                  host.status === "LOCKED" ? "disabled" : ""
+                }>Xem chi tiết</button>
+                    <button class="btn btn-toggle" onclick="toggleHomestayStatus('${
+                      h.id
+                    }', '${h.approveStatus}')" ${
+                  host.status === "LOCKED" ? "disabled" : ""
+                }>${
+                  h.approveStatus === "ACCEPTED" ? "Khóa" : "Mở khóa"
+                }</button>
+                  </div>
+                </div>
+              `
+              )
+              .join("");
+          }
+        } catch (err) {
+          card.querySelector(`#homestays-${host.id}`).innerHTML =
+            "<p>Lỗi khi tải homestay.</p>";
+        }
+      }
+    } catch (err) {
+      container.innerHTML = `<tr><td colspan='4'>Lỗi: ${err.message}</td></tr>`;
+    }
   }
 
   // Hàm tải danh sách người dùng
@@ -310,55 +335,56 @@ window.onload = function () {
   };
 
   // Hàm khóa/mở khóa doanh nghiệp
-  window.toggleHostStatus = function (hostId, currentStatus) {
-    const newStatus = currentStatus === "ACTIVE" ? "LOCKED" : "ACTIVE";
-    mockHosts = mockHosts.map((host) => {
-      if (host.id === hostId) {
-        host.status = newStatus;
-        if (newStatus === "LOCKED") {
-          host.homestays = host.homestays.map((h) => ({
-            ...h,
-            status: "LOCKED",
-          }));
-        }
-      }
-      return host;
-    });
-    const currentState = toggleStates[hostId];
-    loadHostsAndHomestays();
-    if (currentState) {
-      const homestayList = document.getElementById(`homestays-${hostId}`);
-      const expandButton = document.querySelector(
-        `button[onclick="toggleHomestays('${hostId}')"]`
-      );
-      homestayList.classList.add("active");
-      expandButton.textContent = "Thu gọn";
-      toggleStates[hostId] = true;
-    }
-  };
+  // window.toggleHostStatus = function (hostId, currentStatus) {
+  //   const newStatus = currentStatus === "ACTIVE" ? "LOCKED" : "ACTIVE";
+  //   mockHosts = mockHosts.map((host) => {
+  //     if (host.id === hostId) {
+  //       host.status = newStatus;
+  //       if (newStatus === "LOCKED") {
+  //         host.homestays = host.homestays.map((h) => ({
+  //           ...h,
+  //           status: "LOCKED",
+  //         }));
+  //       }
+  //     }
+  //     return host;
+  //   });
+  //   const currentState = toggleStates[hostId];
+  //   loadHostsAndHomestays();
+  //   if (currentState) {
+  //     const homestayList = document.getElementById(`homestays-${hostId}`);
+  //     const expandButton = document.querySelector(
+  //       `button[onclick="toggleHomestays('${hostId}')"]`
+  //     );
+  //     homestayList.classList.add("active");
+  //     expandButton.textContent = "Thu gọn";
+  //     toggleStates[hostId] = true;
+  //   }
+  // };
 
   // Hàm khóa/mở khóa homestay
-  window.toggleHomestayStatus = function (homestayId, currentStatus) {
-    const newStatus = currentStatus === "ACTIVE" ? "LOCKED" : "ACTIVE";
-    mockHosts = mockHosts.map((host) => ({
-      ...host,
-      homestays: host.homestays.map((h) =>
-        h.id === homestayId ? { ...h, status: newStatus } : h
-      ),
-    }));
-    const hostId = mockHosts.find((h) =>
-      h.homestays.some((hs) => hs.id === homestayId)
-    )?.id;
-    const currentState = hostId ? toggleStates[hostId] : false;
-    loadHostsAndHomestays();
-    if (hostId && currentState) {
-      const homestayList = document.getElementById(`homestays-${hostId}`);
-      const expandButton = document.querySelector(
-        `button[onclick="toggleHomestays('${hostId}')"]`
-      );
-      homestayList.classList.add("active");
-      expandButton.textContent = "Thu gọn";
-      toggleStates[hostId] = true;
+  window.toggleHomestayStatus = async function toggleHomestayStatus(
+    homestayId,
+    currentStatus
+  ) {
+    const token = localStorage.getItem("authToken");
+
+    const url =
+      currentStatus === "ACCEPTED"
+        ? `http://localhost:8080/homestay/api/homestays/admin/reject/${homestayId}`
+        : `http://localhost:8080/homestay/api/homestays/admin/pending/${homestayId}`;
+
+    try {
+      const res = await fetch(url, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!res.ok) throw new Error("Không thể cập nhật trạng thái homestay");
+
+      await loadHostsAndHomestays(); // refresh lại danh sách
+    } catch (err) {
+      alert("Lỗi khi cập nhật trạng thái: " + err.message);
     }
   };
 
