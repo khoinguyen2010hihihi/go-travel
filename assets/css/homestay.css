@@ -288,13 +288,12 @@ main.room-detail {
   gap: 20px;
   align-items: center;
   background-color: #fff;
-  padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   overflow: hidden;
   transition: transform 0.3s, box-shadow 0.3s;
-
+  height: 200px;
 }
 
 .room-item:hover {
@@ -303,15 +302,14 @@ main.room-detail {
   background-color: rgba(85, 104, 231, 0.05);
 }
 
-/* === Ảnh phòng === */
+/* ảnh phòng */
 .room-img img {
   width: 300px;
   height: 200px;
   object-fit: cover;
-  flex-shrink: 0;
 }
 
-/* === Tiện nghi (facilities) === */
+/* tiện nghi */
 .room-facilities {
   display: flex;
   flex-direction: column;
@@ -524,6 +522,7 @@ main.room-detail {
   font-size: 15px;
   color: #2c3e50;
   margin-top: 10px;
+  gap: 20px;
 }
 
 .review-comment {
