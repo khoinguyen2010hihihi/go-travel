@@ -112,8 +112,8 @@ public class PaymentServiceImpl implements PaymentService {
     private User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
-            String username = ((UserDetails) principal).getUsername();
-            return userRepository.findByUsername(username)
+            String email = ((UserDetailsImpl) principal).getEmail();
+            return userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
         throw new RuntimeException("User not authenticated");
