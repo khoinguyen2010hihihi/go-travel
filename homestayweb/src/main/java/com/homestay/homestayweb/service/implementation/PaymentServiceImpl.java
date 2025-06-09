@@ -9,6 +9,7 @@ import com.homestay.homestayweb.repository.BookingRepository;
 import com.homestay.homestayweb.repository.PaymentRepository;
 import com.homestay.homestayweb.repository.UserRepository;
 import com.homestay.homestayweb.security.UserDetailsImpl;
+import com.homestay.homestayweb.service.BookingService;
 import com.homestay.homestayweb.service.PaymentService;
 import com.homestay.homestayweb.utils.VnPayUtil;
 import jakarta.transaction.Transactional;
@@ -30,6 +31,7 @@ import java.util.*;
 public class PaymentServiceImpl implements PaymentService {
 
     private final BookingRepository bookingRepository;
+    private final BookingService bookingService;
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
 
@@ -91,7 +93,7 @@ public class PaymentServiceImpl implements PaymentService {
 
             Booking booking = bookingRepository.findById(bookingId)
                     .orElseThrow(() -> new RuntimeException("Booking not found"));
-
+            bookingService.pendingBooking(bookingId);
             User user = booking.getUser();
 
             Payment payment = Payment.builder()
@@ -105,6 +107,7 @@ public class PaymentServiceImpl implements PaymentService {
 
             paymentRepository.save(payment);
             return "Thanh toán thành công cho đơn #" + bookingId;
+
         }
         return "Thanh toán thất bại hoặc bị hủy";
     }

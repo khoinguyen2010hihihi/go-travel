@@ -60,7 +60,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/homestays/{id}/rooms").hasAuthority("CREATE_ROOM")
                         .requestMatchers(HttpMethod.GET, "/api/rooms/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/payment/stats/**").hasAuthority("GET_REVENUE")
-                        .requestMatchers(HttpMethod.GET,"/api/payment/check/**").hasAuthority("GET_REVENUE")
+                        .requestMatchers(HttpMethod.GET,"/api/payment/check/**").permitAll()
 
                         // USER permissions
                         .requestMatchers("/user/**").hasAuthority("USER_ACCESS")

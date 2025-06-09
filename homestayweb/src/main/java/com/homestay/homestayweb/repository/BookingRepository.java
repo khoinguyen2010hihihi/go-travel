@@ -41,4 +41,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             @Param("homestayName") String homestayName
     );
 
+    List<Booking> findByRoom_RoomIdAndBookingIdNotAndBookingStatus(Long roomId, Long bookingId, String status);
 }

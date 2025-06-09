@@ -24,4 +24,6 @@ public interface BookingService {
     List<BookingResponse> getBookingsForHost(Long hostId);
 
     List<BookingResponse> filterBookingsForHost(Long bookingId, LocalDate checkInDate, LocalDate checkOutDate, Long roomId, LocalDate createdAt, String userEmail, String homestayName);
+
+    boolean isBookingOverlapping(Long bookingId);
 }

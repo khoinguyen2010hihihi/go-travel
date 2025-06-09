@@ -71,6 +71,12 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponse pendingBooking(Long id) {
         Booking book = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: " + id));
+
+        if (isBookingOverlapping(id)) {
+            throw new IllegalStateException("Phòng đã được đặt trong khoảng thời gian này.");
+        }
+
+
         book.setBookingStatus("ACCEPTED");
         bookingRepository.save(book);
         return mapToResponse(book);
@@ -167,6 +173,31 @@ public class BookingServiceImpl implements BookingService {
         return results;
     }
 
+    @Override
+    public boolean isBookingOverlapping(Long bookingId) {
+        // Lấy thông tin booking ban đầu
+        Booking currentBooking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy booking"));
+
+        Long roomId = currentBooking.getRoom().getRoomId();
+        LocalDate checkIn = currentBooking.getCheckInDate();
+        LocalDate checkOut = currentBooking.getCheckOutDate();
+
+        // Lấy tất cả booking khác của cùng phòng
+        List<Booking> overlappingBookings = bookingRepository.findByRoom_RoomIdAndBookingIdNotAndBookingStatus(roomId, bookingId, "ACCEPTED");
+
+        for (Booking other : overlappingBookings) {
+            LocalDate otherCheckIn = other.getCheckInDate();
+            LocalDate otherCheckOut = other.getCheckOutDate();
+
+            // Kiểm tra nếu khoảng thời gian giao nhau
+            if (!(checkOut.isBefore(otherCheckIn) || checkIn.isAfter(otherCheckOut))) {
+                return true; // Có trùng lịch
+            }
+        }
+
+        return false; // Không trùng lịch
+    }
 
     private BookingResponse mapToResponse(Booking booking) {
         return BookingResponse.builder()

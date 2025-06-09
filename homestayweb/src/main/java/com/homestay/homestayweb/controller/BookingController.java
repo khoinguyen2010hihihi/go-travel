@@ -78,6 +78,12 @@ public class BookingController {
         return ResponseEntity.ok(bookings);
     }
 
+    @GetMapping("/check_booking_status/{bookingId}")
+    public ResponseEntity<Boolean> checkBookingOverlap(@PathVariable Long bookingId) {
+        boolean isOverlapping = bookingService.isBookingOverlapping(bookingId);
+        return ResponseEntity.ok(isOverlapping);
+    }
+
     @GetMapping("/filter")
     public ResponseEntity<List<BookingResponse>> filterBookingsForHost(
             @RequestParam(required = false) Long bookingId,
