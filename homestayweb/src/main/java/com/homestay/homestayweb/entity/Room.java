@@ -27,7 +27,7 @@ public class Room {
 
     private Double price;
 
-    private Boolean availability = true;
+    private Boolean availability;
 
     @Lob
     private String features;

@@ -13,13 +13,14 @@ import java.util.List;
 public interface RoomRepository extends JpaRepository<Room, Long> {
     List<Room> findByHomestay_HomestayId(Long homestayId);
 
+    List<Room> findByAvailability(Boolean availability);
     List<Room> findByRoomStatus(String status);
     List<Room> findByHomestay_HomestayIdAndRoomStatus(Long homestayId, String status);
 
     @Query(value = """
     SELECT * FROM room r
     WHERE r.homestay_id = :homestayId
-      AND r.room_status = 'ACCEPTED'
+      AND r.availability = '1'
       AND r.room_id NOT IN (
       SELECT b.room_id FROM booking b
         WHERE b.check_in_date < :checkOutDate

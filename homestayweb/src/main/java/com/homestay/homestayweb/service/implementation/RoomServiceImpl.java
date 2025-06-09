@@ -100,7 +100,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomResponse> getAllRooms() {
-        return roomRepository.findByRoomStatus("ACCEPTED")
+        return roomRepository.findByAvailability(true)
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
