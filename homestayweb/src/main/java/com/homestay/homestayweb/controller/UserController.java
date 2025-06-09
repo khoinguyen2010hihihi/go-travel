@@ -30,6 +30,12 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/hosts")
+    @PreAuthorize("hasAuthority('ADMIN_ACCESS')")
+    public List<User> getAllHosts() {
+        return userService.getAllHosts();
+    }
+
     // API cập nhật thông tin người dùng
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN_ACCESS')")

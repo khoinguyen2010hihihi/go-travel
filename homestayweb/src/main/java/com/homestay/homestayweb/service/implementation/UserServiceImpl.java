@@ -73,4 +73,9 @@ public class UserServiceImpl implements UserService {
         }
         throw new RuntimeException("User not authenticated");
     }
+
+    @Override
+    public List<User> getAllHosts() {
+        return userRepository.findUsersByRole("ROLE_HOST");
+    }
 }

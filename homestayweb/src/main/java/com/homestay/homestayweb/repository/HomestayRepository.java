@@ -21,6 +21,7 @@ public interface HomestayRepository extends JpaRepository<Homestay, Long> {
     boolean existsByContactInfo(String contactInfo);
 
     List<Homestay> findByHost_IdAndApproveStatus(Long id, String status);
+    List<Homestay> findByHost_IdAndApproveStatusNot(Long hostId, String status);
 
     @Query(value = """
     SELECT DISTINCT h.* FROM homestay h

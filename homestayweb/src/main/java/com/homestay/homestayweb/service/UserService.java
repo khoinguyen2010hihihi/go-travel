@@ -12,4 +12,6 @@ public interface UserService {
     void deleteUser(Long id);
     User updateMyProfile(User updatedUser);
     User getCurrentUser();
+
+    List<User> getAllHosts();
 }

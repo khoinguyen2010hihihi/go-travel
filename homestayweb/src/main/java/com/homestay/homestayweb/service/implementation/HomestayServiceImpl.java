@@ -163,7 +163,7 @@ public class HomestayServiceImpl implements HomestayService {
 
     @Override
     public List<HomestayResponse> getHomestayByHost(Long id) {
-        List<Homestay> homestays = homestayRepository.findByHost_IdAndApproveStatus(id,"ACCEPTED");
+        List<Homestay> homestays = homestayRepository.findByHost_IdAndApproveStatusNot(id,"PENDING");
         return homestays.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
@@ -188,6 +188,19 @@ public class HomestayServiceImpl implements HomestayService {
         }
 
         List<Homestay> homestays = homestayRepository.findByHost_IdAndApproveStatus(userDetails.getId(),"PENDING");
+        return homestays.stream()
+                .map(this::mapToResponse)
+                .sorted(Comparator.comparing(HomestayResponse::getId).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<HomestayResponse> getMyRejectedHomestays() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof UserDetailsImpl userDetails)) {
+            throw new ForbiddenException("Bạn chưa đăng nhập hoặc token không hợp lệ");
+        }
+
+        List<Homestay> homestays = homestayRepository.findByHost_IdAndApproveStatus(userDetails.getId(),"REJECTED");
         return homestays.stream()
                 .map(this::mapToResponse)
                 .sorted(Comparator.comparing(HomestayResponse::getId).reversed())

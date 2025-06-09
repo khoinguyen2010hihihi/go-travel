@@ -86,6 +86,11 @@ public class HomestayController {
         return ResponseEntity.ok(homestayService.getMyPendingHomestays());
     }
 
+    @GetMapping("/my_rejected")
+    public ResponseEntity<List<HomestayResponse>> getMyRejectedHomestays() {
+        return ResponseEntity.ok(homestayService.getMyRejectedHomestays());
+    }
+
     @GetMapping("/host/{host_id}")
     public ResponseEntity<List<HomestayResponse>> getByHost(@PathVariable Long host_id) {
         return ResponseEntity.ok(homestayService.getHomestayByHost(host_id));
@@ -102,6 +107,7 @@ public class HomestayController {
     public ResponseEntity<HomestayResponse> reject(@PathVariable Long id) {
         return ResponseEntity.ok(homestayService.rejectHomestay(id));
     }
+
 
     @GetMapping("/slide/{district}")
     public ResponseEntity<List<HomestayResponse>> getAllByDistrict(@PathVariable String district, String status) {

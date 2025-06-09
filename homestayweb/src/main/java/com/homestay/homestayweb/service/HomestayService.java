@@ -30,4 +30,6 @@ public interface HomestayService {
     List<HomestayResponse> getMyPendingHomestays();
 
     List<HomestayResponse> searchHomestays(String roomType, Double priceFrom, Double priceTo, String features, LocalDate checkInDate, LocalDate checkOutDate, Double surfRating, String location);
+
+    List<HomestayResponse> getMyRejectedHomestays();
 }
