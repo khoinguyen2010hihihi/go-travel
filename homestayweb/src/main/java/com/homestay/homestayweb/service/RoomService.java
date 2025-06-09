@@ -16,7 +16,6 @@ public interface RoomService {
 
     List<RoomResponse> getAllRooms();
 
-    List<RoomResponse> getRoomsByHomestayA(Long homestayId, String status);
     List<RoomResponse> getRoomsByHomestayP(Long homestayId, String status);
 
     RoomResponse pendingRoom(Long id);

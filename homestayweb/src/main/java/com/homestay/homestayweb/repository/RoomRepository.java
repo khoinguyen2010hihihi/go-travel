@@ -15,7 +15,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     List<Room> findByAvailability(Boolean availability);
     List<Room> findByRoomStatus(String status);
-    List<Room> findByHomestay_HomestayIdAndRoomStatus(Long homestayId, String status);
 
     @Query(value = """
     SELECT * FROM room r

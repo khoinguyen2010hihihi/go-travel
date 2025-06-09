@@ -50,16 +50,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomResponse> getRoomsByHomestayA(Long homestayId, String status) {
-        return roomRepository.findByHomestay_HomestayIdAndRoomStatus(homestayId,status)
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<RoomResponse> getRoomsByHomestayP(Long homestayId, String status) {
-        return roomRepository.findByHomestay_HomestayIdAndRoomStatus(homestayId,status)
+        return roomRepository.findByHomestay_HomestayId(homestayId)
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());

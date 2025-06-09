@@ -56,7 +56,7 @@ public class RoomController {
 
     @GetMapping("/valid-homestay/{homestayId}")
     public ResponseEntity<List<RoomResponse>> getRoomsByHomestay(@PathVariable Long homestayId) {
-        return ResponseEntity.ok(roomService.getRoomsByHomestayA(homestayId,"ACCEPTED"));
+        return ResponseEntity.ok(roomService.getRoomsByHomestay(homestayId));
     }
 
     @GetMapping("/pending-homestay/{homestayId}")
