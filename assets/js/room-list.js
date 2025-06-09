@@ -141,7 +141,7 @@ function toQueryString(params) {
 
 const endpoint = "http://localhost:8080/homestay/api/homestays/search";
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 10;
 
 let currentPage = 1;
 let allHomestays = [];

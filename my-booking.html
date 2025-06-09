@@ -38,12 +38,21 @@
         </div>
 
         <div class="btns desktop-btns" id="auth-buttons">
-          <button class="cooperate-btn" onclick="location.href='partnership.html'">Hợp tác với chúng tôi</button>
+          <button
+            class="cooperate-btn"
+            onclick="location.href='partnership.html'"
+          >
+            Hợp tác với chúng tôi
+          </button>
           <button class="dang-ky-btn signup" id="registerBtn">Đăng ký</button>
           <button class="dang-nhap-btn login" id="loginBtn">Đăng nhập</button>
         </div>
 
-        <div id="user-info" class="user-dropdown" style="display: none; position: relative">
+        <div
+          id="user-info"
+          class="user-dropdown"
+          style="display: none; position: relative"
+        >
           <img src="/assets/img/icon/user.svg" alt="user-icon" id="user-icon" />
           <div id="user-menu" class="dropdown-menu">
             <a href="#" id="profileLink" class="dropdown-item">Hồ sơ</a>
@@ -417,6 +426,26 @@
 
       // Hàm tạo URL thanh toán và chuyển hướng
       async function createPayment(bookingId, token) {
+        const checkResponse = await fetch(
+          `http://localhost:8080/homestay/api/bookings/check_booking_status/${bookingId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!checkResponse.ok) {
+          throw new Error("Không thể kiểm tra trạng thái booking.");
+        }
+
+        const isOverlapping = await checkResponse.json();
+
+        if (isOverlapping === true) {
+          alert("Lỗi khi duyệt: Phòng đã được đặt trong khoảng thời gian này.");
+          return; // Dừng lại nếu trùng lịch
+        }
+
         try {
           const response = await fetch(
             `http://localhost:8080/homestay/api/payment/vnpay/create-url/${bookingId}`,
