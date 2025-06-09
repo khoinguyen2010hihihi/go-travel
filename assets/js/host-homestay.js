@@ -840,7 +840,12 @@ function handleApprove(event) {
     }
   )
     .then((response) => {
-      if (!response.ok) throw new Error("Lỗi khi duyệt booking");
+      if (!response.ok) {
+        return response.json().then((errorData) => {
+          const msg = errorData.message || "Lỗi không xác định";
+          throw new Error(msg);
+        });
+      }
       return response.json();
     })
     .then((data) => {
@@ -848,8 +853,8 @@ function handleApprove(event) {
       loadPendingBookings();
     })
     .catch((error) => {
-      console.error("Lỗi:", error);
-      alert("Có lỗi xảy ra khi duyệt");
+      console.error("Lỗi khi duyệt:", error);
+      alert("Lỗi khi duyệt: " + error.message);
     });
 }
 
