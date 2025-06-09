@@ -502,7 +502,31 @@ async function handleEditHomestay(homestayId) {
 
         alert("Cập nhật homestay thành công!");
         document.getElementById("edit-homestay").style.display = "none";
-        fetchPendingHomestays();
+        // Ẩn tab chỉnh sửa homestay
+        document.getElementById("edit-homestay").style.display = "none";
+
+        // Gọi returnToDefault để hiển thị nội dung mặc định
+        returnToDefault();
+
+        // Xóa class active-tab khỏi tất cả các liên kết tab
+        document
+          .querySelectorAll(".tab-link")
+          .forEach((link) => link.classList.remove("active-tab"));
+
+        // Xóa class active-homestay khỏi tất cả các homestay-toggle
+        document
+          .querySelectorAll(".homestay-toggle")
+          .forEach((toggle) => toggle.classList.remove("active-homestay"));
+
+        // Đặt lại trạng thái submenu trong sidebar
+        document
+          .querySelectorAll(".sub-menu")
+          .forEach((menu) => (menu.style.display = "none"));
+        document.querySelector(".homestay-list").style.display = "none";
+        const parentToggle = document.querySelector(".parent-toggle");
+        if (parentToggle) {
+          parentToggle.classList.remove("open");
+        }
       } catch (error) {
         console.error("Lỗi khi cập nhật homestay:", error);
         alert("Không thể cập nhật homestay. Vui lòng thử lại.");
@@ -593,6 +617,40 @@ window.addHomestay = function () {
 
       alert("Thêm homestay thành công!");
       resetHomestayForm();
+      
+      // Ẩn tất cả tab nội dung và xóa class active
+      document.querySelectorAll(".tab-content").forEach((tab) => {
+        tab.classList.remove("active");
+        tab.style.display = "none";
+      });
+
+      // Hiển thị tab "Đang chờ phê duyệt"
+      const pendingTab = document.getElementById("pending-approval-homestays");
+      if (pendingTab) {
+        pendingTab.classList.add("active");
+        pendingTab.style.display = "block";
+      }
+
+      // Xóa class active-tab khỏi tất cả các liên kết tab
+      document
+        .querySelectorAll(".tab-link")
+        .forEach((link) => link.classList.remove("active-tab"));
+
+      // Thêm class active-tab cho liên kết "Đang chờ phê duyệt"
+      const pendingTabLink = document.querySelector(
+        '.tab-link[data-tab="pending-approval-homestays"]'
+      );
+      if (pendingTabLink) {
+        pendingTabLink.classList.add("active-tab");
+      }
+
+      // Xóa class active-homestay khỏi các homestay-toggle (nếu có)
+      document
+        .querySelectorAll(".homestay-toggle")
+        .forEach((toggle) => toggle.classList.remove("active-homestay"));
+
+      // Tải danh sách homestay đang chờ phê duyệt
+      fetchPendingHomestays();
     } catch (error) {
       console.error("Lỗi khi thêm homestay:", error);
       alert("Đã xảy ra lỗi khi thêm homestay.");
