@@ -25,6 +25,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     private final JavaMailSender mailSender;
 
     @Override
+    @Transactional
     public void sendOtp(String email) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Email không tồn tại"));
@@ -46,20 +47,20 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     }
 
     @Override
-    public boolean verifyOtp(String email, String otp) {
-        return tokenRepo.findByEmailAndOtp(email, otp)
-                .filter(t -> t.getExpirationTime().isAfter(LocalDateTime.now()))
-                .isPresent();
-    }
-
-    @Override
     @Transactional
-    public void resetPassword(String email, String newPassword) {
+    public void resetPassword(String email, String newPassword, String otp) {
+        PasswordResetToken token = tokenRepo.findByEmailAndOtp(email, otp)
+                .orElseThrow(() -> new RuntimeException("OTP không đúng hoặc đã hết hạn"));
+
+        if (token.getExpirationTime().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("OTP đã hết hạn");
+        }
+
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Email không tồn tại"));
 
         user.setPassword(encoder.encode(newPassword));
         userRepo.save(user);
-        tokenRepo.deleteByEmail(email);
+        tokenRepo.deleteByEmail(email); // cleanup
     }
 }

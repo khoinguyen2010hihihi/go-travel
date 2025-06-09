@@ -15,6 +15,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final PasswordResetService passwordResetService;
+
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest request) {
         return authService.login(request);
@@ -31,16 +32,9 @@ public class AuthController {
         return ResponseEntity.ok("Đã gửi OTP về email.");
     }
 
-    @PostMapping("/verify-otp")
-    public ResponseEntity<?> verifyOtp(@RequestBody OtpVerifyRequest req) {
-        boolean valid = passwordResetService.verifyOtp(req.getEmail(), req.getOtp());
-        return valid ? ResponseEntity.ok("OTP hợp lệ") :
-                ResponseEntity.badRequest().body("OTP không đúng hoặc hết hạn");
-    }
-
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest req) {
-        passwordResetService.resetPassword(req.getEmail(), req.getNewPassword());
+        passwordResetService.resetPassword(req.getEmail(), req.getNewPassword(), req.getOtp());
         return ResponseEntity.ok("Đặt lại mật khẩu thành công.");
     }
 }
