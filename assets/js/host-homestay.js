@@ -92,8 +92,8 @@ window.onload = function () {
             <td>${r.roomId}</td>
             <td>${r.roomType}</td>
             <td>${Number(r.price).toLocaleString("vi-VN")}đ</td>
-            <td>${r.availability ? "Còn trống" : "Đang được sử dụng"}</td>
-            <td>${r.roomStatus ? "Không có" : "Đang sửa chữa"}</td>
+            <td>${r.roomStatus ? "Còn trống" : "Đang được sử dụng"}</td>
+            <td>${r.availability ? "Đang hoạt động" : "Đang sửa chữa"}</td>
             <td>
               <button class="btn btn-edit"  data-id="${
                 r.roomId
@@ -102,43 +102,45 @@ window.onload = function () {
             </td>
           `;
           // sửa phòng
-          tr.querySelector(".btn-edit").addEventListener(
-            "click",
-            async function () {
-              const roomId = this.getAttribute("data-id");
-              const token = localStorage.getItem("authToken");
+          tr.querySelector(".btn-edit").addEventListener("click", async function () {
+            const roomId = this.getAttribute("data-id");
+            const token = localStorage.getItem("authToken");
 
+            try {
               const res = await fetch(
                 `http://localhost:8080/homestay/api/rooms/${roomId}`,
                 {
                   headers: { Authorization: `Bearer ${token}` },
                 }
               );
-              const room = await res.json();
+              if (!res.ok) throw new Error("Không thể lấy dữ liệu phòng");
+              const data = await res.json();
 
-              document.getElementById("editRoomId").value = room.roomId;
-              document.getElementById("editPrice").value = room.price;
+              // Populate form fields
+              document.getElementById("editRoomId").value = data.roomId;
+              document.getElementById("editPrice").value = data.price;
+              document.querySelectorAll("input[name='editRoomType']").forEach((el) => {
+                el.checked = el.value === data.roomType;
+              });
 
-              document
-                .querySelectorAll("input[name='editRoomType']")
-                .forEach((radio) => {
-                  radio.checked = radio.value === room.roomType;
-                });
+              const selectedFacilities = data.features?.split(", ") || [];
+              document.querySelectorAll("input[name='editFacilities']").forEach((el) => {
+                el.checked = selectedFacilities.includes(el.value);
+              });
 
-              const selected = (room.features || "").split(", ");
-              document
-                .querySelectorAll("input[name='editFacilities']")
-                .forEach((cb) => {
-                  cb.checked = selected.includes(cb.value);
-                });
+              // Set room status
+              document.getElementById("editRoomAvailability").value = data.roomStatus ? "1" : "0";
 
               document.getElementById("edit-preview-container").innerHTML = "";
               document
                 .querySelectorAll(".tab-content")
-                .forEach((tab) => (tab.style.display = "none"));
+                .forEach((t) => (t.style.display = "none"));
               document.getElementById("edit-room").style.display = "block";
+            } catch (error) {
+              console.error("Lỗi khi lấy dữ liệu phòng:", error);
+              alert("Không thể tải dữ liệu phòng. Vui lòng thử lại sau.");
             }
-          );
+          });
 
           // xóa phòng
           tr.querySelector(".btn-delete").addEventListener(
@@ -884,30 +886,50 @@ document
 
     const token = localStorage.getItem("authToken");
 
-    await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ roomType, price, features }),
-    });
+    try {
+      const res = await fetch(
+        `http://localhost:8080/homestay/api/rooms/${roomId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            roomType,
+            price,
+            features,
+            availability : availability  === "1"
+          }),
+        }
+      );
 
-    if (imageFile) {
-      const formData = new FormData();
-      formData.append("file", imageFile);
+      if (!res.ok) throw new Error("Không thể cập nhật phòng");
 
-      await fetch(`http://localhost:8080/homestay/api/rooms/${roomId}/images`, {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append("file", imageFile);
+
+        const imgRes = await fetch(
+          `http://localhost:8080/homestay/api/rooms/${roomId}/images`,
+          {
+            method: "PUT",
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData,
+          }
+        );
+
+        if (!imgRes.ok) throw new Error("Lỗi khi upload ảnh phòng");
+      }
+
+      alert("Cập nhật thành công!");
+      document
+        .querySelectorAll(".tab-content")
+        .forEach((tab) => (tab.style.display = "none"));
+      document.getElementById("view-all-room").style.display = "block";
+      document.getElementById("edit-room").style.display = "none";
+    } catch (error) {
+      console.error("Lỗi khi cập nhật phòng:", error);
+      alert("Không thể cập nhật phòng. Vui lòng thử lại sau.");
     }
-
-    alert("Cập nhật thành công!");
-    document
-      .querySelectorAll(".tab-content")
-      .forEach((tab) => (tab.style.display = "none"));
-    document.getElementById("view-all-room").style.display = "block";
-    document.getElementById("edit-room").style.display = "none";
   });

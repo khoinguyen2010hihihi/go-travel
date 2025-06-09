@@ -164,6 +164,11 @@ body {
 .filters label {
   display: block;
   margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.filters label:hover {
+  color: #0099ff;
 }
 
 .results {

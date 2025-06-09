@@ -552,3 +552,52 @@ body {
     transform: rotate(360deg);
   }
 }
+
+/* Style for the set-availability form group */
+.set-availability.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.set-availability select#editRoomAvailability {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.set-availability select#editRoomAvailability:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.set-availability select#editRoomAvailability option {
+  padding: 0.5rem;
+  background-color: #fff;
+  color: #333;
+}
+
+/* Hover effect for better interactivity */
+.set-availability select#editRoomAvailability:hover {
+  border-color: #999;
+  cursor: pointer;
+}
+
+/* Ensure consistency with other form elements */
+.card-box .set-availability {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .set-availability select#editRoomAvailability {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+}
