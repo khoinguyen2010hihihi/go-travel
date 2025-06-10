@@ -5,9 +5,9 @@ server:
 
 spring:
   datasource:
-    url: "jdbc:mysql://localhost:3306/homestay"
+    url: "jdbc:mysql://localhost:3306/goTravel"
     username: root
-    password: 123456
+    password: Bachdepzai11
   jpa:
     hibernate:
       ddl-auto: update
