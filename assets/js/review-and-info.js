@@ -22,19 +22,26 @@ const apiBase = "http://localhost:8080/homestay/api/reviews";
 const nameEl = document.getElementById("homestay-name");
 const addressEl = document.getElementById("homestay-address");
 const descEl = document.getElementById("homestay-description");
+const contactEl = document.getElementById("contact-info");
 
 function loadHomestayInfo() {
   fetch(`http://localhost:8080/homestay/api/homestays/${homestayId}`)
     .then((res) => res.json())
     .then((homestay) => {
+
+      if (!homestay.name) {window.location.href = "access-denied.html"; return;}
+
       nameEl.textContent = homestay.name || "Tên homestay đang cập nhật";
       const addressParts = [homestay.street, homestay.ward, homestay.district]
         .filter(Boolean)
         .join(", ");
-      addressEl.textContent = addressParts || "Địa chỉ chưa cập nhật";
+      addressEl.textContent = addressParts ? `📍 Địa chỉ: ${addressParts}` : "Địa chỉ chưa cập nhật";
       descEl.textContent = homestay.description?.trim() || "Chưa có mô tả cho homestay này.";
+      contactEl.textContent = homestay.contactInfo
+        ? `📞 Liên hệ: ${homestay.contactInfo}`
+        : "Thông tin liên hệ chưa được cập nhật.";
     })
-    .catch((err) => {
+    .catch((err) => {// Chuyển hướng nếu không tìm thấy homestay
       console.error("Lỗi khi tải thông tin tổng quan:", err);
       nameEl.textContent = "Không thể tải thông tin homestay";
     });

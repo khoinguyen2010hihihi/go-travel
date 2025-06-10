@@ -121,23 +121,6 @@ main.room-detail {
   border-radius: 10px;
 }
 
-.view-all-btn {
-  position: absolute;
-  bottom: 15px;
-  left: 15px;
-  background-color: #fff;
-  color: #007bff;
-  font-weight: bold;
-  padding: 8px 12px;
-  border-radius: 20px;
-  text-decoration: none;
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
 .gallery-small {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -246,6 +229,13 @@ main.room-detail {
   font-size: 16px;
   color: #2c3e50; /* Màu chữ cho phần mô tả */
   line-height: 1.6;
+}
+
+.overview .contactInfo {
+  font-size: 15px;
+  color: #2980b9; /* Màu xanh nhấn mạnh thông tin liên hệ */
+  font-weight: 500;
+  margin-top: 15px;
 }
 
 /* === Thông tin hữu ích === */
