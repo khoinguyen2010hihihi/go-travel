@@ -58,10 +58,9 @@ window.onload = async function () {
 
 const resultsContainer = document.querySelector(".results");
 
-// Tạo pagination container
 const paginationContainer = document.createElement("div");
 paginationContainer.classList.add("pagination");
-resultsContainer.after(paginationContainer);
+document.querySelector(".homestay-section").after(paginationContainer);
 
 // Lấy filter + reload trang khi baasm filter mới
 const filterInputs = document.querySelectorAll("[data-filter]");
@@ -141,7 +140,7 @@ function toQueryString(params) {
 
 const endpoint = "http://localhost:8080/homestay/api/homestays/search";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 5;
 
 let currentPage = 1;
 let allHomestays = [];
