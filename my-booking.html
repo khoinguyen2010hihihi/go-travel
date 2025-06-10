@@ -69,15 +69,7 @@
         <h2>Tài khoản của tôi</h2>
         <ul>
           <li>
-            <a href="#" class="tab-link" data-tab="tab-my-booking"
-              >Đơn đặt chỗ</a
-            >
-          </li>
-          <li><a href="#" class="tab-link" data-tab="tab-profile">Hồ sơ</a></li>
-          <li>
-            <a href="#" class="tab-link" data-tab="tab-change-password"
-              >Đổi mật khẩu</a
-            >
+            <a href="#" class="tab-link" data-tab="tab-my-booking">Đơn đặt chỗ</a>
           </li>
         </ul>
       </div>
@@ -143,91 +135,6 @@
               <p id="no-canceled" style="display: none">
                 Không có đơn đặt chỗ đã hủy.
               </p>
-            </div>
-          </div>
-        </div>
-
-        <div id="tab-profile" class="tab-content">
-          <div class="card-box">
-            <button class="close-btn" onclick="returnToDefault()">×</button>
-            <h2>Hồ sơ của tôi</h2>
-
-            <div class="profile-info">
-              <p>
-                <span class="label">Họ và tên:</span>
-                <span id="userName">Phuc Thinh</span>
-              </p>
-              <p>
-                <span class="label">Email:</span>
-                <span id="userEmail">phuc.thinh@example.com</span>
-              </p>
-            </div>
-
-            <button class="change-info-btn" onclick="editProfile()">
-              Thay đổi thông tin
-            </button>
-
-            <div
-              id="edit-profile-form"
-              class="edit-profile-form"
-              style="display: none"
-            >
-              <label for="editName">Họ và tên:</label>
-              <input type="text" id="editName" value="Phuc Thinh" />
-
-              <label for="editEmail">Email:</label>
-              <input
-                type="email"
-                id="editEmail"
-                value="phuc.thinh@example.com"
-              />
-
-              <button class="profile-save-btn" onclick="saveProfile()">
-                Lưu thay đổi
-              </button>
-              <button class="profile-cancel-btn" onclick="cancelEdit()">
-                Hủy
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div id="tab-change-password" class="tab-content">
-          <div class="card-box">
-            <button class="close-btn" onclick="returnToDefault()">×</button>
-            <h2>Đổi mật khẩu</h2>
-
-            <div class="change-password-form">
-              <label for="currentPassword">Mật khẩu hiện tại:</label>
-              <input
-                type="password"
-                id="currentPassword"
-                placeholder="Nhập mật khẩu hiện tại"
-              />
-
-              <label for="newPassword">Mật khẩu mới:</label>
-              <input
-                type="password"
-                id="newPassword"
-                placeholder="Nhập mật khẩu mới"
-              />
-
-              <label for="confirmPassword">Xác nhận mật khẩu mới:</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                placeholder="Xác nhận mật khẩu mới"
-              />
-
-              <button class="profile-save-btn" onclick="savePassword()">
-                Lưu thay đổi
-              </button>
-              <button
-                class="profile-cancel-btn"
-                onclick="cancelChangePassword()"
-              >
-                Hủy
-              </button>
             </div>
           </div>
         </div>
@@ -582,44 +489,6 @@
           console.error("Lỗi khi hủy đặt chỗ:", error);
           alert("Có lỗi xảy ra khi hủy đặt chỗ. Vui lòng thử lại.");
         }
-      }
-
-      function editProfile() {
-        document.getElementById("edit-profile-form").style.display = "block";
-        document.querySelector(".profile-info").style.display = "none";
-        document.querySelector(".change-info-btn").style.display = "none";
-      }
-
-      function saveProfile() {
-        const name = document.getElementById("editName").value;
-        const email = document.getElementById("editEmail").value;
-        document.getElementById("userName").textContent = name;
-        document.getElementById("userEmail").textContent = email;
-        cancelEdit();
-      }
-
-      function cancelEdit() {
-        document.getElementById("edit-profile-form").style.display = "none";
-        document.querySelector(".profile-info").style.display = "block";
-        document.querySelector(".change-info-btn").style.display = "block";
-      }
-
-      function savePassword() {
-        const newPassword = document.getElementById("newPassword").value;
-        const confirmPassword =
-          document.getElementById("confirmPassword").value;
-        if (newPassword !== confirmPassword) {
-          alert("Mật khẩu mới và xác nhận không khớp!");
-          return;
-        }
-        alert("Mật khẩu đã được cập nhật!");
-        cancelChangePassword();
-      }
-
-      function cancelChangePassword() {
-        document.getElementById("currentPassword").value = "";
-        document.getElementById("newPassword").value = "";
-        document.getElementById("confirmPassword").value = "";
       }
     </script>
     <script type="module" src="assets/js/main.js"></script>
