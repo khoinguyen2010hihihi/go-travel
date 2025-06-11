@@ -283,7 +283,7 @@ main.room-detail {
   margin-bottom: 20px;
   overflow: hidden;
   transition: transform 0.3s, box-shadow 0.3s;
-  height: 200px;
+  height: 250px;
 }
 
 .room-item:hover {
@@ -295,8 +295,15 @@ main.room-detail {
 /* ảnh phòng */
 .room-img img {
   width: 300px;
-  height: 200px;
+  height: 250px;
   object-fit: cover;
+}
+
+.room-type {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
 }
 
 /* tiện nghi */
@@ -304,6 +311,8 @@ main.room-detail {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-self: flex-start;
+  margin-top: 20px;
 }
 
 .room-facilities h4 {

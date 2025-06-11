@@ -13,11 +13,12 @@ function decodeJWT(token) {
   return JSON.parse(jsonPayload);
 }
 
+let isLoggedIn = false;
+
 function login() {
   const loginBtn = document.querySelector(".submit-login-btn");
-
-  
-  if (loginBtn) {
+  if (loginBtn && !isLoggedIn) {
+    isLoggedIn = true;
     loginBtn.addEventListener("click", function () {
       const email = document.getElementById("loginEmail").value;
       const password = document.getElementById("loginPassword").value;

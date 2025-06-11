@@ -7,11 +7,11 @@ window.onload = async function () {
   const roomTypeParam = urlParams.get("roomType");
   if (roomTypeParam) {
     const checkboxes = document.querySelectorAll(
-      'input[type="checkbox"][data-filter="roomType"]'
+      'input[type="radio"][data-filter="roomType"]'
     );
-    checkboxes.forEach((checkbox) => {
-      if (checkbox.value === roomTypeParam) {
-        checkbox.checked = true;
+    checkboxes.forEach((radio) => {
+      if (radio.value === roomTypeParam) {
+        radio.checked = true;
       }
     });
   }
